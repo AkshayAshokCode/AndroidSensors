@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MetalDetector</string>
+    <string name="max_progress">200 µTesla</string>
+    <string name="min_progress">0 µTesla</string>
+    <string name="average_value">45.00</string>
+</resources>
