@@ -1,55 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_main"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000000"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/average_value"
-            android:textColor="#FFFFFF"
-            android:textSize="23sp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold" />
-        <LinearLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/activity_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/value"
-            android:gravity="center"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:context=".MainActivity">
+
+            <com.google.android.material.appbar.AppBarLayout
+                style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textColor="#FFFFFF"
-                android:text="@string/min_progress"/>
-            <ProgressBar
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:layout_height="40dp"
-                android:max="200"
-                android:scaleY="2"
-                android:layout_margin="5dp"
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"/>
+                android:fitsSystemWindows="true">
 
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/activity_main_toolbar"
+                    style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:elevation="4dp" />
+            </com.google.android.material.appbar.AppBarLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-               android:padding="5dp"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="@string/max_progress"/>
-        </LinearLayout>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_frag"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                app:navGraph="@navigation/nav_graph" />
 
-    </RelativeLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/drawer_items" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

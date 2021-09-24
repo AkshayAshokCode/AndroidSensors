@@ -5,6 +5,12 @@
       <map>
         <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/drawable/progress_bar_color.xml" value="0.2078125" />
         <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/layout/activity_main.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/layout/gravity_meter.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/layout/heart_rate_meter.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/layout/metal_detector.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/layout/pressure_meter.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/layout/relative_humidity_meter.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Akshay/AndroidStudioProjects/MetalDetector/app/src/main/res/menu/drawer_items.xml" value="0.19166666666666668" />
       </map>
     </option>
   </component>

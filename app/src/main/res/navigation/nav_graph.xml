@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/metalDetector">
+
+    <fragment
+        android:id="@+id/metalDetector"
+        android:name="com.akshayAshokCode.metaldetector.fragments.MetalDetector"
+        tools:layout="@layout/metal_detector"
+        android:label="Metal Detector" />
+    <fragment
+        android:id="@+id/gravityMeter"
+        tools:layout="@layout/gravity_meter"
+        android:name="com.akshayAshokCode.metaldetector.fragments.GravityMeter"
+        android:label="Gravity Meter" />
+    <fragment
+        android:id="@+id/heartRateMeter"
+        android:name="com.akshayAshokCode.metaldetector.fragments.HeartRateMeter"
+        android:label="Heart Rate Meter" />
+    <fragment
+        android:id="@+id/pressureMeter"
+        android:name="com.akshayAshokCode.metaldetector.fragments.PressureMeter"
+        android:label="Pressure Meter" />
+    <fragment
+        android:id="@+id/relativeHumidityMeter"
+        android:name="com.akshayAshokCode.metaldetector.fragments.RelativeHumidityMeter"
+        android:label="Humidity Meter" />
+</navigation>

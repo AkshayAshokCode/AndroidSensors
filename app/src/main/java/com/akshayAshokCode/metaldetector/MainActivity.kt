@@ -14,77 +14,53 @@ import android.util.Log
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.akshayAshokCode.metaldetector.databinding.ActivityMainBinding
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.navigation.NavigationView
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
-    // Add Gravity meter
-    // Add Heart rate meter
-    // Add pressure meter
-    // Add Relative Humidity
-class MainActivity : AppCompatActivity(), SensorEventListener {
+// Add Gravity meter
+// Add Heart rate meter
+// Add pressure meter
+// Add Relative Humidity
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var toolbar: MaterialToolbar
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
-    private val TAG="MainActivity"
-    private lateinit var sensorManager: SensorManager
-    private lateinit var DECIMAL_FORMATTER: DecimalFormat
-    private var magneticValue="0"
+    private lateinit var navigationView: NavigationView
+    private lateinit var drawerLayout: DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        toolbar = binding.activityMainToolbar
+        navigationView=binding.navView
+        drawerLayout=binding.drawerLayout
 
-        // define decimal formatter
-        val symbols = DecimalFormatSymbols(Locale.US)
-        symbols.decimalSeparator = '.'
-        DECIMAL_FORMATTER = DecimalFormat("#.000", symbols)
-        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        val navHostFrag =
+            supportFragmentManager.findFragmentById(R.id.nav_host_frag) as NavHostFragment
+        navController = navHostFrag.navController
+
+        val appBarConfiguration= AppBarConfiguration(navController.graph,drawerLayout)
+        toolbar.setupWithNavController(navController,appBarConfiguration)
+        navigationView.setupWithNavController(navController)
     }
 
-    override fun onResume() {
-        super.onResume()
-        sensorManager.registerListener(
-            this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sensorManager.unregisterListener(this)
-    }
-
-    override fun onSensorChanged(p0: SensorEvent) {
-        if (p0.sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            // get values for each axes X,Y,Z
-            val magX = p0.values[0];
-            val magY = p0.values[1];
-            val magZ = p0.values[2];
-            val magnitude=Math.sqrt((magX.times(magX.toDouble())).plus(magY.times(magY.toDouble())).plus(magZ.times(magZ.toDouble())))
-             magneticValue=DECIMAL_FORMATTER.format(magnitude);
-            // set value on the screen
-            binding.value.text = magneticValue + " µTesla";
-
-            val progressValue=magneticValue.toDouble().toInt()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                binding.progressBar.setProgress(progressValue,true)
-                when {
-                    progressValue<100 -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(this,R.color.light_red))
-                    }
-                    progressValue<150 -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(this,R.color.red))
-                    }
-                    else -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(this,R.color.dark_red))
-                    }
-                }
-            }
+    override fun onBackPressed() {
+        if(drawerLayout.isOpen){
+            drawerLayout.close()
+        }else {
+            super.onBackPressed()
         }
-    }
-
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
 }
