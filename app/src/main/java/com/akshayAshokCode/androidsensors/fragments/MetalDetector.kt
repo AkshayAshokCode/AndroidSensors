@@ -1,4 +1,4 @@
-package com.akshayAshokCode.metaldetector.fragments
+package com.akshayAshokCode.androidsensors.fragments
 
 import android.content.res.ColorStateList
 import android.hardware.Sensor
@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.akshayAshokCode.metaldetector.R
-import com.akshayAshokCode.metaldetector.databinding.MetalDetectorBinding
+import com.akshayAshokCode.androidsensors.R
+import com.akshayAshokCode.androidsensors.databinding.MetalDetectorBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*

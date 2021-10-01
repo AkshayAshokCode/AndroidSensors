@@ -1,33 +1,17 @@
-package com.akshayAshokCode.metaldetector
+package com.akshayAshokCode.androidsensors
 
-import android.content.res.ColorStateList
-import android.content.res.Resources
-import android.graphics.Color
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
-import android.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.akshayAshokCode.metaldetector.databinding.ActivityMainBinding
+import com.akshayAshokCode.androidsensors.R
+import com.akshayAshokCode.androidsensors.databinding.ActivityMainBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.*
 
 // Add Gravity meter
 // Add Heart rate meter

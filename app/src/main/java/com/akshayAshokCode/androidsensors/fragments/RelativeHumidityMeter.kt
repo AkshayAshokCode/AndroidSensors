@@ -1,4 +1,4 @@
-package com.akshayAshokCode.metaldetector.fragments
+package com.akshayAshokCode.androidsensors.fragments
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -12,29 +12,29 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.akshayAshokCode.metaldetector.R
-import com.akshayAshokCode.metaldetector.databinding.PressureMeterBinding
+import com.akshayAshokCode.androidsensors.R
+import com.akshayAshokCode.androidsensors.databinding.RelativeHumidityMeterBinding
 
-class PressureMeter: Fragment(), SensorEventListener {
-    private val TAG="PressureMeter"
-    private lateinit var binding: PressureMeterBinding
+class RelativeHumidityMeter: Fragment(), SensorEventListener {
+    private val TAG="RelativeHumidityMeter"
+    private lateinit var binding: RelativeHumidityMeterBinding
     private lateinit var sensorManager: SensorManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding= DataBindingUtil.inflate(inflater, R.layout.pressure_meter,container,false)
+    ): View{
+        binding=DataBindingUtil.inflate(inflater, R.layout.relative_humidity_meter,container,false)
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
         return binding.root
     }
     override fun onResume() {
         super.onResume()
         sensorManager.registerListener(
-            this, sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE),
+            this, sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY),
             SensorManager.SENSOR_DELAY_NORMAL
         )
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)==null){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY)==null){
             binding.notAvailable.visibility=View.VISIBLE
         }
     }
@@ -45,8 +45,8 @@ class PressureMeter: Fragment(), SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent) {
-        if (p0.sensor?.type == Sensor.TYPE_PRESSURE) {
-            Log.d(TAG,"TYPE_PRESSURE")
+        if (p0.sensor?.type == Sensor.TYPE_RELATIVE_HUMIDITY) {
+            Log.d(TAG,"TYPE_RELATIVE_HUMIDITY")
         }
     }
 

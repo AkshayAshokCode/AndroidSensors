@@ -1,4 +1,4 @@
-package com.akshayAshokCode.metaldetector.fragments
+package com.akshayAshokCode.androidsensors.fragments
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -12,8 +12,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.akshayAshokCode.metaldetector.R
-import com.akshayAshokCode.metaldetector.databinding.GravityMeterBinding
+import com.akshayAshokCode.androidsensors.R
+import com.akshayAshokCode.androidsensors.databinding.GravityMeterBinding
 
 class GravityMeter : Fragment(), SensorEventListener {
     private val TAG="GravityMeter"
