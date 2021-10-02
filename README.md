@@ -1,7 +1,21 @@
 # AndroidSensors
 This repository demonstrates integration of following **Android sensors** in an Android device.
 - ### Metal Detector
-- ### Gravity Meter
+- ### Gravity Meter (Pending)
 - ### Heart Rate Meter
 - ### Pressure Meter
 - ### Relative Humidity
+- ### Accelerometer (Pending)
+- ### Ambient temperature (Pending)
+- ### Magnetic field sensor (Pending)
+- ### Gyroscope (Pending)
+- ### Light Meter (Pending)
+- ### Proximity Meter (Pending)
+- ### Linear acceleration (Pending)
+- ### Significant motion (Pending)
+- ### Step detector (Pending)
+- ### Step counter (Pending)
+- ### Tilt detector (Pending)
+- ### Wake up gesture (Pending)
+- ### Pick up gesture (Pending)
+- ### Glance gesture (Pending)
