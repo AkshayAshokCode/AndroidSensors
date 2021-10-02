@@ -21,6 +21,10 @@
             android:id="@+id/relativeHumidityMeter"
             android:icon="@drawable/humidity_icon"
             android:title="Relative Humidity"/>
+        <item
+            android:id="@+id/inAppReview"
+            android:icon="@drawable/ic_baseline_star_rate_24"
+            android:title="Write Us A Review"/>
 
     </group>
 </menu>
