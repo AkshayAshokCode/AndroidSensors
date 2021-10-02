@@ -8,7 +8,7 @@
         android:id="@+id/not_available"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:textColor="#FFFFFF"
         android:lines="2"
         android:gravity="center"

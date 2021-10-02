@@ -27,4 +27,8 @@
         android:id="@+id/relativeHumidityMeter"
         android:name="com.akshayAshokCode.androidsensors.fragments.RelativeHumidityMeter"
         android:label="Humidity Meter" />
+    <fragment
+        android:id="@+id/inAppReview"
+        android:name="com.akshayAshokCode.androidsensors.fragments.InAppReview"
+        android:label="Write Us A Review" />
 </navigation>
