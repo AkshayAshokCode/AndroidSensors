@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/metalDetector">
+    app:startDestination="@id/allSensors">
 
     <fragment
         android:id="@+id/metalDetector"
@@ -31,4 +31,27 @@
         android:id="@+id/inAppReview"
         android:name="com.akshayAshokCode.androidsensors.fragments.InAppReview"
         android:label="Write Us A Review" />
+    <fragment
+        android:id="@+id/allSensors"
+        android:name="com.akshayAshokCode.androidsensors.fragments.AllSensors"
+        android:label="AllSensors" >
+        <action
+            android:id="@+id/action_allSensors_to_metalDetector"
+            app:destination="@id/metalDetector" />
+        <action
+            android:id="@+id/action_allSensors_to_gravityMeter"
+            app:destination="@id/gravityMeter" />
+        <action
+            android:id="@+id/action_allSensors_to_heartRateMeter"
+            app:destination="@id/heartRateMeter" />
+        <action
+            android:id="@+id/action_allSensors_to_pressureMeter"
+            app:destination="@id/pressureMeter" />
+        <action
+            android:id="@+id/action_allSensors_to_relativeHumidityMeter"
+            app:destination="@id/relativeHumidityMeter" />
+        <action
+            android:id="@+id/action_allSensors_to_relativeHumidityMeter2"
+            app:destination="@id/relativeHumidityMeter" />
+    </fragment>
 </navigation>
