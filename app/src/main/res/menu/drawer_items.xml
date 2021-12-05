@@ -2,26 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/metalDetector"
-            android:icon="@drawable/metal_icon"
-            android:title="Metal Detector"/>
-        <item
-            android:id="@+id/gravityMeter"
-            android:icon="@drawable/gravity_icon"
-            android:title="Gravity Meter"/>
-        <item
-            android:id="@+id/heartRateMeter"
-            android:icon="@drawable/heart_icon"
-            android:title="Heart Rate Meter"/>
-        <item
-            android:id="@+id/pressureMeter"
-            android:icon="@drawable/pressure_icon"
-            android:title="Pressure Meter"/>
-        <item
-            android:id="@+id/relativeHumidityMeter"
-            android:icon="@drawable/humidity_icon"
-            android:title="Relative Humidity"/>
-        <item
             android:id="@+id/inAppReview"
             android:icon="@drawable/ic_baseline_star_rate_24"
             android:title="Write Us A Review"/>

@@ -27,11 +27,12 @@ class HeartRateMeter: Fragment(), SensorEventListener {
     ): View {
         binding= DataBindingUtil.inflate(inflater, R.layout.heart_rate_meter,container,false)
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-        var sensors= listOf<Sensor>()
+       /* var sensors= listOf<Sensor>()
         sensors=sensorManager.getSensorList(Sensor.TYPE_ALL)
         for (sensor in sensors){
 
         }
+        */
         return binding.root
     }
     override fun onResume() {
