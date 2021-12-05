@@ -3,10 +3,10 @@
     <string name="max_progress">200 µTesla</string>
     <string name="min_progress">0 µTesla</string>
     <string name="average_value">45.00 µTesla</string>
-    <string name="heart_rate_not_available">Heart Rate Sensor not available in your device</string>
-    <string name="metal_detector_not_available">Metal Detector Sensor not available in your device</string>
-    <string name="pressure_meter_not_available">Pressure Meter Sensor not available in your device</string>
-    <string name="gravity_meter_not_available">Gravity Meter Sensor not available in your device</string>
-    <string name="humidity_meter_not_available">Humidity Meter Sensor not available in your device</string>
+    <string name="heart_rate_not_available">Heart Rate Sensor not available\n in your device</string>
+    <string name="metal_detector_not_available">Metal Detector Sensor not available\n in your device</string>
+    <string name="pressure_meter_not_available">Pressure Meter Sensor not available\n in your device</string>
+    <string name="gravity_meter_not_available">Gravity Meter Sensor not available\n in your device</string>
+    <string name="humidity_meter_not_available">Humidity Meter Sensor not available\n in your device</string>
     <string name="thank_you_for_review">Thank You</string>
 </resources>

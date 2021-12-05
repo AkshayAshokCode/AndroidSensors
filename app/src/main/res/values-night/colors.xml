@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryReverse">#121212</color>
+    <color name="colorPrimary">#121212</color>
+    <color name="colorPrimaryReverse">#ffffff</color>
     <color name="white">#ffffff</color>
     <color name="dark_red">#F32013</color>
     <color name="red">#FF6347</color>

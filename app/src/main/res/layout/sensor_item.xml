@@ -22,11 +22,12 @@
             android:id="@+id/sensor_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             tools:src="@drawable/humidity_icon"/>
         <TextView
             android:id="@+id/sensor_name"
             android:layout_width="wrap_content"
-            tools:text="akskfmd"
+            tools:text="sensor"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="14sp"
