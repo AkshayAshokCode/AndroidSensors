@@ -6,14 +6,14 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.akshayAshokCode.androidsensors"
         minSdk 23
-        targetSdk 30
-        versionCode 1
-        versionName "1.0"
+        targetSdk 31
+        versionCode 3
+        versionName "1.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,5 +49,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation 'com.google.android.play:core:1.10.2'
 
-
+    // for adding recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }

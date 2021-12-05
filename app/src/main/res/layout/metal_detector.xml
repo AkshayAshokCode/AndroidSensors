@@ -4,13 +4,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dark_mode">
+        android:background="@color/colorPrimary">
         <TextView
             android:id="@+id/not_available"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorPrimaryReverse"
             android:lines="2"
             android:gravity="center"
             android:textSize="16sp"
@@ -23,7 +23,7 @@
             android:layout_centerInParent="true"
             android:layout_marginBottom="10dp"
             android:text="@string/average_value"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorPrimaryReverse"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/min_progress"
-                android:textColor="#FFFFFF" />
+                android:textColor="@color/colorPrimaryReverse" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/max_progress"
-                android:textColor="#FFFFFF" />
+                android:textColor="@color/colorPrimaryReverse" />
         </LinearLayout>
 
     </RelativeLayout>

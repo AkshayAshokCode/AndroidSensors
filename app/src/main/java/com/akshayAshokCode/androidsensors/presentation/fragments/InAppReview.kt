@@ -1,6 +1,5 @@
-package com.akshayAshokCode.androidsensors.fragments
+package com.akshayAshokCode.androidsensors.presentation.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.InAppReviewLayoutBinding
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.model.ReviewErrorCode
 
 class InAppReview : Fragment() {
     private lateinit var binding: InAppReviewLayoutBinding
