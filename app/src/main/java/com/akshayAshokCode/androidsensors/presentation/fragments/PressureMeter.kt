@@ -1,4 +1,4 @@
-package com.akshayAshokCode.androidsensors.fragments
+package com.akshayAshokCode.androidsensors.presentation.fragments
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent

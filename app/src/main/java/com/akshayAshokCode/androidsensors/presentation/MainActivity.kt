@@ -1,4 +1,4 @@
-package com.akshayAshokCode.androidsensors
+package com.akshayAshokCode.androidsensors.presentation
 
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
@@ -17,14 +17,12 @@ import com.akshayAshokCode.androidsensors.databinding.ActivityMainBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.tasks.Task
 
 // Add Gravity meter
 // Add Heart rate meter

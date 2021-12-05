@@ -7,33 +7,33 @@
 
     <fragment
         android:id="@+id/metalDetector"
-        android:name="com.akshayAshokCode.androidsensors.fragments.MetalDetector"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.MetalDetector"
         tools:layout="@layout/metal_detector"
         android:label="Metal Detector" />
     <fragment
         android:id="@+id/gravityMeter"
         tools:layout="@layout/gravity_meter"
-        android:name="com.akshayAshokCode.androidsensors.fragments.GravityMeter"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.GravityMeter"
         android:label="Gravity Meter" />
     <fragment
         android:id="@+id/heartRateMeter"
-        android:name="com.akshayAshokCode.androidsensors.fragments.HeartRateMeter"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.HeartRateMeter"
         android:label="Heart Rate Meter" />
     <fragment
         android:id="@+id/pressureMeter"
-        android:name="com.akshayAshokCode.androidsensors.fragments.PressureMeter"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.PressureMeter"
         android:label="Pressure Meter" />
     <fragment
         android:id="@+id/relativeHumidityMeter"
-        android:name="com.akshayAshokCode.androidsensors.fragments.RelativeHumidityMeter"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.RelativeHumidityMeter"
         android:label="Humidity Meter" />
     <fragment
         android:id="@+id/inAppReview"
-        android:name="com.akshayAshokCode.androidsensors.fragments.InAppReview"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.InAppReview"
         android:label="Write Us A Review" />
     <fragment
         android:id="@+id/allSensors"
-        android:name="com.akshayAshokCode.androidsensors.fragments.AllSensors"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.AllSensors"
         android:label="Android Sensors" >
         <action
             android:id="@+id/action_allSensors_to_metalDetector"

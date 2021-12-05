@@ -9,4 +9,12 @@
     <string name="gravity_meter_not_available">Gravity Meter Sensor not available\n in your device</string>
     <string name="humidity_meter_not_available">Humidity Meter Sensor not available\n in your device</string>
     <string name="thank_you_for_review">Thank You</string>
+
+    <string name="gravity_x">Force of gravity along the x axis:</string>
+    <string name="gravity_y">Force of gravity along the y axis:</string>
+    <string name="gravity_z">Force of gravity along the z axis:</string>
+    <string name="x_axis">X-axis:</string>
+    <string name="y_axis">Y-axis:</string>
+    <string name="z_axis">Z-axis:</string>
+    <string name="ms">m/s&#xB2;</string>
 </resources>

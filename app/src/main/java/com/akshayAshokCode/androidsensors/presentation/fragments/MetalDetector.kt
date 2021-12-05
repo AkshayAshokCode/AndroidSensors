@@ -1,4 +1,4 @@
-package com.akshayAshokCode.androidsensors.fragments
+package com.akshayAshokCode.androidsensors.presentation.fragments
 
 import android.content.res.ColorStateList
 import android.hardware.Sensor
