@@ -1,11 +1,10 @@
-package com.akshayAshokCode.androidsensors.fragments
+package com.akshayAshokCode.androidsensors.presentation.fragments
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +15,13 @@ import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.GravityMeterBinding
 
 class GravityMeter : Fragment(), SensorEventListener {
-    private val TAG="GravityMeter"
+    private val TAG = "GravityMeter"
     private lateinit var binding: GravityMeterBinding
     private lateinit var sensorManager: SensorManager
+    private var gravityUnit = ""
+    private var xAxis = ""
+    private var yAxis = ""
+    private var zAxis = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,16 +29,22 @@ class GravityMeter : Fragment(), SensorEventListener {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.gravity_meter, container, false)
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
+        gravityUnit = getString(R.string.ms)
+        xAxis = getString(R.string.x_axis)
+        yAxis = getString(R.string.y_axis)
+        zAxis = getString(R.string.z_axis)
         return binding.root
     }
+
     override fun onResume() {
         super.onResume()
         sensorManager.registerListener(
             this, sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
             SensorManager.SENSOR_DELAY_NORMAL
         )
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)==null){
-            binding.notAvailable.visibility=View.VISIBLE
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) == null) {
+            binding.notAvailable.visibility = View.VISIBLE
+            binding.gravityData.visibility = View.GONE
         }
     }
 
@@ -46,7 +55,12 @@ class GravityMeter : Fragment(), SensorEventListener {
 
     override fun onSensorChanged(p0: SensorEvent) {
         if (p0.sensor?.type == Sensor.TYPE_GRAVITY) {
-            Log.d(TAG,"GRAVITY")
+            val x = "$xAxis ${String.format("%.2f",p0.values[0])} $gravityUnit"
+            val y = "$yAxis ${String.format("%.2f",p0.values[1])} $gravityUnit"
+            val z = "$zAxis ${String.format("%.2f",p0.values[2])} $gravityUnit"
+            binding.gravityX.text = x
+            binding.gravityY.text = y
+            binding.gravityZ.text = z
         }
     }
 

@@ -1,18 +1,14 @@
-package com.akshayAshokCode.androidsensors.fragments
+package com.akshayAshokCode.androidsensors.presentation.fragments
 
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.adapter.SensorAdapter
 import com.akshayAshokCode.androidsensors.data.SensorModel
