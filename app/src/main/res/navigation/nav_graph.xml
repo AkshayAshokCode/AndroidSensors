@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/allSensors"
         android:name="com.akshayAshokCode.androidsensors.fragments.AllSensors"
-        android:label="AllSensors" >
+        android:label="Android Sensors" >
         <action
             android:id="@+id/action_allSensors_to_metalDetector"
             app:destination="@id/metalDetector" />
