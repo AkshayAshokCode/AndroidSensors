@@ -19,3 +19,9 @@ This repository demonstrates integration of following **Android sensors** in an 
 - ### Wake up gesture (Pending)
 - ### Pick up gesture (Pending)
 - ### Glance gesture (Pending)
+<br/>
+<br/>
+
+<a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot1.png" height="500"></a> &nbsp;&nbsp;&nbsp;&nbsp;
+<a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot2.png" height="500"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot3.png" height="500"></a>
