@@ -1,20 +1,17 @@
 package com.akshayAshokCode.androidsensors.adapter
 
 import android.content.Context
-import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.akshayAshokCode.androidsensors.R
-import com.akshayAshokCode.androidsensors.data.SensorModel
 import com.akshayAshokCode.androidsensors.databinding.SensorItemBinding
 
-class SensorAdapter(private val context: Context?, private val sensorsList: List<SensorModel>) :
+class SensorAdapter(private val context: Context?, private val sensorsList: List<com.akshayAshokCode.androidsensors.data.SensorModel>) :
     RecyclerView.Adapter<SensorAdapter.ViewHolder>() {
     private lateinit var binding: SensorItemBinding
     private lateinit var sensorManager: SensorManager

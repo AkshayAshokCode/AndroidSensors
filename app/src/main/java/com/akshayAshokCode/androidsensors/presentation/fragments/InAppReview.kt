@@ -1,6 +1,7 @@
 package com.akshayAshokCode.androidsensors.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 
 class InAppReview : Fragment() {
     private lateinit var binding: InAppReviewLayoutBinding
+    private val TAG = "InAppReview"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,12 +26,15 @@ class InAppReview : Fragment() {
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // We got the ReviewInfo object
+                    Log.d(TAG,"FIRST:"+task.isComplete)
                 val reviewInfo = task.result
                 val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
                 flow.addOnCompleteListener {task->
                     if(task.isSuccessful){
                         Toast.makeText(requireContext(),"Review successful",Toast.LENGTH_SHORT).show()
                         binding.thankYou.visibility=View.VISIBLE
+                    }else{
+
                     }
 
                     // The flow has finished. The API does not indicate whether the user
