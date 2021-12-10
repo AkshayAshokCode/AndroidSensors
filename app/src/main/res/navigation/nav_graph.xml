@@ -27,10 +27,11 @@
         android:id="@+id/relativeHumidityMeter"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.RelativeHumidityMeter"
         android:label="Humidity Meter" />
-    <fragment
+   <!-- <fragment
         android:id="@+id/inAppReview"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.InAppReview"
         android:label="Write Us A Review" />
+    -->
     <fragment
         android:id="@+id/allSensors"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.AllSensors"

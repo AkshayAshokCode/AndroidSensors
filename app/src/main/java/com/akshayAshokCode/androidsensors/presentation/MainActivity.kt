@@ -5,6 +5,7 @@ import android.content.IntentSender.SendIntentException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.annotation.Nullable
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -28,7 +29,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 // Add Heart rate meter
 // Add pressure meter
 // Add Relative Humidity
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var toolbar: MaterialToolbar
     private lateinit var navController: NavController
@@ -64,6 +65,16 @@ class MainActivity : AppCompatActivity() {
         navigationView = binding.navView
         drawerLayout = binding.drawerLayout
 
+        binding.navView.setNavigationItemSelectedListener{
+            Log.d(TAG,"Clicked Item:"+it.itemId)
+            when (it.itemId) {
+
+                else -> {
+                    true
+                }
+            }
+        }
+        binding.navView.bringToFront()
         val navHostFrag =
             supportFragmentManager.findFragmentById(R.id.nav_host_frag) as NavHostFragment
         navController = navHostFrag.navController
@@ -148,5 +159,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val id=item.itemId
+        Log.d(TAG,"Clicked Item:"+id)
+        return true
     }
 }
