@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private val TAG="MainActivity"
     private lateinit var appUpdateManager: AppUpdateManager
 
+    override fun onStart() {
+        super.onStart()
+        checkUpdate()
+    }
+
     override fun onResume() {
         super.onResume()
         if (appUpdateManager != null) {
@@ -60,7 +65,6 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        appUpdateManager= AppUpdateManagerFactory.create(this)
         toolbar = binding.activityMainToolbar
         navigationView = binding.navView
         drawerLayout = binding.drawerLayout
@@ -82,12 +86,11 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         toolbar.setupWithNavController(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
-
-        checkUpdate()
     }
 
     private fun checkUpdate() {
         // Returns an intent object that you use to check for an update.
+        appUpdateManager= AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
