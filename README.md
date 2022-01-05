@@ -1,5 +1,5 @@
 # AndroidSensors
-This repository demonstrates integration of following **Android sensors** in a device.
+This repository demonstrates integration of following **Android sensors** in a app.
 
 ## Available Sensors:
 <h3>✅ Metal Detector</h3>
