@@ -19,6 +19,7 @@ This repository demonstrates integration of following **Android sensors** in a d
 <h3>⬜️ Step detector</h3>
 <h3>⬜️ Step counter</h3>
 <h3>⬜️ Tilt detector</h3>
+<h3>⬜️ Orientation Sensor</h3>
 <h3>⬜️ Wake up gesture</h3>
 <h3>⬜️ Pick up gesture</h3>
 <h3>⬜️ Glance gesture</h3>
