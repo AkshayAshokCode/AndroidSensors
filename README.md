@@ -23,7 +23,6 @@ This repository demonstrates integration of following **Android sensors** in a d
 <h3>⬜️ Pick up gesture</h3>
 <h3>⬜️ Glance gesture</h3>
 <br/>
-<br/>
 
 ## Screenshots:
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot1.png" height="500"></a> &nbsp;&nbsp;&nbsp;&nbsp;
