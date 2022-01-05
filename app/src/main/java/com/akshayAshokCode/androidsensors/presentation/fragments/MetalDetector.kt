@@ -60,13 +60,13 @@ class MetalDetector : Fragment(), SensorEventListener {
     override fun onSensorChanged(p0: SensorEvent) {
         if (p0.sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
             // get values for each axes X,Y,Z
-            val magX = p0.values[0];
-            val magY = p0.values[1];
-            val magZ = p0.values[2];
+            val magX = p0.values[0]
+            val magY = p0.values[1]
+            val magZ = p0.values[2]
             val magnitude= sqrt((magX.times(magX.toDouble())).plus(magY.times(magY.toDouble())).plus(magZ.times(magZ.toDouble())))
-            magneticValue=DECIMAL_FORMATTER.format(magnitude);
+            magneticValue=DECIMAL_FORMATTER.format(magnitude)
             // set value on the screen
-            binding.value.text = magneticValue + " µTesla";
+            binding.value.text = magneticValue + " µTesla"
 
             val progressValue=magneticValue.toDouble().toInt()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
