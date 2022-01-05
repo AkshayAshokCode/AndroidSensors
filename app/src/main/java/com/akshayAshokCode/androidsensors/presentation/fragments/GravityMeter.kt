@@ -5,6 +5,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,8 @@ class GravityMeter : Fragment(), SensorEventListener {
         )
         if (sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) == null) {
             binding.notAvailable.visibility = View.VISIBLE
-            binding.gravityData.visibility = View.GONE
+            binding.cardView.visibility=View.GONE
+            binding.cardView1.visibility=View.GONE
         }
     }
 
@@ -61,6 +63,15 @@ class GravityMeter : Fragment(), SensorEventListener {
             binding.gravityX.text = x
             binding.gravityY.text = y
             binding.gravityZ.text = z
+
+            when{
+                p0.values[0]>7 ->binding.phoneStatus.text=getString(R.string.positive_x_axis)
+                p0.values[0]< -7 ->binding.phoneStatus.text=getString(R.string.negative_x_axis)
+                p0.values[1]>7 ->binding.phoneStatus.text=getString(R.string.positive_y_axis)
+                p0.values[1]< -7 ->binding.phoneStatus.text=getString(R.string.negative_y_axis)
+                p0.values[2]>7 ->binding.phoneStatus.text=getString(R.string.positive_z_axis)
+                p0.values[2]< -7 ->binding.phoneStatus.text=getString(R.string.negative_z_axis)
+            }
         }
     }
 
