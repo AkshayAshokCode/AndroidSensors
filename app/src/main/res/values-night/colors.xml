@@ -7,4 +7,11 @@
     <color name="red">#FF6347</color>
     <color name="light_red">#FF7F7F</color>
     <color name="black">#121212</color>
+    <color name="background_start_color">#000000</color>
+    <color name="background_center_color">#151515</color>
+    <color name="background_end_color">#2C2A2A</color>
+
+    <color name="card_view_start_color">#000000</color>
+    <color name="card_view_center_color">#151515</color>
+    <color name="card_view_end_color">#2C2A2A</color>
 </resources>

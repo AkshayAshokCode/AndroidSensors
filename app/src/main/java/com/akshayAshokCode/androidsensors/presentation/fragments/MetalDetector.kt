@@ -19,6 +19,7 @@ import com.akshayAshokCode.androidsensors.databinding.MetalDetectorBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.math.sqrt
 
 class MetalDetector : Fragment(), SensorEventListener {
     private lateinit var binding: MetalDetectorBinding
@@ -44,7 +45,10 @@ class MetalDetector : Fragment(), SensorEventListener {
             this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
             SensorManager.SENSOR_DELAY_NORMAL
         )
+
         if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)==null){
+            binding.cardView.visibility=View.GONE
+            binding.cardView1.visibility=View.GONE
             binding.notAvailable.visibility=View.VISIBLE
         }
     }
@@ -59,7 +63,7 @@ class MetalDetector : Fragment(), SensorEventListener {
             val magX = p0.values[0];
             val magY = p0.values[1];
             val magZ = p0.values[2];
-            val magnitude=Math.sqrt((magX.times(magX.toDouble())).plus(magY.times(magY.toDouble())).plus(magZ.times(magZ.toDouble())))
+            val magnitude= sqrt((magX.times(magX.toDouble())).plus(magY.times(magY.toDouble())).plus(magZ.times(magZ.toDouble())))
             magneticValue=DECIMAL_FORMATTER.format(magnitude);
             // set value on the screen
             binding.value.text = magneticValue + " µTesla";
@@ -69,10 +73,10 @@ class MetalDetector : Fragment(), SensorEventListener {
                 binding.progressBar.setProgress(progressValue,true)
                 when {
                     progressValue<100 -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),R.color.light_red))
+                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),android.R.color.holo_green_light))
                     }
                     progressValue<150 -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),R.color.red))
+                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),android.R.color.holo_orange_dark))
                     }
                     else -> {
                         binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),R.color.dark_red))

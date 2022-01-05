@@ -17,4 +17,17 @@
     <string name="y_axis">Y-axis:</string>
     <string name="z_axis">Z-axis:</string>
     <string name="ms">m/s&#xB2;</string>
+    <string name="metal_detector_details">
+       \u25BA The strength of earth\'s natural magnetic field ranges from 30 to 60 µTesla.\n\n
+       \u25BA General public should not be exposed on a continuous 100 µTesla.\n\n
+       \u25BA Magnetic fields for occupational exposures should be limited to less than 500 µTesla.
+    </string>
+
+    <string name="status_of_phone">status of your phone</string>
+    <string name="positive_x_axis">our phone is held horizontally</string>
+    <string name="negative_x_axis">our phone is held horizontally</string>
+    <string name="positive_y_axis">Your phone is held straight and maybe facing you</string>
+    <string name="negative_y_axis">Your phone is held upside down</string>
+    <string name="positive_z_axis">Your phone is facing the ceiling</string>
+    <string name="negative_z_axis">Your phone is facing the floor</string>
 </resources>
