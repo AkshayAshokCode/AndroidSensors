@@ -1,27 +1,31 @@
 # AndroidSensors
-This repository demonstrates integration of following **Android sensors** in an Android device.
-- ### Metal Detector
-- ### Gravity Meter
-- ### Heart Rate Meter
-- ### Pressure Meter
-- ### Relative Humidity
-- ### Accelerometer (Pending)
-- ### Ambient temperature (Pending)
-- ### Magnetic field sensor (Pending)
-- ### Gyroscope (Pending)
-- ### Light Meter (Pending)
-- ### Proximity Meter (Pending)
-- ### Linear acceleration (Pending)
-- ### Significant motion (Pending)
-- ### Step detector (Pending)
-- ### Step counter (Pending)
-- ### Tilt detector (Pending)
-- ### Wake up gesture (Pending)
-- ### Pick up gesture (Pending)
-- ### Glance gesture (Pending)
+This repository demonstrates integration of following **Android sensors** in a device.
+
+## Available Sensors:
+<h3>✅ Metal Detector</h3>
+<h3>✅  Gravity Meter</h3>
+<h3>✅  Heart Rate Meter</h3>
+<h3>✅  Pressure Meter</h3>
+<h3>✅  Relative Humidity</h3>
+<h3>⬜️ Accelerometer</h3>
+<h3>⬜️ Ambient temperature</h3>
+<h3>⬜️ Magnetic field sensor</h3>
+<h3>⬜️ Gyroscope</h3>
+<h3>⬜️ Light Meter</h3>
+<h3>⬜️ Fingerprint sensor</h3>
+<h3>⬜️ Proximity Meter</h3>
+<h3>⬜️ Linear acceleration</h3>
+<h3>⬜️ Significant motion</h3>
+<h3>⬜️ Step detector</h3>
+<h3>⬜️ Step counter</h3>
+<h3>⬜️ Tilt detector</h3>
+<h3>⬜️ Wake up gesture</h3>
+<h3>⬜️ Pick up gesture</h3>
+<h3>⬜️ Glance gesture</h3>
 <br/>
 <br/>
 
+## Screenshots:
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot1.png" height="500"></a> &nbsp;&nbsp;&nbsp;&nbsp;
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot2.png" height="500"></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot3.png" height="500"></a>
