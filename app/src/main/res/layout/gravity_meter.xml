@@ -23,67 +23,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             app:cardCornerRadius="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-        <LinearLayout
-            android:id="@+id/gravity_data"
-            android:layout_width="match_parent"
-            android:padding="10dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/card_view_gradient"
-            android:gravity="center"
-            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/gravity_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_view_gradient"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="@string/gravity_x"
-                android:textColor="@color/colorPrimaryReverse"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/gravity_x"
+                    android:textColor="@color/colorPrimaryReverse"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/gravity_x"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryReverse" />
+                <TextView
+                    android:id="@+id/gravity_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryReverse" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/gravity_y"
-                android:textColor="@color/colorPrimaryReverse"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/gravity_y"
+                    android:textColor="@color/colorPrimaryReverse"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/gravity_y"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryReverse" />
+                <TextView
+                    android:id="@+id/gravity_y"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryReverse" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/gravity_z"
-                android:textColor="@color/colorPrimaryReverse"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/gravity_z"
+                    android:textColor="@color/colorPrimaryReverse"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/gravity_z"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryReverse" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/gravity_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryReverse" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
@@ -96,17 +98,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_view1">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/phone_status"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/card_view_gradient"
-            android:padding="15dp"
-            android:textColor="@color/colorPrimaryReverse"
-            android:text="@string/status_of_phone"
-            android:textAlignment="center"
-            android:textSize="15sp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/phone_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_view_gradient"
+                android:padding="15dp"
+                android:text="@string/status_of_phone"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryReverse"
+                android:textSize="15sp" />
         </androidx.cardview.widget.CardView>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
