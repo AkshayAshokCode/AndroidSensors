@@ -24,8 +24,8 @@
     </string>
 
     <string name="status_of_phone">status of your phone</string>
-    <string name="positive_x_axis">our phone is held horizontally</string>
-    <string name="negative_x_axis">our phone is held horizontally</string>
+    <string name="positive_x_axis">Your phone is held horizontally</string>
+    <string name="negative_x_axis">Your phone is held horizontally</string>
     <string name="positive_y_axis">Your phone is held straight and maybe facing you</string>
     <string name="negative_y_axis">Your phone is held upside down</string>
     <string name="positive_z_axis">Your phone is facing the ceiling</string>
