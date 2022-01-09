@@ -29,3 +29,5 @@ This repository demonstrates integration of following **Android sensors** in a a
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot1.png" height="500"></a> &nbsp;&nbsp;&nbsp;&nbsp;
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot2.png" height="500"></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a><img src="https://github.com/AkshayAshokCode/AndroidSensors/blob/master/screenshot3.png" height="500"></a>
+
+*You can Install the latest AndroidSensors app from here 👉* [<img align=center src="https://www.logo.wine/a/logo/Google_Play/Google_Play-Badge-Logo.wine.svg" width="200" />](https://play.google.com/store/apps/details?id=com.akshayAshokCode.androidsensors)
