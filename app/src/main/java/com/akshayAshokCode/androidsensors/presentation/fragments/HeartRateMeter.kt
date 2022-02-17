@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.HeartRateMeterBinding
 
 class HeartRateMeter: Fragment(), SensorEventListener {
@@ -23,7 +21,7 @@ class HeartRateMeter: Fragment(), SensorEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding= DataBindingUtil.inflate(inflater, R.layout.heart_rate_meter,container,false)
+        binding= HeartRateMeterBinding.inflate(layoutInflater)
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
        /* var sensors= listOf<Sensor>()
         sensors=sensorManager.getSensorList(Sensor.TYPE_ALL)

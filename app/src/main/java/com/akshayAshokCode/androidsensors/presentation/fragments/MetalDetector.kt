@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.MetalDetectorBinding
@@ -31,7 +30,7 @@ class MetalDetector : Fragment(), SensorEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.metal_detector, container,false)
+        binding = MetalDetectorBinding.inflate(layoutInflater)
         // define decimal formatter
         val symbols = DecimalFormatSymbols(Locale.US)
         symbols.decimalSeparator = '.'

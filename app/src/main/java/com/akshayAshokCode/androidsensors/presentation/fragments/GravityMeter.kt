@@ -5,12 +5,10 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.GravityMeterBinding
@@ -28,7 +26,7 @@ class GravityMeter : Fragment(), SensorEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.gravity_meter, container, false)
+        binding = GravityMeterBinding.inflate(layoutInflater)
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
         gravityUnit = getString(R.string.ms)
         xAxis = getString(R.string.x_axis)

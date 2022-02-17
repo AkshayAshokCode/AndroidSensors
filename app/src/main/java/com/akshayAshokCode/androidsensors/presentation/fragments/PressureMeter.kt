@@ -10,9 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.PressureMeterBinding
 
 class PressureMeter: Fragment(), SensorEventListener {
@@ -24,7 +22,7 @@ class PressureMeter: Fragment(), SensorEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding= DataBindingUtil.inflate(inflater, R.layout.pressure_meter,container,false)
+        binding= PressureMeterBinding.inflate(layoutInflater)
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
         return binding.root
     }

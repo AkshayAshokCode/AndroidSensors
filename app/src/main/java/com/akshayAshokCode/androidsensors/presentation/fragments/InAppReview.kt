@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.InAppReviewLayoutBinding
 import com.google.android.play.core.review.ReviewManagerFactory
 
@@ -20,7 +18,7 @@ class InAppReview : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.in_app_review_layout, container, false)
+        binding = InAppReviewLayoutBinding.inflate(layoutInflater)
         val manager = ReviewManagerFactory.create(requireContext())
         val request = manager.requestReviewFlow()
         request.addOnCompleteListener { task ->

@@ -6,4 +6,5 @@ object Constants {
     const val HEART_RATE_METER = 2
     const val PRESSURE_METER = 3
     const val RELATIVE_HUMIDITY = 4
+    const val ORIENTATION_SENSOR=5
 }

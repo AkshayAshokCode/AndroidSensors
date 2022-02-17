@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/colorPrimary"
@@ -16,4 +15,3 @@
         android:text="@string/humidity_meter_not_available"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
