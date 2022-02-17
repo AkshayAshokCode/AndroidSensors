@@ -1,18 +1,11 @@
 package com.akshayAshokCode.androidsensors.presentation.fragments
 
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.akshayAshokCode.androidsensors.Constants
@@ -32,7 +25,7 @@ class AllSensors : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.all_sensors, container, false)
+        binding = AllSensorsBinding.inflate(layoutInflater)
         binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
         allSensorsViewModel = ViewModelProvider(this).get(AllSensorsViewModel::class.java)
         allSensorsViewModel.sensors.observe(viewLifecycleOwner, { sensor ->

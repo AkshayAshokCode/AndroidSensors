@@ -36,7 +36,13 @@ class SensorRepository {
                 "Relative Humidity",
                 R.drawable.humidity_icon,
                 Sensor.TYPE_RELATIVE_HUMIDITY
-            )
+            ),
+           /* SensorModel(
+                Constants.ORIENTATION_SENSOR,
+                "Orientation Sensor",
+                R.drawable.humidity_icon,
+                Sensor.TYPE_ROTATION_VECTOR
+            )*/
         )
     }
 }
