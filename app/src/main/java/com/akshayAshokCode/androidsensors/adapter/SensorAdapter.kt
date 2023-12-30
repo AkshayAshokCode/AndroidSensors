@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.akshayAshokCode.androidsensors.Constants
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.data.SensorModel
 import com.akshayAshokCode.androidsensors.databinding.SensorItemBinding
@@ -43,9 +41,9 @@ class SensorAdapter(
                 clickListener(sensor)
             }
           val  sensorManager:SensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-            if (sensorManager.getDefaultSensor(sensor.sensorType)==null){
-                  //binding.root.visibility= View.GONE
-            }
+//            if (sensorManager.getDefaultSensor(sensor.sensorType)==null){
+//                  //binding.root.visibility= View.GONE
+//            }
         }
 
     }
