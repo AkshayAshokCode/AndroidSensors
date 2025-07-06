@@ -1,17 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.akshayAshokCode.androidsensors"
         minSdk 23
-        targetSdk 34
+        targetSdk 35
         versionCode 8
         versionName "1.4.0"
 
