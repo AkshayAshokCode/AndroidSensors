@@ -18,9 +18,12 @@
     <string name="z_axis">Z-axis:</string>
     <string name="ms">m/s&#xB2;</string>
     <string name="metal_detector_details">
+        \u25BA Sensor Used: Magnetometer (Magnetic Field Sensor)\n\n
+        \u25BA How it works: Detects changes in Earth\'s magnetic field caused by metal objects.\n\n
        \u25BA The strength of earth\'s natural magnetic field ranges from 30 to 60 µTesla.\n\n
        \u25BA General public should not be exposed on a continuous 100 µTesla.\n\n
-       \u25BA Magnetic fields for occupational exposures should be limited to less than 500 µTesla.
+       \u25BA Magnetic fields for occupational exposures should be limited to less than 500 µTesla.\n\n
+       \u25BA Fun Fact: Your phone can detect magnetic changes as small as 0.1 µTesla!
     </string>
 
     <string name="status_of_phone">status of your phone</string>
@@ -30,4 +33,12 @@
     <string name="negative_y_axis">Your phone is held upside down</string>
     <string name="positive_z_axis">Your phone is facing the ceiling</string>
     <string name="negative_z_axis">Your phone is facing the floor</string>
+
+    <string name="gravity_meter_details">
+         \u25BA Sensor Used: Gravity Sensor (Software-based)\n\n
+         \u25BA How it works: Used accelerometer data with filtering to isolate gravitational force from motion.\n\n
+         \u25BA Earth\'s gravity is approximately 9.8 m/s²; downward\n\n
+         \u25BA This sensor helps determine device orientation and tilt.\n\n
+         \u25BA Fun Fact: Combines hardware (accelerometer) with smart algorithms to separate gravity from movement!
+    </string>
 </resources>
