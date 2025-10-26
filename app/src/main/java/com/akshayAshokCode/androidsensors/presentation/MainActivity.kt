@@ -29,7 +29,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 // Add Heart rate meter
 // Add pressure meter
 // Add Relative Humidity
-class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var toolbar: MaterialToolbar
     private lateinit var navController: NavController
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private val REQUEST_CODE = 11
-    private val TAG="MainActivity"
+    private val TAG = "MainActivity"
     private lateinit var appUpdateManager: AppUpdateManager
 
     override fun onStart() {
@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                     // notify the user to complete the update.
                     if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                         popupSnackbarForCompleteUpdate()
-                    }else{
-                        Log.d(TAG,"State of update: ${appUpdateInfo.installStatus()}")
+                    } else {
+                        Log.d(TAG, "State of update: ${appUpdateInfo.installStatus()}")
                     }
                 }
         }
@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         navigationView = binding.navView
         drawerLayout = binding.drawerLayout
 
-        binding.navView.setNavigationItemSelectedListener{
-            Log.d(TAG,"Clicked Item:"+it.itemId)
+        binding.navView.setNavigationItemSelectedListener {
+            Log.d(TAG, "Clicked Item:" + it.itemId)
             when (it.itemId) {
 
                 else -> {
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
     private fun checkUpdate() {
         // Returns an intent object that you use to check for an update.
-        appUpdateManager= AppUpdateManagerFactory.create(this)
+        appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
@@ -149,6 +149,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
         }
     }
+
     override fun onStop() {
         if (appUpdateManager != null) {
             appUpdateManager.unregisterListener(listener)
@@ -165,8 +166,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val id=item.itemId
-        Log.d(TAG,"Clicked Item:"+id)
+        val id = item.itemId
+        Log.d(TAG, "Clicked Item:" + id)
         return true
     }
 }
