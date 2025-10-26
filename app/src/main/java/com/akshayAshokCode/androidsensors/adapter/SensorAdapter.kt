@@ -3,6 +3,7 @@ package com.akshayAshokCode.androidsensors.adapter
 import android.content.Context
 import android.hardware.SensorManager
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -19,7 +20,12 @@ class SensorAdapter(
     RecyclerView.Adapter<SensorAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-       val binding:SensorItemBinding=DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.sensor_item,parent,false)
+        val binding: SensorItemBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.sensor_item,
+            parent,
+            false
+        )
         return ViewHolder(binding)
     }
 
@@ -32,15 +38,23 @@ class SensorAdapter(
         return sensorsList.size
     }
 
-    class ViewHolder(val binding:SensorItemBinding) : RecyclerView.ViewHolder(binding.root)
-    {
-        fun bind(sensor: SensorModel, context: Context?, clickListener: (SensorModel) -> Unit){
-            binding.sensorName.text=sensor.name
+    class ViewHolder(val binding: SensorItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(sensor: SensorModel, context: Context?, clickListener: (SensorModel) -> Unit) {
+            binding.sensorName.text = sensor.name
             binding.sensorIcon.setImageResource(sensor.icon)
-            binding.root.setOnClickListener {
-                clickListener(sensor)
+
+            if (!sensor.isAvailable){
+                binding.root.alpha = 0.5f
+                binding.comingSoonLabel.visibility = View.VISIBLE
+                binding.root.setOnClickListener { /* Disabled */ }
+            }else{
+                binding.root.alpha = 1f
+                binding.comingSoonLabel.visibility = View.GONE
+                binding.root.setOnClickListener { clickListener(sensor) }
             }
-          val  sensorManager:SensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
+
+            val sensorManager: SensorManager =
+                context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
 //            if (sensorManager.getDefaultSensor(sensor.sensorType)==null){
 //                  //binding.root.visibility= View.GONE
 //            }
