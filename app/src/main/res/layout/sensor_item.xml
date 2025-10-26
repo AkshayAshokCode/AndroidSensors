@@ -1,42 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:paddingBottom="10dp"
-    android:layout_height="wrap_content">
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        android:backgroundTint="@color/white">
-        <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:padding="5dp"
-            android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/sensor_icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            tools:src="@drawable/humidity_icon"/>
-        <TextView
-            android:id="@+id/sensor_name"
-            android:layout_width="wrap_content"
-            tools:text="sensor"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
-            />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/white"
+            app:cardCornerRadius="5dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/sensor_icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    tools:src="@drawable/humidity_icon" />
+
+                <TextView
+                    android:id="@+id/sensor_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="sensor" />
+
+                <TextView
+                    android:id="@+id/coming_soon_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
+                    android:background="#FF5722"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text="Coming Soon"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
 
-</LinearLayout>
+    </LinearLayout>
 </layout>
