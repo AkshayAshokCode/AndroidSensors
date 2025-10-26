@@ -26,17 +26,9 @@ class InAppReview : Fragment() {
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // We got the ReviewInfo object
-                    Log.d(TAG,"FIRST:"+task.isComplete)
                 val reviewInfo = task.result
                 val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
-                flow.addOnCompleteListener {task->
-                    if(task.isSuccessful){
-                        Toast.makeText(requireContext(),"Review successful",Toast.LENGTH_SHORT).show()
-                        binding.thankYou.visibility=View.VISIBLE
-                    }else{
-
-                    }
-
+                flow.addOnCompleteListener { task ->
                     // The flow has finished. The API does not indicate whether the user
                     // reviewed or not, or even whether the review dialog was shown. Thus, no
                     // matter the result, we continue our app flow.
@@ -44,8 +36,6 @@ class InAppReview : Fragment() {
             } else {
                 // There was some problem, log or handle the error code.
             }
-
-
         }
         return binding.root
     }
