@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/inAppReview"
             android:icon="@drawable/ic_baseline_star_rate_24"
             android:title="Write Us A Review"/>
-
+        <item
+            android:id="@+id/sendFeedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="Send Feedback"/>
     </group>
 </menu>

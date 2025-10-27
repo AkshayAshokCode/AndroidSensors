@@ -2,6 +2,8 @@ package com.akshayAshokCode.androidsensors.presentation
 
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +26,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.review.ReviewManagerFactory
 
 // Add Gravity meter
 // Add Heart rate meter
@@ -72,9 +75,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navView.setNavigationItemSelectedListener {
             Log.d(TAG, "Clicked Item:" + it.itemId)
             when (it.itemId) {
+                R.id.inAppReview -> {
+                    val manager = ReviewManagerFactory.create(this)
+                    val request = manager.requestReviewFlow()
+                    request.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // We got the ReviewInfo object
+                            val reviewInfo = task.result
+                            val flow = manager.launchReviewFlow(this, reviewInfo)
+                            flow.addOnCompleteListener { task ->
+                                // The flow has finished. The API does not indicate whether the user
+                                // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                // matter the result, we continue our app flow.
+                            }
+                        } else {
+                            // There was some problem, log or handle the error code.
+                        }
+                    }
+                    drawerLayout.closeDrawers()
+                    true
+                }
+
+                R.id.sendFeedback -> {
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_EMAIL, "akshayashokan1054@gmail.com")
+                        putExtra(Intent.EXTRA_SUBJECT, "AndroidSensors App Feedback")
+                        putExtra(Intent.EXTRA_TEXT, "Device: ${Build.MODEL}\n\nFeedback:\n")
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    } else {
+                        Log.e(TAG, "No email app found on device")
+                    }
+                    drawerLayout.closeDrawers()
+                    true
+                }
 
                 else -> {
-                    true
+                    false
                 }
             }
         }
@@ -85,11 +124,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         toolbar.setupWithNavController(navController, appBarConfiguration)
-        navigationView.setupWithNavController(navController)
+        // navigationView.setupWithNavController(navController)
     }
 
     private fun checkUpdate() {
-        // Returns an intent object that you use to check for an update.
+        if (::appUpdateManager.isInitialized) {
+            appUpdateManager.unregisterListener(listener)
+        }
+
         appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         // Checks that the platform will allow the specified type of update.
@@ -97,23 +139,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
-                // Request the update.
                 try {
                     appUpdateManager.startUpdateFlowForResult(
-                        // Pass the intent that is returned by 'getAppUpdateInfo()'.
                         appUpdateInfo,
-                        // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
                         AppUpdateType.FLEXIBLE,
-                        // The current activity making the update request.
                         this,
-                        // Include a request code to later monitor this update request.
                         REQUEST_CODE
                     )
                 } catch (e: SendIntentException) {
-                    e.printStackTrace()
+                    Log.e(TAG, "Update flow failed", e)
                 }
+            } else {
+                Log.e(TAG, "No update available or not allowed")
             }
+        }.addOnFailureListener { exception ->
+            Log.e(TAG, "Update check failed", exception)
         }
+
         appUpdateManager.registerListener(listener)
     }
 
