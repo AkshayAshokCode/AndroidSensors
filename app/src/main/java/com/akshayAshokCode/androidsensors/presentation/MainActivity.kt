@@ -27,6 +27,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
+import androidx.core.net.toUri
 
 // Add Gravity meter
 // Add Heart rate meter
@@ -97,11 +98,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 R.id.sendFeedback -> {
+                    val subject = "AndroidSensors App Feedback"
+                    val body = "Device: ${Build.MODEL}\n\nFeedback:\n"
+                    val encodedSubject = Uri.encode(subject)
+                    val encodedBody = Uri.encode(body)
                     val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:")
-                        putExtra(Intent.EXTRA_EMAIL, "akshayashokan1054@gmail.com")
-                        putExtra(Intent.EXTRA_SUBJECT, "AndroidSensors App Feedback")
-                        putExtra(Intent.EXTRA_TEXT, "Device: ${Build.MODEL}\n\nFeedback:\n")
+                        data =
+                            "mailto:akshayashokan1054@gmail.com?subject=$encodedSubject&body=$encodedBody".toUri()
                     }
                     if (intent.resolveActivity(packageManager) != null) {
                         startActivity(intent)
