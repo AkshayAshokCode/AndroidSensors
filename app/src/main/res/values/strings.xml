@@ -13,9 +13,9 @@
     <string name="gravity_x">Force of gravity along the x axis:</string>
     <string name="gravity_y">Force of gravity along the y axis:</string>
     <string name="gravity_z">Force of gravity along the z axis:</string>
-    <string name="x_axis">X-axis:</string>
-    <string name="y_axis">Y-axis:</string>
-    <string name="z_axis">Z-axis:</string>
+    <string name="x_axis">X</string>
+    <string name="y_axis">Y</string>
+    <string name="z_axis">Z</string>
     <string name="ms">m/s&#xB2;</string>
     <string name="metal_detector_details">
         \u25BA Sensor Used: Magnetometer (Magnetic Field Sensor)\n\n
@@ -41,4 +41,15 @@
          \u25BA This sensor helps determine device orientation and tilt.\n\n
          \u25BA Fun Fact: Combines hardware (accelerometer) with smart algorithms to separate gravity from movement!
     </string>
+
+    <string name="tap_for_sensor_details">Tap for sensor details</string>
+    <string name="gravity_meter_details_title">Gravity Meter Details</string>
+    <string name="intial_x_value">X-axis: 0:00 m/s&#xB2;</string>
+    <string name="intial_y_value">Y-axis: 0:00 m/s&#xB2;</string>
+    <string name="intial_z_value">Z-axis: 0:00 m/s&#xB2;</string>
+    <string name="initial_phone_status">Status of phone</string>
+    <string name="total_magnitude">Total: %.2f m/s&#xB2;</string>
+    <string name="axis_unit">m/s&#xB2;</string>
+    <string name="axis_label">%s-Axis</string>
+    <string name="real_time_graph">Real-time Graph</string>
 </resources>
