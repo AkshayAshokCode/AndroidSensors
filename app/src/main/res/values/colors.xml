@@ -14,4 +14,19 @@
     <color name="card_view_start_color">#dfe9f3</color>
     <color name="card_view_center_color">#ffffff</color>
     <color name="card_view_end_color">#ffffff</color>
+
+    <!-- Gravity Meter Colors -->
+    <color name="gravity_low">#4CAF50</color>
+    <color name="gravity_normal">#FFC107</color>
+    <color name="gravity_high">#FF5722</color>
+    <color name="gravity_card_outer">#2A2A3E</color>
+    <color name="gravity_card_inner">#1E1E32</color>
+    <color name="gravity_background_start">#1A1A2E</color>
+    <color name="gravity_background_middle">#16213E</color>
+    <color name="gravity_background_end">#0F3460</color>
+
+    <!-- Axis Colors -->
+    <color name="axis_x_color">#E91E63</color>
+    <color name="axis_y_color">#2196F3</color>
+    <color name="axis_z_color">#4CAF50</color>
 </resources>

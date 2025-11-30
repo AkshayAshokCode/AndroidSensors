@@ -12,7 +12,6 @@
         android:label="Metal Detector" />
     <fragment
         android:id="@+id/gravityMeter"
-        tools:layout="@layout/gravity_meter"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.GravityMeter"
         android:label="Gravity Meter" />
     <fragment
