@@ -19,27 +19,6 @@ class SensorRepository {
                 R.drawable.gravity_icon,
                 Sensor.TYPE_GRAVITY
             ),
-            SensorModel(
-                Constants.HEART_RATE_METER,
-                "Heart rate meter",
-                R.drawable.heart_icon,
-                Sensor.TYPE_HEART_RATE,
-                false
-            ),
-            SensorModel(
-                Constants.PRESSURE_METER,
-                "Pressure meter",
-                R.drawable.pressure_icon,
-                Sensor.TYPE_PRESSURE,
-                false
-            ),
-            SensorModel(
-                Constants.RELATIVE_HUMIDITY,
-                "Relative Humidity",
-                R.drawable.humidity_icon,
-                Sensor.TYPE_RELATIVE_HUMIDITY,
-                false
-            )
         )
     }
 }
