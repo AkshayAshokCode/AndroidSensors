@@ -29,8 +29,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    tools:src="@drawable/humidity_icon" />
+                    android:scaleType="centerInside"/>
 
                 <TextView
                     android:id="@+id/sensor_name"

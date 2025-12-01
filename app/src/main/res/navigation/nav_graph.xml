@@ -15,18 +15,6 @@
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.GravityMeter"
         android:label="Gravity Meter" />
     <fragment
-        android:id="@+id/heartRateMeter"
-        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.HeartRateMeter"
-        android:label="Heart Rate Meter" />
-    <fragment
-        android:id="@+id/pressureMeter"
-        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.PressureMeter"
-        android:label="Pressure Meter" />
-    <fragment
-        android:id="@+id/relativeHumidityMeter"
-        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.RelativeHumidityMeter"
-        android:label="Humidity Meter" />
-    <fragment
         android:id="@+id/allSensors"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.AllSensors"
         android:label="Android Sensors" >
@@ -36,17 +24,5 @@
         <action
             android:id="@+id/action_allSensors_to_gravityMeter"
             app:destination="@id/gravityMeter" />
-        <action
-            android:id="@+id/action_allSensors_to_heartRateMeter"
-            app:destination="@id/heartRateMeter" />
-        <action
-            android:id="@+id/action_allSensors_to_pressureMeter"
-            app:destination="@id/pressureMeter" />
-        <action
-            android:id="@+id/action_allSensors_to_relativeHumidityMeter"
-            app:destination="@id/relativeHumidityMeter" />
-        <action
-            android:id="@+id/action_allSensors_to_relativeHumidityMeter2"
-            app:destination="@id/relativeHumidityMeter" />
     </fragment>
 </navigation>

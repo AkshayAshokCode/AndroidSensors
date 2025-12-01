@@ -42,9 +42,6 @@ class AllSensors : Fragment() {
         when (sensor.id) {
             Constants.METAL_DETECTOR -> findNavController().navigate(R.id.action_allSensors_to_metalDetector)
             Constants.GRAVITY_METER -> findNavController().navigate(R.id.action_allSensors_to_gravityMeter)
-            Constants.HEART_RATE_METER -> findNavController().navigate(R.id.action_allSensors_to_heartRateMeter)
-            Constants.PRESSURE_METER -> findNavController().navigate(R.id.action_allSensors_to_pressureMeter)
-            Constants.RELATIVE_HUMIDITY -> findNavController().navigate(R.id.action_allSensors_to_relativeHumidityMeter2)
         }
         //To handle update on clicks
     }
