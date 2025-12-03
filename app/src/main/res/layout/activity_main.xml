@@ -16,16 +16,18 @@
             tools:context="com.akshayAshokCode.androidsensors.presentation.MainActivity">
 
             <com.google.android.material.appbar.AppBarLayout
-                style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/toolbar_background"
                 android:fitsSystemWindows="true">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/activity_main_toolbar"
-                    style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="@color/toolbar_background"
+                    app:titleTextColor="@color/toolbar_text"
+                    app:navigationIconTint="@color/toolbar_text"
                     android:elevation="4dp" />
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,8 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:itemIconTint="@color/colorPrimaryReverse"
-            app:itemTextColor="@color/colorPrimaryReverse"
+            android:background="@color/gravity_card_outer"
+            app:itemIconTint="@color/toolbar_text"
+            app:itemTextColor="@color/toolbar_text"
             app:menu="@menu/drawer_items" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
