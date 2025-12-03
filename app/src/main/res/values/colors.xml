@@ -7,13 +7,6 @@
     <color name="red">#FF6347</color>
     <color name="light_red">#FF7F7F</color>
     <color name="black">#121212</color>
-    <color name="background_start_color">#dfe9f3</color>
-    <color name="background_center_color">#ffffff</color>
-    <color name="background_end_color">#ffffff</color>
-
-    <color name="card_view_start_color">#dfe9f3</color>
-    <color name="card_view_center_color">#ffffff</color>
-    <color name="card_view_end_color">#ffffff</color>
 
     <!-- Gravity Meter Colors -->
     <color name="gravity_low">#4CAF50</color>
@@ -30,4 +23,7 @@
     <color name="axis_x_color">#E91E63</color>
     <color name="axis_y_color">#2196F3</color>
     <color name="axis_z_color">#4CAF50</color>
+
+    <color name="toolbar_background">#1E1E32</color>
+    <color name="toolbar_text">#ffffff</color>
 </resources>
