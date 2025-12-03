@@ -42,7 +42,7 @@ class AllSensors : Fragment() {
         when (sensor.id) {
             Constants.METAL_DETECTOR -> findNavController().navigate(R.id.action_allSensors_to_metalDetector)
             Constants.GRAVITY_METER -> findNavController().navigate(R.id.action_allSensors_to_gravityMeter)
+            Constants.BUBBLE_LEVEL_TOOL -> findNavController().navigate(R.id.action_allSensors_to_bubbleLevelTool)
         }
-        //To handle update on clicks
     }
 }

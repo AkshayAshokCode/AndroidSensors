@@ -19,6 +19,12 @@ class SensorRepository {
                 R.drawable.gravity_icon,
                 Sensor.TYPE_GRAVITY
             ),
+            SensorModel(
+                Constants.BUBBLE_LEVEL_TOOL,
+                name = "Bubble Level",
+                R.drawable.gravity_icon,
+                Sensor.TYPE_ACCELEROMETER
+            )
         )
     }
 }

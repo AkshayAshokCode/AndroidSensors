@@ -3,11 +3,8 @@
     <string name="max_progress">500 µTesla</string>
     <string name="min_progress">0 µTesla</string>
     <string name="average_value">45.00 µTesla</string>
-    <string name="heart_rate_not_available">Heart Rate Sensor not available\n in your device</string>
-    <string name="metal_detector_not_available">Metal Detector Sensor not available\n in your device</string>
-    <string name="pressure_meter_not_available">Pressure Meter Sensor not available\n in your device</string>
-    <string name="gravity_meter_not_available">Gravity Meter Sensor not available\n in your device</string>
-    <string name="humidity_meter_not_available">Humidity Meter Sensor not available\n in your device</string>
+    <string name="metal_detector_not_available">Metal Detector Sensor not available\n on your device</string>
+    <string name="gravity_meter_not_available">Gravity Meter Sensor not available\n on your device</string>
     <string name="thank_you_for_review">Thank You</string>
 
     <string name="gravity_x">Force of gravity along the x axis:</string>
@@ -52,4 +49,17 @@
     <string name="axis_unit">m/s&#xB2;</string>
     <string name="axis_label">%s-Axis</string>
     <string name="real_time_graph">Real-time Graph</string>
+
+    <string name="bubble_level_details_title">Bubble Level Details</string>
+    <string name="bubble_level_details">
+        \u25BA Sensors Used: Accelerometer + Magnetometer (Fusion Sensor)\n\n
+        \u25BA How it works: Combines accelerometer and magnetometer data to calculate precise device orientation using rotation matrix.\n\n
+        \u25BA Pitch (Y-axis): Forward/backward tilt - like tilting your phone toward or away from you. Positive = tilted up, Negative = tilted down.\n\n
+        \u25BA Roll (X-axis): Left/right tilt - like rotating your phone clockwise or counterclockwise. Positive = tilted right, Negative = tilted left.\n\n
+        \u25BA Level Detection: When both pitch and roll are within tolerance range (±0.5° to ±5°), the bubble turns green and haptic feedback triggers.\n\n
+        \u25BA Features: Multiple sensitivity modes, haptic feedback, and real-time bubble physics simulation.\n\n
+        \u25BA Professional Use: Perfect for construction, carpentry, picture hanging, and any leveling task requiring precision.\n\n
+        \u25BA Fun Fact: Uses the same sensor fusion technology found in professional digital levels costing hundreds of dollars!
+    </string>
+    <string name="bubble_level_not_available">Bubble Level Sensor not available\n on your device</string>
 </resources>

@@ -254,7 +254,6 @@ fun GravityMeterScreen(
                         color = Color.White.copy(alpha = 0.7f),
                         fontSize = 12.sp
                     )
-
                 }
             }
         }
