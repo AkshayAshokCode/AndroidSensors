@@ -10,7 +10,7 @@ class SensorRepository {
             SensorModel(
                 Constants.METAL_DETECTOR,
                 "Metal detector",
-                R.drawable.metal_icon,
+                R.drawable.metal_detector_icon,
                 Sensor.TYPE_MAGNETIC_FIELD
             ),
             SensorModel(
@@ -22,7 +22,7 @@ class SensorRepository {
             SensorModel(
                 Constants.BUBBLE_LEVEL_TOOL,
                 name = "Bubble Level",
-                R.drawable.gravity_icon,
+                R.drawable.bubble_level_icon,
                 Sensor.TYPE_ACCELEROMETER
             )
         )
