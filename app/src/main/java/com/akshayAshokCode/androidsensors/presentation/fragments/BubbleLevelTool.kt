@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -292,36 +293,39 @@ fun BubbleLevelToolScreen(
             AngleCard("ROLL", roll)
         }
 
-        // Bottom Info Section with Up Arrow
+        // Bottom Info Section with Up Arrow - FIX THE CLICK BEHAVIOR
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .clickable { showBottomSheet = true }
+                .clickable(
+                    indication = null, // Remove ripple effect
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    showBottomSheet = true
+                }
                 .padding(vertical = 8.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = null,
-                tint = Color.White.copy(alpha = 0.7f),
-                modifier = Modifier.size(24.dp)
+                contentDescription = "View Details",
+                tint = Color.Gray,
+                modifier = Modifier.size(32.dp)
             )
-
             Text(
-                text = stringResource(R.string.tap_for_sensor_details),
-                color = Color.White.copy(alpha = 0.7f),
-                fontSize = 12.sp
+                text = "Tap for sensor details",
+                fontSize = 12.sp,
+                color = Color.Gray
             )
         }
     }
 
-    SensorDetailsBottomSheet(
-        isVisible = showBottomSheet,
-        onDismiss = { showBottomSheet = false },
-        title = stringResource(R.string.bubble_level_details_title),
-        content = stringResource(R.string.bubble_level_details)
-    )
+    // Reusable Bottom Sheet - IMPROVE STATE HANDLING
+    if (showBottomSheet) {
+        SensorDetailsBottomSheet(
+            isVisible = showBottomSheet,
+            onDismiss = { showBottomSheet = false },
+            title = "Bubble Level Details",
+            content = stringResource(R.string.bubble_level_details)
+        )
+    }
 }
-
-
-
-

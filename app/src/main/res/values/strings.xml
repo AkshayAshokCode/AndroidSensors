@@ -16,11 +16,14 @@
     <string name="ms">m/s&#xB2;</string>
     <string name="metal_detector_details">
         \u25BA Sensor Used: Magnetometer (Magnetic Field Sensor)\n\n
-        \u25BA How it works: Detects changes in Earth\'s magnetic field caused by metal objects.\n\n
-       \u25BA The strength of earth\'s natural magnetic field ranges from 30 to 60 µTesla.\n\n
-       \u25BA General public should not be exposed on a continuous 100 µTesla.\n\n
-       \u25BA Magnetic fields for occupational exposures should be limited to less than 500 µTesla.\n\n
-       \u25BA Fun Fact: Your phone can detect magnetic changes as small as 0.1 µTesla!
+        \u25BA How it works: Detects changes in Earth\'s magnetic field caused by metal objects. When metal is nearby, it distorts the natural magnetic field, creating detectable variations.\n\n
+        \u25BA Simple Mode: Shows deviation from baseline magnetic field. Values above 10 µT indicate potential metal presence. Automatically calibrates to local environment.\n\n
+        \u25BA Advanced Mode: Displays raw magnetic field strength (25-65 µT typical). Useful for analyzing magnetic interference and environmental conditions.\n\n
+        \u25BA Detection Range: Effective for large metal objects within 5-15cm. Smaller objects like coins detectable within 2-5cm. Range varies by phone model.\n\n
+        \u25BA Earth\'s Magnetic Field: Natural strength ranges from 25-65 µTesla depending on location. Stronger at poles, weaker at equator.\n\n
+        \u25BA Accuracy Tips: Calibrate away from metal surfaces, move slowly, keep phone flat, avoid electronic interference (WiFi/Bluetooth).\n\n
+        \u25BA Safety Note: This is not a professional metal detector. Do not rely on it for safety-critical applications or treasure hunting.\n\n
+        \u25BA Fun Fact: Your phone\'s magnetometer is the same technology used in navigation compasses and professional geological surveys!
     </string>
 
     <string name="status_of_phone">status of your phone</string>
@@ -32,11 +35,15 @@
     <string name="negative_z_axis">Your phone is facing the floor</string>
 
     <string name="gravity_meter_details">
-         \u25BA Sensor Used: Gravity Sensor (Software-based)\n\n
-         \u25BA How it works: Used accelerometer data with filtering to isolate gravitational force from motion.\n\n
-         \u25BA Earth\'s gravity is approximately 9.8 m/s²; downward\n\n
-         \u25BA This sensor helps determine device orientation and tilt.\n\n
-         \u25BA Fun Fact: Combines hardware (accelerometer) with smart algorithms to separate gravity from movement!
+        \u25BA Sensor Used: Gravity Sensor (Software-based)\n\n
+        \u25BA How it works: Uses accelerometer data with filtering to isolate gravitational force from motion. Combines hardware readings with smart algorithms to separate gravity from device movement.\n\n
+        \u25BA Earth\'s Gravity: Standard gravity is 9.8 m/s² downward. Actual values vary slightly by location due to altitude, latitude, and local geology.\n\n
+        \u25BA Vector Display: Shows gravity components on X, Y, Z axes. The arrow points in the direction gravity is pulling relative to your device orientation.\n\n
+        \u25BA Real-time Graph: Tracks gravity changes over time. Useful for analyzing device movement patterns and orientation stability.\n\n
+        \u25BA Device Orientation: Automatically detects phone position - horizontal, vertical, facing up/down. Based on which axis has the strongest gravity component.\n\n
+        \u25BA Magnitude Calculation: Total gravity = √(X² + Y² + Z²). Should be close to 9.8 m/s² when device is stationary.\n\n
+        \u25BA Applications: Used in navigation, gaming, screen rotation, and scientific measurements. Essential for augmented reality and motion sensing.\n\n
+        \u25BA Fun Fact: This sensor fusion technology enables your phone to know its orientation in 3D space, powering features from auto-rotate to fitness tracking!
     </string>
 
     <string name="tap_for_sensor_details">Tap for sensor details</string>
@@ -62,4 +69,5 @@
         \u25BA Fun Fact: Uses the same sensor fusion technology found in professional digital levels costing hundreds of dollars!
     </string>
     <string name="bubble_level_not_available">Bubble Level Sensor not available\n on your device</string>
+    <string name="metal_detector_details_title">Metal Detector</string>
 </resources>

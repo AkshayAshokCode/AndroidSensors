@@ -1,55 +1,115 @@
 package com.akshayAshokCode.androidsensors.presentation.fragments
 
-import android.content.res.ColorStateList
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import com.akshayAshokCode.androidsensors.R
-import com.akshayAshokCode.androidsensors.databinding.MetalDetectorBinding
+import com.akshayAshokCode.androidsensors.presentation.views.MetalDetectorScreen
+import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 class MetalDetector : Fragment(), SensorEventListener {
-    private lateinit var binding: MetalDetectorBinding
     private lateinit var sensorManager: SensorManager
     private lateinit var DECIMAL_FORMATTER: DecimalFormat
-    private var magneticValue="0"
+
+    private var magneticValue by mutableStateOf("0.000")
+    private var rawMagneticValue by mutableStateOf("0.000")
+    private var isAvailable by mutableStateOf(true)
+    private var showBottomSheet by mutableStateOf(false)
+    private var showRawValues by mutableStateOf(false)
+
+    // Calibration variables
+    private var baselineMagnitude = 0.0
+    private var isCalibrated = false
+    private val calibrationSamples = mutableListOf<Double>()
+    private val maxCalibrationSamples = 20
+
+    // Add recalibration state for visual feedback
+    private var isRecalibrating by mutableStateOf(false)
+
+    private fun recalibrate() {
+        isCalibrated = false
+        calibrationSamples.clear()
+        baselineMagnitude = 0.0
+        isRecalibrating = true
+
+        // Restart sensor with consistent delay for both modes
+        sensorManager.unregisterListener(this)
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            sensorManager.registerListener(
+                this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+            isRecalibrating = false
+        }, 1000)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.metal_detector, container,false)
-        // define decimal formatter
+        // Initialize formatter
         val symbols = DecimalFormatSymbols(Locale.US)
         symbols.decimalSeparator = '.'
         DECIMAL_FORMATTER = DecimalFormat("#.000", symbols)
+
+        // Initialize sensor manager
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-        return binding.root
+
+        return ComposeView(requireContext()).apply {
+            setContent {
+                val displayValue = when {
+                    isRecalibrating -> "Recalibrating..."
+                    showRawValues -> rawMagneticValue
+                    else -> magneticValue
+                }
+
+                MetalDetectorScreen(
+                    magneticValue = displayValue,
+                    isAvailable = isAvailable,
+                    showRawValues = showRawValues,
+                    onToggleMode = { showRawValues = !showRawValues },
+                    onRecalibrate = { recalibrate() },
+                    onBottomSheetToggleClick = { showBottomSheet = true }
+                )
+
+                SensorDetailsBottomSheet(
+                    isVisible = showBottomSheet,
+                    onDismiss = { showBottomSheet = false },
+                    title = stringResource(R.string.metal_detector_details_title),
+                    content = stringResource(R.string.metal_detector_details)
+                )
+            }
+        }
     }
+
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(
-            this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
 
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)==null){
-            binding.cardView.visibility=View.GONE
-            binding.cardView1.visibility=View.GONE
-            binding.notAvailable.visibility=View.VISIBLE
+        // Check sensor availability
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null) {
+            isAvailable = false
+        } else {
+            recalibrate()
         }
     }
 
@@ -57,36 +117,33 @@ class MetalDetector : Fragment(), SensorEventListener {
         super.onPause()
         sensorManager.unregisterListener(this)
     }
-    override fun onSensorChanged(p0: SensorEvent) {
-        if (p0.sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            // get values for each axes X,Y,Z
-            val magX = p0.values[0]
-            val magY = p0.values[1]
-            val magZ = p0.values[2]
-            val magnitude= sqrt((magX.times(magX.toDouble())).plus(magY.times(magY.toDouble())).plus(magZ.times(magZ.toDouble())))
-            magneticValue=DECIMAL_FORMATTER.format(magnitude)
-            // set value on the screen
-            binding.value.text = magneticValue + " µTesla"
 
-            val progressValue=magneticValue.toDouble().toInt()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                binding.progressBar.setProgress(progressValue,true)
-                when {
-                    progressValue<100 -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),android.R.color.holo_green_light))
-                    }
-                    progressValue<150 -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),android.R.color.holo_orange_dark))
-                    }
-                    else -> {
-                        binding.progressBar.progressTintList= ColorStateList.valueOf(ContextCompat.getColor(requireContext(),R.color.dark_red))
-                    }
+    override fun onSensorChanged(event: SensorEvent) {
+        if (event.sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
+            val magnitude = sqrt(
+                (event.values[0] * event.values[0] +
+                        event.values[1] * event.values[1] +
+                        event.values[2] * event.values[2]).toDouble()
+            )
+
+            // Update raw value
+            rawMagneticValue = DECIMAL_FORMATTER.format(magnitude)
+
+            // Handle calibration for metal detection mode
+            if (!isCalibrated) {
+                calibrationSamples.add(magnitude)
+                if (calibrationSamples.size >= maxCalibrationSamples) {
+                    baselineMagnitude = calibrationSamples.average()
+                    isCalibrated = true
+                    calibrationSamples.clear()
                 }
+                magneticValue = "Calibrating..."
+            } else {
+                val deviation = abs(magnitude - baselineMagnitude)
+                magneticValue = DECIMAL_FORMATTER.format(deviation)
             }
         }
     }
 
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-    }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 }
