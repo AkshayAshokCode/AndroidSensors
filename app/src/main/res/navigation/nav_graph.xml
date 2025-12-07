@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/metalDetector"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.MetalDetector"
-        tools:layout="@layout/metal_detector"
         android:label="Metal Detector" />
     <fragment
         android:id="@+id/gravityMeter"
