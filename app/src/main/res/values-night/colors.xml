@@ -26,4 +26,7 @@
 
     <color name="toolbar_background">#1E1E32</color>
     <color name="toolbar_text">#ffffff</color>
+
+    <color name="metal_detector_green">#00FF41</color>
+    <color name="metal_detector_background">#0A0A0A</color>
 </resources>
