@@ -39,6 +39,10 @@ class AllSensors : Fragment() {
     }
 
     private fun clickedSensor(sensor: SensorModel) {
+        val navController = findNavController()
+        if(navController.currentDestination?.id != R.id.allSensors) {
+            return // Already navigated away
+        }
         when (sensor.id) {
             Constants.METAL_DETECTOR -> findNavController().navigate(R.id.action_allSensors_to_metalDetector)
             Constants.GRAVITY_METER -> findNavController().navigate(R.id.action_allSensors_to_gravityMeter)
