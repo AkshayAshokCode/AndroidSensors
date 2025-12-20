@@ -1,5 +1,6 @@
 package com.akshayAshokCode.androidsensors.presentation
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.net.Uri
@@ -102,8 +103,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 R.id.sendFeedback -> {
-                    val subject = "AndroidSensors App Feedback"
-                    val body = "Device: ${Build.MODEL}\n\nFeedback:\n"
+                    val subject = "Android Sensors App Feedback"
+                    val body = feedbackBody()
                     val encodedSubject = Uri.encode(subject)
                     val encodedBody = Uri.encode(body)
                     val intent = Intent(Intent.ACTION_SENDTO).apply {
@@ -218,5 +219,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val id = item.itemId
         Log.d(TAG, "Clicked Item:" + id)
         return true
+    }
+
+    private fun feedbackBody(): String {
+        val body = """
+        Hi 👋
+
+        Thanks for using Android Sensors!
+
+        Please share your feedback below 👇
+        (Write your feedback below — you can delete this text)
+
+        • What were you trying to do?
+        • What worked well?
+        • What didn’t work or felt confusing?
+        • Any feature request?
+
+
+
+
+
+        --------------------
+        Device Info:
+        • Device: ${Build.MANUFACTURER} ${Build.MODEL}
+        • Android Version: ${Build.VERSION.RELEASE}
+        • App Version: ${packageManager.getPackageInfo(packageName, 0).versionName}
+        --------------------
+    """.trimIndent()
+
+        return body
     }
 }

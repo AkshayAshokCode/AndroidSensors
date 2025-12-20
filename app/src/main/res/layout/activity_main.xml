@@ -50,7 +50,8 @@
             android:background="@color/gravity_card_outer"
             app:itemIconTint="@color/toolbar_text"
             app:itemTextColor="@color/toolbar_text"
-            app:menu="@menu/drawer_items" />
+            app:menu="@menu/drawer_items"
+            app:headerLayout="@layout/nav_header"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
