@@ -1,16 +1,16 @@
 package com.akshayAshokCode.androidsensors.presentation
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -29,7 +29,6 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
-import androidx.core.net.toUri
 
 // Add Gravity meter
 // Add Heart rate meter
@@ -75,6 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         toolbar = binding.activityMainToolbar
+        setSupportActionBar(toolbar)
         navigationView = binding.navView
         drawerLayout = binding.drawerLayout
 
