@@ -30,10 +30,6 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
 
-// Add Gravity meter
-// Add Heart rate meter
-// Add pressure meter
-// Add Relative Humidity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var toolbar: MaterialToolbar
@@ -130,9 +126,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             supportFragmentManager.findFragmentById(R.id.nav_host_frag) as NavHostFragment
         navController = navHostFrag.navController
 
-        val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.allSensors),
+            drawerLayout
+        )
         toolbar.setupWithNavController(navController, appBarConfiguration)
-        // navigationView.setupWithNavController(navController)
+
+        // Lock drawer on feature screens, unlock on home screen
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.allSensors -> {
+                    // Enable drawer
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                }
+
+                else -> {
+                    // disable drawer
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
+            }
+        }
     }
 
     private fun checkUpdate() {
