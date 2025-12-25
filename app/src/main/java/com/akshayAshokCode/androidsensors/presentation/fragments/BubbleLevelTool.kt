@@ -9,6 +9,9 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -43,7 +46,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.presentation.views.AngleCard
 import com.akshayAshokCode.androidsensors.presentation.views.LevelBubbleView
@@ -84,6 +89,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
     // Add calibration offset
     private var calibrationOffsetPitch = 0f
     private var calibrationOffsetRoll = 0f
+    private var showBottomSheet by mutableStateOf(false)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,10 +107,34 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
                     isLevel = isLevel,
                     currentMode = currentMode,
                     isAvailable = isAvailabe,
-                    onModeChange = { currentMode = it }
+                    onModeChange = { currentMode = it },
+                    showBottomSheet = showBottomSheet,
+                    onBottomSheetChange = { showBottomSheet = it }
                 )
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Add menu to toolbar using MenuProvider
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.sensor_info_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_info -> {
+                        showBottomSheet = true
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onResume() {
@@ -211,9 +241,10 @@ fun BubbleLevelToolScreen(
     isLevel: Boolean,
     currentMode: BubbleLevelTool.SensitivityMode,
     isAvailable: Boolean,
-    onModeChange: (BubbleLevelTool.SensitivityMode) -> Unit
+    onModeChange: (BubbleLevelTool.SensitivityMode) -> Unit,
+    showBottomSheet: Boolean,
+    onBottomSheetChange: (Boolean) -> Unit
 ) {
-    var showBottomSheet by remember { mutableStateOf(false) }
 
     if (!isAvailable) {
         Box(
@@ -238,84 +269,87 @@ fun BubbleLevelToolScreen(
             )
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        colorResource(R.color.gravity_background_start),
-                        colorResource(R.color.gravity_background_middle)
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            colorResource(R.color.gravity_background_start),
+                            colorResource(R.color.gravity_background_middle)
+                        )
                     )
                 )
-            )
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ) {
-
-        // Sensitivity Mode Selector
-        SensitivityModeSelector(
-            currentMode = currentMode,
-            onModeChange = onModeChange
-        )
-
-        // Status Text with tolerance info
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = if (isLevel) "LEVEL" else "NOT LEVEL",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (isLevel) colorResource(R.color.gravity_low) else colorResource(R.color.gravity_high)
-            )
-            Text(
-                text = "Tolerance: \u00B1${currentMode.tolerance}\u00B0",
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
-        }
-
-        // Level Bubble View
-        LevelBubbleView(
-            roll = roll,
-            pitch = pitch,
-            isLevel = isLevel,
-            tolerance = currentMode.tolerance,
-            modifier = Modifier.size(300.dp)
-        )
-
-        // Angle Displays
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            AngleCard("PITCH", pitch)
-            AngleCard("ROLL", roll)
-        }
-
-        // Bottom Info Section with Up Arrow - FIX THE CLICK BEHAVIOR
-        Column(
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .clickable(
-                    indication = null, // Remove ripple effect
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                    showBottomSheet = true
-                }
-                .padding(vertical = 8.dp)
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "View Details",
-                tint = Color.Gray,
-                modifier = Modifier.size(32.dp)
+
+            // Sensitivity Mode Selector
+            SensitivityModeSelector(
+                currentMode = currentMode,
+                onModeChange = onModeChange
             )
-            Text(
-                text = "Tap for sensor details",
-                fontSize = 12.sp,
-                color = Color.Gray
+
+            // Status Text with tolerance info
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = if (isLevel) "LEVEL" else "NOT LEVEL",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (isLevel) colorResource(R.color.gravity_low) else colorResource(R.color.gravity_high)
+                )
+                Text(
+                    text = "Tolerance: \u00B1${currentMode.tolerance}\u00B0",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+            }
+
+            // Level Bubble View
+            LevelBubbleView(
+                roll = roll,
+                pitch = pitch,
+                isLevel = isLevel,
+                tolerance = currentMode.tolerance,
+                modifier = Modifier.size(300.dp)
             )
+
+            // Angle Displays
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                AngleCard("PITCH", pitch)
+                AngleCard("ROLL", roll)
+            }
+
+            // Bottom Info Section with Up Arrow - FIX THE CLICK BEHAVIOR
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .clickable(
+                        indication = null, // Remove ripple effect
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        onBottomSheetChange(true)
+                    }
+                    .padding(vertical = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowUp,
+                    contentDescription = "View Details",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(32.dp)
+                )
+                Text(
+                    text = "Tap for sensor details",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+            }
         }
     }
 
@@ -323,7 +357,7 @@ fun BubbleLevelToolScreen(
     if (showBottomSheet) {
         SensorDetailsBottomSheet(
             isVisible = showBottomSheet,
-            onDismiss = { showBottomSheet = false },
+            onDismiss = { onBottomSheetChange(false) },
             title = "Bubble Level Details",
             content = stringResource(R.string.bubble_level_details)
         )
