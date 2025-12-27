@@ -101,6 +101,7 @@ class MetalDetector : Fragment(), SensorEventListener {
                     isVisible = showBottomSheet,
                     onDismiss = { showBottomSheet = false },
                     title = stringResource(R.string.metal_detector_details_title),
+                    instruction = stringResource(R.string.metal_detector_instruction),
                     content = stringResource(R.string.metal_detector_details)
                 )
             }

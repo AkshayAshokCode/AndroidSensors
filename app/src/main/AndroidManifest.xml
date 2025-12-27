@@ -17,7 +17,11 @@
         android:theme="@style/Theme.MetalDetector">
         <activity
             android:name="com.akshayAshokCode.androidsensors.presentation.MainActivity"
-            android:exported="true">
+            android:exported="true" />
+
+        <activity android:name=".presentation.onboarding.OnboardingActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MetalDetector">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

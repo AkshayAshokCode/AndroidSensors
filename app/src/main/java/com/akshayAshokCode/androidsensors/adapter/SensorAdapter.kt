@@ -1,11 +1,9 @@
 package com.akshayAshokCode.androidsensors.adapter
 
 import android.content.Context
-import android.hardware.SensorManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akshayAshokCode.androidsensors.R
@@ -40,7 +38,7 @@ class SensorAdapter(
 
     class ViewHolder(val binding: SensorItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(sensor: SensorModel, context: Context?, clickListener: (SensorModel) -> Unit) {
-            binding.sensorName.text = sensor.name
+            binding.sensorName.text = context?.getString(sensor.nameResId)
             binding.sensorIcon.setImageResource(sensor.icon)
 
             if (!sensor.isAvailable){
@@ -52,12 +50,6 @@ class SensorAdapter(
                 binding.comingSoonLabel.visibility = View.GONE
                 binding.root.setOnClickListener { clickListener(sensor) }
             }
-
-            val sensorManager: SensorManager =
-                context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-//            if (sensorManager.getDefaultSensor(sensor.sensorType)==null){
-//                  //binding.root.visibility= View.GONE
-//            }
         }
 
     }

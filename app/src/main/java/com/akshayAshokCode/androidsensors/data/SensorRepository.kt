@@ -9,19 +9,19 @@ class SensorRepository {
         return listOf(
             SensorModel(
                 Constants.METAL_DETECTOR,
-                "Metal detector",
+                R.string.sensor_name_metal_detector,
                 R.drawable.metal_detector_icon,
                 Sensor.TYPE_MAGNETIC_FIELD
             ),
             SensorModel(
                 Constants.GRAVITY_METER,
-                "Gravity meter",
+                R.string.sensor_name_gravity_meter,
                 R.drawable.gravity_icon,
                 Sensor.TYPE_GRAVITY
             ),
             SensorModel(
                 Constants.BUBBLE_LEVEL_TOOL,
-                name = "Bubble Level",
+                R.string.sensor_name_bubble_level,
                 R.drawable.bubble_level_icon,
                 Sensor.TYPE_ACCELEROMETER
             )

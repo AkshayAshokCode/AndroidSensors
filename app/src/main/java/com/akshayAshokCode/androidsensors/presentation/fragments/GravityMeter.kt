@@ -99,6 +99,7 @@ class GravityMeter : Fragment(), SensorEventListener {
                     isVisible = showBottomSheet,
                     onDismiss = { showBottomSheet = false },
                     title = stringResource(R.string.gravity_meter_details_title),
+                    instruction = stringResource(R.string.gravity_meter_instruction),
                     content = stringResource(R.string.gravity_meter_details)
                 )
             }

@@ -358,7 +358,8 @@ fun BubbleLevelToolScreen(
         SensorDetailsBottomSheet(
             isVisible = showBottomSheet,
             onDismiss = { onBottomSheetChange(false) },
-            title = "Bubble Level Details",
+            title = stringResource(R.string.bubble_level_details_title),
+            instruction = stringResource(R.string.bubble_level_instruction),
             content = stringResource(R.string.bubble_level_details)
         )
     }
