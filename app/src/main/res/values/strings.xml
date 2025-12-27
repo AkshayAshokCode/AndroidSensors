@@ -48,6 +48,12 @@
 
     <string name="tap_for_sensor_details">Tap for sensor details</string>
     <string name="gravity_meter_details_title">Gravity Meter Details</string>
+
+    <!-- Bottom Sheet Instructions -->
+    <string name="how_to_use_label">💡 How to use:</string>
+    <string name="metal_detector_instruction">Move your phone slowly near metal objects to detect magnetic field changes.</string>
+    <string name="gravity_meter_instruction">Tilt and rotate your phone to see how gravity affects each axis in real-time.</string>
+    <string name="bubble_level_instruction">Place your phone flat on the surface you want to level, then adjust until the bubble stays in the center.</string>
     <string name="intial_x_value">X-axis: 0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Y-axis: 0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Z-axis: 0:00 m/s&#xB2;</string>
@@ -70,6 +76,23 @@
     </string>
     <string name="bubble_level_not_available">Bubble Level Sensor not available\n on your device</string>
     <string name="metal_detector_details_title">Metal Detector</string>
+
+    <!-- Sensor Names -->
+    <string name="sensor_name_metal_detector">Metal detector</string>
+    <string name="sensor_name_gravity_meter">Gravity meter</string>
+    <string name="sensor_name_bubble_level">Bubble Level</string>
+
+    <!-- Metal Detector Strings -->
+    <string name="recalibrating">Recalibrating…</string>
+    <string name="please_wait">Please wait</string>
+    <string name="recalibrating_sensor">Recalibrating sensor…</string>
+    <string name="recalibrating_baseline">Recalibrating baseline…</string>
+    <string name="unit_microtesla">µTesla</string>
+    <string name="button_recalibrate">RECALIBRATE</string>
+    <string name="label_status">STATUS</string>
+    <string name="label_range">RANGE</string>
+    <string name="label_signal_strength">SIGNAL STRENGTH</string>
+    <string name="no_data">---</string>
 
     <!-- Onboarding Strings -->
     <!-- Screen 1: Welcome -->

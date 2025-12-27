@@ -26,69 +26,81 @@ fun FeaturesScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Animated icon
-        AnimatedIcon(
-            icon = {
-                Icon(
-                    imageVector = Icons.Filled.Star,
-                    contentDescription = null,
-                    modifier = Modifier.size(100.dp),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-            }
-        )
+        // Top section - stays at top
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(40.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
+            // Animated icon
+            AnimatedIcon(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            )
 
-        // Title
-        Text(
-            text = stringResource(R.string.onboarding_features_title),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
+            Spacer(modifier = Modifier.height(32.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+            // Title
+            Text(
+                text = stringResource(R.string.onboarding_features_title),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
 
-        // Subtitle
-        Text(
-            text = stringResource(R.string.onboarding_features_subtitle),
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Medium
-        )
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
+            // Subtitle
+            Text(
+                text = stringResource(R.string.onboarding_features_subtitle),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Medium
+            )
+        }
 
-        // Feature cards
-        FeatureCard(
-            icon = Icons.Filled.Search,
-            title = stringResource(R.string.onboarding_feature_metal_detector_title),
-            description = stringResource(R.string.onboarding_feature_metal_detector_description),
-            delay = 0
-        )
+        Spacer(modifier = Modifier.height(48.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+        // Feature cards section - animates in
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FeatureCard(
+                icon = Icons.Filled.Search,
+                title = stringResource(R.string.onboarding_feature_metal_detector_title),
+                description = stringResource(R.string.onboarding_feature_metal_detector_description),
+                delay = 0
+            )
 
-        FeatureCard(
-            icon = Icons.Filled.Public,
-            title = stringResource(R.string.onboarding_feature_gravity_meter_title),
-            description = stringResource(R.string.onboarding_feature_gravity_meter_description),
-            delay = 150
-        )
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+            FeatureCard(
+                icon = Icons.Filled.Public,
+                title = stringResource(R.string.onboarding_feature_gravity_meter_title),
+                description = stringResource(R.string.onboarding_feature_gravity_meter_description),
+                delay = 150
+            )
 
-        FeatureCard(
-            icon = Icons.Filled.Architecture,
-            title = stringResource(R.string.onboarding_feature_bubble_level_title),
-            description = stringResource(R.string.onboarding_feature_bubble_level_description),
-            delay = 300
-        )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            FeatureCard(
+                icon = Icons.Filled.Architecture,
+                title = stringResource(R.string.onboarding_feature_bubble_level_title),
+                description = stringResource(R.string.onboarding_feature_bubble_level_description),
+                delay = 300
+            )
+        }
     }
 }
 

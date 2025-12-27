@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.akshayAshokCode.androidsensors.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,6 +30,7 @@ fun SensorDetailsBottomSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
     title: String,
+    instruction: String,
     content: String
 ) {
     if (isVisible) {
@@ -71,6 +74,24 @@ fun SensorDetailsBottomSheet(
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                // Instruction line - highlighted
+                Text(
+                    text = stringResource(R.string.how_to_use_label),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF64B5F6),
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                Text(
+                    text = instruction,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFFE3F2FD),
+                    lineHeight = 20.sp,
+                    modifier = Modifier.padding(bottom = 20.dp)
                 )
 
                 Text(

@@ -160,13 +160,13 @@ fun MetalDetectorRadar(magneticValue: String, showRawValues: Boolean) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Recalibrating...",
+                    text = stringResource(R.string.recalibrating),
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "Please wait",
+                    text = stringResource(R.string.please_wait),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp
                 )
@@ -299,7 +299,7 @@ fun MetalDetectorRadar(magneticValue: String, showRawValues: Boolean) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "µTesla",
+                text = stringResource(R.string.unit_microtesla),
                 color = Color.White.copy(alpha = 0.7f),
                 fontSize = 14.sp
             )
@@ -364,7 +364,7 @@ fun ModeToggleCard(
                 )
             ) {
                 Text(
-                    text = "RECALIBRATE",
+                    text = stringResource(R.string.button_recalibrate),
                     color = colorResource(R.color.metal_detector_green),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
@@ -396,7 +396,7 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "---",
+                            text = stringResource(R.string.no_data),
                             color = Color.White.copy(alpha = 0.5f),
                             fontSize = 16.sp
                         )
@@ -461,7 +461,7 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "STATUS",
+                    text = stringResource(R.string.label_status),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
@@ -488,7 +488,7 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "RANGE",
+                    text = stringResource(R.string.label_range),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
@@ -522,7 +522,7 @@ fun SignalStrengthIndicator(magneticValue: String, showRawValues: Boolean) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (showRawValues) "Recalibrating sensor..." else "Recalibrating baseline...",
+                    text = if (showRawValues) stringResource(R.string.recalibrating_sensor) else stringResource(R.string.recalibrating_baseline),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 14.sp
                 )
@@ -549,7 +549,7 @@ fun SignalStrengthIndicator(magneticValue: String, showRawValues: Boolean) {
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                text = "SIGNAL STRENGTH",
+                text = stringResource(R.string.label_signal_strength),
                 color = Color.White.copy(alpha = 0.7f),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
