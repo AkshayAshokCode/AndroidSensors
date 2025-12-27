@@ -70,4 +70,32 @@
     </string>
     <string name="bubble_level_not_available">Bubble Level Sensor not available\n on your device</string>
     <string name="metal_detector_details_title">Metal Detector</string>
+
+    <!-- Onboarding Strings -->
+    <!-- Screen 1: Welcome -->
+    <string name="onboarding_welcome_title">Welcome to\nAndroid Sensors</string>
+    <string name="onboarding_welcome_subtitle">Unlock the hidden power of your phone\'s sensors</string>
+    <string name="onboarding_welcome_description">Transform your smartphone into a powerful toolkit with professional-grade sensor tools for everyday use.</string>
+
+    <!-- Screen 2: Features -->
+    <string name="onboarding_features_title">Powerful Features</string>
+    <string name="onboarding_features_subtitle">Everything you need in one app</string>
+
+    <!-- Feature 1: Metal Detector -->
+    <string name="onboarding_feature_metal_detector_title">Metal Detector</string>
+    <string name="onboarding_feature_metal_detector_description">Detect metal objects around you</string>
+
+    <!-- Feature 2: Gravity Meter -->
+    <string name="onboarding_feature_gravity_meter_title">Gravity Meter</string>
+    <string name="onboarding_feature_gravity_meter_description">See gravity changes as you move</string>
+
+    <!-- Feature 3: Bubble Level -->
+    <string name="onboarding_feature_bubble_level_title">Bubble Level</string>
+    <string name="onboarding_feature_bubble_level_description">Check if surfaces are perfectly level</string>
+
+    <!-- Navigation Buttons -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_get_started_button">Get Started!</string>
 </resources>
