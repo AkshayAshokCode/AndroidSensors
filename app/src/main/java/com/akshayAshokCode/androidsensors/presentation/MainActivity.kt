@@ -99,13 +99,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 R.id.sendFeedback -> {
-                    val subject = "Android Sensors App Feedback"
+                    val subject = getString(R.string.feedback_subject)
                     val body = feedbackBody()
                     val encodedSubject = Uri.encode(subject)
                     val encodedBody = Uri.encode(body)
+                    val email = getString(R.string.feedback_email)
                     val intent = Intent(Intent.ACTION_SENDTO).apply {
                         data =
-                            "mailto:akshayashokan1054@gmail.com?subject=$encodedSubject&body=$encodedBody".toUri()
+                            "mailto:$email?subject=$encodedSubject&body=$encodedBody".toUri()
                     }
                     if (intent.resolveActivity(packageManager) != null) {
                         startActivity(intent)
@@ -195,10 +196,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun popupSnackbarForCompleteUpdate() {
         Snackbar.make(
             findViewById(android.R.id.content),
-            "An update has just been downloaded.",
+            getString(R.string.update_downloaded),
             Snackbar.LENGTH_INDEFINITE
         ).apply {
-            setAction("RESTART") { appUpdateManager.completeUpdate() }
+            setAction(getString(R.string.update_restart)) { appUpdateManager.completeUpdate() }
             show()
         }
     }
@@ -235,31 +236,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun feedbackBody(): String {
-        val body = """
-        Hi 👋
-
-        Thanks for using Android Sensors!
-
-        Please share your feedback below 👇
-        (Write your feedback below — you can delete this text)
-
-        • What were you trying to do?
-        • What worked well?
-        • What didn’t work or felt confusing?
-        • Any feature request?
-
-
-
-
-
-        --------------------
-        Device Info:
-        • Device: ${Build.MANUFACTURER} ${Build.MODEL}
-        • Android Version: ${Build.VERSION.RELEASE}
-        • App Version: ${packageManager.getPackageInfo(packageName, 0).versionName}
-        --------------------
-    """.trimIndent()
-
-        return body
+        return getString(
+            R.string.feedback_body_template,
+            Build.MANUFACTURER,
+            Build.MODEL,
+            Build.VERSION.RELEASE,
+            packageManager.getPackageInfo(packageName, 0).versionName
+        )
     }
 }

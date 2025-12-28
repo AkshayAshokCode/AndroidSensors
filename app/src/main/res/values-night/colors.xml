@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#121212</color>
-    <color name="colorPrimaryReverse">#ffffff</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryReverse">#121212</color>
     <color name="white">#ffffff</color>
     <color name="dark_red">#F32013</color>
     <color name="red">#FF6347</color>
@@ -29,4 +29,20 @@
 
     <color name="metal_detector_green">#00FF41</color>
     <color name="metal_detector_background">#0A0A0A</color>
+
+    <!-- Common UI Colors -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="text_tertiary">#808080</color>
+
+    <!-- Sensor Details Colors -->
+    <color name="sensor_detail_icon">#64B5F6</color>
+    <color name="sensor_detail_text">#E3F2FD</color>
+
+    <!-- Overlay Colors -->
+    <color name="overlay_light">#4DFFFFFF</color> <!-- White with 30% alpha -->
+    <color name="overlay_dark">#4D000000</color> <!-- Black with 30% alpha -->
+    <color name="overlay_subtle">#33FFFFFF</color> <!-- White with 20% alpha -->
+    <color name="overlay_medium">#99FFFFFF</color> <!-- White with 60% alpha -->
+    <color name="overlay_strong">#B3FFFFFF</color> <!-- White with 70% alpha -->
 </resources>

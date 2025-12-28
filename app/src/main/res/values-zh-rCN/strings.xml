@@ -1,0 +1,173 @@
+<resources>
+    <string name="app_name">AndroidSensors</string>
+    <string name="max_progress">500 µTesla</string>
+    <string name="min_progress">0 µTesla</string>
+    <string name="average_value">45.00 µTesla</string>
+    <string name="metal_detector_not_available">金属探测器传感器不可用\n 在您的设备上</string>
+    <string name="gravity_meter_not_available">重力计传感器不可用\n 在您的设备上</string>
+    <string name="thank_you_for_review">谢谢</string>
+
+    <string name="gravity_x">沿x轴的重力：</string>
+    <string name="gravity_y">沿y轴的重力：</string>
+    <string name="gravity_z">沿z轴的重力：</string>
+    <string name="metal_detector_details">
+        \u25BA 使用的传感器：磁力计（磁场传感器）\n\n
+        \u25BA 工作原理：检测金属物体引起的地球磁场变化。当金属靠近时，它会扭曲自然磁场，产生可检测的变化。\n\n
+        \u25BA 简单模式：显示与基线磁场的偏差。高于10 µT的值表示可能存在金属。自动校准到本地环境。\n\n
+        \u25BA 高级模式：显示原始磁场强度（典型值25-65 µT）。用于分析磁干扰和环境条件。\n\n
+        \u25BA 检测范围：对5-15厘米内的大型金属物体有效。硬币等较小物体可在2-5厘米内检测到。范围因手机型号而异。\n\n
+        \u25BA 地球磁场：自然强度范围为25-65微特斯拉，取决于位置。在两极较强，在赤道较弱。\n\n
+        \u25BA 精度提示：远离金属表面校准，缓慢移动，保持手机平放，避免电子干扰（WiFi/蓝牙）。\n\n
+        \u25BA 安全提示：这不是专业的金属探测器。不要依赖它进行安全关键应用或寻宝。\n\n
+        \u25BA 趣味事实：您手机的磁力计与导航指南针和专业地质调查中使用的技术相同！
+    </string>
+
+    <string name="status_of_phone">您手机的状态</string>
+    <string name="positive_x_axis">您的手机水平放置</string>
+    <string name="negative_x_axis">您的手机水平放置</string>
+    <string name="positive_y_axis">您的手机竖直放置，可能面向您</string>
+    <string name="negative_y_axis">您的手机倒置</string>
+    <string name="positive_z_axis">您的手机面向天花板</string>
+    <string name="negative_z_axis">您的手机面向地板</string>
+
+    <string name="gravity_meter_details">
+        \u25BA 使用的传感器：重力传感器（基于软件）\n\n
+        \u25BA 工作原理：使用加速度计数据并进行过滤，以将重力与运动隔离。结合硬件读数和智能算法，将重力与设备运动分离。\n\n
+        \u25BA 地球重力：标准重力为向下9.8 m/s²。实际值因海拔、纬度和当地地质而略有不同。\n\n
+        \u25BA 矢量显示：显示X、Y、Z轴上的重力分量。箭头指向相对于设备方向的重力拉力方向。\n\n
+        \u25BA 实时图表：跟踪重力随时间的变化。用于分析设备运动模式和方向稳定性。\n\n
+        \u25BA 设备方向：自动检测手机位置 - 水平、垂直、朝上/朝下。基于哪个轴具有最强的重力分量。\n\n
+        \u25BA 幅度计算：总重力 = √(X² + Y² + Z²)。当设备静止时应接近9.8 m/s²。\n\n
+        \u25BA 应用：用于导航、游戏、屏幕旋转和科学测量。对增强现实和运动感应至关重要。\n\n
+        \u25BA 趣味事实：这种传感器融合技术使您的手机能够知道其在3D空间中的方向，为从自动旋转到健身追踪的功能提供动力！
+    </string>
+
+    <string name="tap_for_sensor_details">点击查看传感器详情</string>
+    <string name="gravity_meter_details_title">重力计详情</string>
+
+    <!-- Bottom Sheet Instructions -->
+    <string name="how_to_use_label">💡 使用方法：</string>
+    <string name="metal_detector_instruction">将手机缓慢移动到金属物体附近以检测磁场变化。</string>
+    <string name="gravity_meter_instruction">倾斜和旋转手机以实时查看重力如何影响每个轴。</string>
+    <string name="bubble_level_instruction">将手机平放在要调平的表面上，然后调整直到气泡保持在中心。</string>
+    <string name="intial_x_value">X轴：0:00 m/s&#xB2;</string>
+    <string name="intial_y_value">Y轴：0:00 m/s&#xB2;</string>
+    <string name="intial_z_value">Z轴：0:00 m/s&#xB2;</string>
+    <string name="initial_phone_status">手机状态</string>
+    <string name="total_magnitude">总计：%.2f m/s&#xB2;</string>
+    <string name="axis_label">%s轴</string>
+    <string name="real_time_graph">实时图表</string>
+
+    <string name="bubble_level_details_title">水平仪详情</string>
+    <string name="bubble_level_details">
+        \u25BA 使用的传感器：加速度计 + 磁力计（融合传感器）\n\n
+        \u25BA 工作原理：结合加速度计和磁力计数据，使用旋转矩阵计算精确的设备方向。\n\n
+        \u25BA 俯仰（Y轴）：前后倾斜 - 就像将手机向您倾斜或远离您。正值 = 向上倾斜，负值 = 向下倾斜。\n\n
+        \u25BA 横滚（X轴）：左右倾斜 - 就像顺时针或逆时针旋转手机。正值 = 向右倾斜，负值 = 向左倾斜。\n\n
+        \u25BA 水平检测：当俯仰和横滚都在容差范围内（±0.5°至±5°）时，气泡变绿并触发触觉反馈。\n\n
+        \u25BA 功能：多种灵敏度模式、触觉反馈和实时气泡物理模拟。\n\n
+        \u25BA 专业用途：非常适合建筑、木工、挂画以及任何需要精确调平的任务。\n\n
+        \u25BA 趣味事实：使用与价值数百美元的专业数字水平仪相同的传感器融合技术！
+    </string>
+    <string name="bubble_level_not_available">水平仪传感器不可用\n 在您的设备上</string>
+    <string name="metal_detector_details_title">金属探测器</string>
+
+    <!-- Sensor Names -->
+    <string name="sensor_name_metal_detector">金属探测器</string>
+    <string name="sensor_name_gravity_meter">重力计</string>
+    <string name="sensor_name_bubble_level">水平仪</string>
+
+    <!-- Metal Detector Strings -->
+    <string name="calibrating">正在校准...</string>
+    <string name="recalibrating">正在重新校准…</string>
+    <string name="please_wait">请稍候</string>
+    <string name="recalibrating_sensor">正在重新校准传感器…</string>
+    <string name="recalibrating_baseline">正在重新校准基线…</string>
+    <string name="button_recalibrate">重新校准</string>
+    <string name="label_status">状态</string>
+    <string name="label_range">范围</string>
+    <string name="label_signal_strength">信号强度</string>
+
+    <!-- Onboarding Strings -->
+    <!-- Screen 1: Welcome -->
+    <string name="onboarding_welcome_title">欢迎使用\nAndroid Sensors</string>
+    <string name="onboarding_welcome_subtitle">解锁手机传感器的隐藏力量</string>
+    <string name="onboarding_welcome_description">将您的智能手机转变为功能强大的工具包，配备专业级传感器工具供日常使用。</string>
+
+    <!-- Screen 2: Features -->
+    <string name="onboarding_features_title">强大功能</string>
+    <string name="onboarding_features_subtitle">一个应用满足所有需求</string>
+
+    <!-- Feature 1: Metal Detector -->
+    <string name="onboarding_feature_metal_detector_title">金属探测器</string>
+    <string name="onboarding_feature_metal_detector_description">检测周围的金属物体</string>
+
+    <!-- Feature 2: Gravity Meter -->
+    <string name="onboarding_feature_gravity_meter_title">重力计</string>
+    <string name="onboarding_feature_gravity_meter_description">查看移动时的重力变化</string>
+
+    <!-- Feature 3: Bubble Level -->
+    <string name="onboarding_feature_bubble_level_title">水平仪</string>
+    <string name="onboarding_feature_bubble_level_description">检查表面是否完全水平</string>
+
+    <!-- Navigation Buttons -->
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_next">下一步</string>
+    <string name="onboarding_back">返回</string>
+    <string name="onboarding_get_started_button">开始使用！</string>
+
+    <!-- Menu Items -->
+    <string name="menu_write_review">给我们写评论</string>
+    <string name="menu_send_feedback">发送反馈</string>
+
+    <!-- Metal Detector Mode Strings -->
+    <string name="mode_advanced">高级模式</string>
+    <string name="mode_simple">简单模式</string>
+    <string name="mode_advanced_desc">原始磁场读数</string>
+    <string name="mode_simple_desc">带警报的金属检测</string>
+
+    <!-- Metal Detector Status Levels -->
+    <string name="status_normal">正常</string>
+    <string name="status_slight_anomaly">轻微异常</string>
+    <string name="status_moderate">中等</string>
+    <string name="status_strong">强</string>
+    <string name="status_very_strong">非常强</string>
+    <string name="status_clear">清晰</string>
+    <string name="status_weak">弱</string>
+
+    <!-- Bubble Level Angle Labels -->
+    <string name="angle_pitch">俯仰</string>
+    <string name="angle_roll">横滚</string>
+
+    <!-- Navigation Labels -->
+    <string name="nav_label_metal_detector">金属探测器</string>
+    <string name="nav_label_gravity_meter">重力计</string>
+    <string name="nav_label_bubble_level">水平仪</string>
+    <string name="nav_label_all_sensors">Android Sensors</string>
+
+    <!-- Bubble Level Sensitivity Modes -->
+    <string name="sensitivity_precision">精确</string>
+    <string name="sensitivity_standard">标准</string>
+    <string name="sensitivity_rough">粗略</string>
+
+    <!-- Bubble Level Status -->
+    <string name="level_status_level">水平</string>
+    <string name="level_status_not_level">不水平</string>
+    <string name="level_tolerance">容差：±%1$.1f°</string>
+    <string name="sensor_not_available">传感器不可用</string>
+    <string name="view_details">查看详情</string>
+
+    <!-- Gravity Meter Orientation Labels -->
+    <string name="orientation_landscape">横屏模式</string>
+    <string name="orientation_portrait">竖屏模式</string>
+    <string name="orientation_upside_down">倒置</string>
+    <string name="orientation_face_up">正面朝上</string>
+    <string name="orientation_face_down">正面朝下</string>
+    <string name="orientation_unknown">未知位置</string>
+
+    <!-- MainActivity Strings -->
+    <string name="feedback_subject">Android Sensors 应用反馈</string>
+    <string name="update_downloaded">更新已下载完成。</string>
+    <string name="update_restart">重启</string>
+    <string name="feedback_body_template">您好 👋\n\n感谢使用 Android Sensors！\n\n请在下方分享您的反馈 👇\n（在下方写下您的反馈 — 您可以删除此文本）\n\n• 您想做什么？\n• 什么运行良好？\n• 什么不起作用或令人困惑？\n• 有什么功能请求吗？\n\n\n\n\n\n--------------------\n设备信息：\n• 设备：%1$s %2$s\n• Android 版本：%3$s\n• 应用版本：%4$s\n--------------------</string>
+</resources>

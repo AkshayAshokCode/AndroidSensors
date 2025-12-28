@@ -63,7 +63,7 @@ class GravityMeter : Fragment(), SensorEventListener {
     private var xValue by mutableStateOf("")
     private var yValue by mutableStateOf("")
     private var zValue by mutableStateOf("")
-    private var phoneStatus by mutableStateOf("")
+    private var phoneOrientation by mutableStateOf(SensorUtils.PhoneOrientation.UNKNOWN)
     private var isAvailable by mutableStateOf(true)
     private var showBottomSheet by mutableStateOf(false)
 
@@ -81,7 +81,7 @@ class GravityMeter : Fragment(), SensorEventListener {
         xValue = getString(R.string.intial_x_value)
         yValue = getString(R.string.intial_y_value)
         zValue = getString(R.string.intial_z_value)
-        phoneStatus = getString(R.string.initial_phone_status)
+        phoneOrientation = SensorUtils.PhoneOrientation.UNKNOWN
 
         return ComposeView(requireContext()).apply {
             setContent {
@@ -89,7 +89,7 @@ class GravityMeter : Fragment(), SensorEventListener {
                     xValue = xValue,
                     yValue = yValue,
                     zValue = zValue,
-                    phoneStatus = phoneStatus,
+                    phoneOrientation = phoneOrientation,
                     isAvailable = isAvailable,
                     gravityHistory = gravityHistory.toList(),
                     onBottomSheetToggleClick = { showBottomSheet = true }
@@ -159,14 +159,14 @@ class GravityMeter : Fragment(), SensorEventListener {
             gravityHistory.add(Triple(event.values[0], event.values[1], event.values[2]))
             if (gravityHistory.size > maxHistorySize) gravityHistory.removeAt(0)
 
-            phoneStatus = when {
-                event.values[0] > 7 -> getString(R.string.positive_x_axis)
-                event.values[0] < -7 -> getString(R.string.negative_x_axis)
-                event.values[1] > 7 -> getString(R.string.positive_y_axis)
-                event.values[1] < -7 -> getString(R.string.negative_y_axis)
-                event.values[2] > 7 -> getString(R.string.positive_z_axis)
-                event.values[2] < -7 -> getString(R.string.negative_z_axis)
-                else -> phoneStatus
+            phoneOrientation = when {
+                event.values[0] > 7 -> SensorUtils.PhoneOrientation.LANDSCAPE
+                event.values[0] < -7 -> SensorUtils.PhoneOrientation.LANDSCAPE
+                event.values[1] > 7 -> SensorUtils.PhoneOrientation.PORTRAIT
+                event.values[1] < -7 -> SensorUtils.PhoneOrientation.UPSIDE_DOWN
+                event.values[2] > 7 -> SensorUtils.PhoneOrientation.FACE_UP
+                event.values[2] < -7 -> SensorUtils.PhoneOrientation.FACE_DOWN
+                else -> phoneOrientation
             }
         }
     }
@@ -180,7 +180,7 @@ fun GravityMeterScreen(
     xValue: String,
     yValue: String,
     zValue: String,
-    phoneStatus: String,
+    phoneOrientation: SensorUtils.PhoneOrientation,
     isAvailable: Boolean,
     gravityHistory: List<Triple<Float, Float, Float>>,
     onBottomSheetToggleClick: () -> Unit
@@ -227,7 +227,7 @@ fun GravityMeterScreen(
                     xValue = xFloat,
                     yValue = yFloat,
                     zValue = zFloat,
-                    phoneStatus = phoneStatus,
+                    phoneOrientation = phoneOrientation,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -286,5 +286,3 @@ fun GravityMeterScreen(
         }
     }
 }
-
-

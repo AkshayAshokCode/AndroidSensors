@@ -8,19 +8,19 @@
     <fragment
         android:id="@+id/metalDetector"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.MetalDetector"
-        android:label="Metal Detector" />
+        android:label="@string/nav_label_metal_detector" />
     <fragment
         android:id="@+id/gravityMeter"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.GravityMeter"
-        android:label="Gravity Meter" />
+        android:label="@string/nav_label_gravity_meter" />
     <fragment
         android:id="@+id/bubbleLevelTool"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.BubbleLevelTool"
-        android:label="Bubble Level" />
+        android:label="@string/nav_label_bubble_level" />
     <fragment
         android:id="@+id/allSensors"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.AllSensors"
-        android:label="Android Sensors" >
+        android:label="@string/nav_label_all_sensors" >
         <action
             android:id="@+id/action_allSensors_to_metalDetector"
             app:destination="@id/metalDetector" />

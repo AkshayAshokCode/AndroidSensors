@@ -146,7 +146,7 @@ fun MetalDetectorScreen(
 @Composable
 fun MetalDetectorRadar(magneticValue: String, showRawValues: Boolean) {
     // Handle recalibration state for both modes
-    if (magneticValue == "Recalibrating...") {
+    if (magneticValue == stringResource(R.string.recalibrating)) {
         Box(
             modifier = Modifier.size(280.dp),
             contentAlignment = Alignment.Center
@@ -330,13 +330,13 @@ fun ModeToggleCard(
             ) {
                 Column {
                     Text(
-                        text = if (showRawValues) "ADVANCED MODE" else "SIMPLE MODE",
+                        text = if (showRawValues) stringResource(R.string.mode_advanced) else stringResource(R.string.mode_simple),
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = if (showRawValues) "Raw magnetic field readings" else "Metal detection with alerts",
+                        text = if (showRawValues) stringResource(R.string.mode_advanced_desc) else stringResource(R.string.mode_simple_desc),
                         color = Color.White.copy(alpha = 0.7f),
                         fontSize = 12.sp
                     )
@@ -376,7 +376,9 @@ fun ModeToggleCard(
 
 @Composable
 fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
-    if (magneticValue == "Recalibrating...") {
+    val recalibratingText = stringResource(R.string.recalibrating)
+
+    if (magneticValue == recalibratingText) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -409,14 +411,25 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
 
     val value = magneticValue.toDoubleOrNull() ?: 0.0
 
+    // Get string resources
+    val statusNormal = stringResource(R.string.status_normal)
+    val statusSlightAnomaly = stringResource(R.string.status_slight_anomaly)
+    val statusModerate = stringResource(R.string.status_moderate)
+    val statusStrong = stringResource(R.string.status_strong)
+    val statusVeryStrong = stringResource(R.string.status_very_strong)
+    val statusClear = stringResource(R.string.status_clear)
+    val statusWeak = stringResource(R.string.status_weak)
+    val rangeRaw = stringResource(R.string.range_raw)
+    val rangeDetection = stringResource(R.string.range_detection)
+
     val (detectionLevel, statusColor, rangeText) = if (showRawValues) {
         // Raw magnetic field thresholds
         val level = when {
-            value < 30 -> "NORMAL"
-            value < 100 -> "SLIGHT ANOMALY"
-            value < 300 -> "MODERATE"
-            value < 600 -> "STRONG"
-            else -> "VERY STRONG"
+            value < 30 -> statusNormal
+            value < 100 -> statusSlightAnomaly
+            value < 300 -> statusModerate
+            value < 600 -> statusStrong
+            else -> statusVeryStrong
         }
         val color = when {
             value < 30 -> colorResource(R.color.gravity_low)
@@ -425,15 +438,15 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
             value < 600 -> colorResource(R.color.orange)
             else -> colorResource(R.color.dark_red)
         }
-        Triple(level, color, "25-1000+ µT")
+        Triple(level, color, rangeRaw)
     } else {
         // Metal detection thresholds (deviation from baseline)
         val level = when {
-            value < 10 -> "CLEAR"
-            value < 50 -> "WEAK"
-            value < 200 -> "MODERATE"
-            value < 500 -> "STRONG"
-            else -> "VERY STRONG"
+            value < 10 -> statusClear
+            value < 50 -> statusWeak
+            value < 200 -> statusModerate
+            value < 500 -> statusStrong
+            else -> statusVeryStrong
         }
         val color = when {
             value < 10 -> colorResource(R.color.gravity_low)
@@ -442,7 +455,7 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
             value < 500 -> colorResource(R.color.orange)
             else -> colorResource(R.color.dark_red)
         }
-        Triple(level, color, "0-1000+ µT")
+        Triple(level, color, rangeDetection)
     }
 
     Row(
@@ -507,7 +520,9 @@ fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
 
 @Composable
 fun SignalStrengthIndicator(magneticValue: String, showRawValues: Boolean) {
-    if (magneticValue == "Recalibrating...") {
+    val recalibratingText = stringResource(R.string.recalibrating)
+
+    if (magneticValue == recalibratingText) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),

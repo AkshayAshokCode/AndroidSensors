@@ -1,9 +1,20 @@
 package com.akshayAshokCode.androidsensors.utils
 
+import android.content.Context
 import com.akshayAshokCode.androidsensors.R
 import kotlin.math.*
 
 object SensorUtils {
+
+    // Phone orientation enum for language-independent orientation detection
+    enum class PhoneOrientation {
+        LANDSCAPE,
+        PORTRAIT,
+        UPSIDE_DOWN,
+        FACE_UP,
+        FACE_DOWN,
+        UNKNOWN
+    }
 
     fun extractNumericValue(valueString: String): Float {
         return try {
@@ -14,25 +25,25 @@ object SensorUtils {
         }
     }
 
-    fun getOrientationEmoji(status: String): String {
-        return when {
-            status.contains("horizontally") -> " \uD83D\uDCF1 "
-            status.contains("straight") -> "\uD83D\uDDFF "
-            status.contains("upside down") -> " \uD83D\uDE43 "
-            status.contains("ceiling") -> " ⬆\uFE0F "
-            status.contains("floor") -> " ⬇\uFE0F "
-            else -> "  "
+    fun getOrientationEmoji(orientation: PhoneOrientation): String {
+        return when (orientation) {
+            PhoneOrientation.LANDSCAPE -> " \uD83D\uDCF1 "
+            PhoneOrientation.PORTRAIT -> "\uD83D\uDDFF "
+            PhoneOrientation.UPSIDE_DOWN -> " \uD83D\uDE43 "
+            PhoneOrientation.FACE_UP -> " ⬆\uFE0F "
+            PhoneOrientation.FACE_DOWN -> " ⬇\uFE0F "
+            PhoneOrientation.UNKNOWN -> "  "
         }
     }
 
-    fun getSimpleOrientationText(status: String): String {
-        return when {
-            status.contains("horizontally") -> "Landscape Mode"
-            status.contains("straight") -> "Portrait Mode"
-            status.contains("upside down") -> "Upside Down"
-            status.contains("ceiling") -> "Face Up"
-            status.contains("floor") -> "Face Down"
-            else -> "Unknown Position"
+    fun getSimpleOrientationText(orientation: PhoneOrientation, context: Context): String {
+        return when (orientation) {
+            PhoneOrientation.LANDSCAPE -> context.getString(R.string.orientation_landscape)
+            PhoneOrientation.PORTRAIT -> context.getString(R.string.orientation_portrait)
+            PhoneOrientation.UPSIDE_DOWN -> context.getString(R.string.orientation_upside_down)
+            PhoneOrientation.FACE_UP -> context.getString(R.string.orientation_face_up)
+            PhoneOrientation.FACE_DOWN -> context.getString(R.string.orientation_face_down)
+            PhoneOrientation.UNKNOWN -> context.getString(R.string.orientation_unknown)
         }
     }
 

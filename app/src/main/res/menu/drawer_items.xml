@@ -4,10 +4,10 @@
         <item
             android:id="@+id/inAppReview"
             android:icon="@drawable/ic_baseline_star_rate_24"
-            android:title="Write Us A Review"/>
+            android:title="@string/menu_write_review"/>
         <item
             android:id="@+id/sendFeedback"
             android:icon="@drawable/ic_feedback"
-            android:title="Send Feedback"/>
+            android:title="@string/menu_send_feedback"/>
     </group>
 </menu>
