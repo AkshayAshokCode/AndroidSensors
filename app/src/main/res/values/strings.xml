@@ -10,10 +10,10 @@
     <string name="gravity_x">Force of gravity along the x axis:</string>
     <string name="gravity_y">Force of gravity along the y axis:</string>
     <string name="gravity_z">Force of gravity along the z axis:</string>
-    <string name="x_axis">X</string>
-    <string name="y_axis">Y</string>
-    <string name="z_axis">Z</string>
-    <string name="ms">m/s&#xB2;</string>
+    <string name="x_axis" translatable="false">X</string>
+    <string name="y_axis" translatable="false">Y</string>
+    <string name="z_axis" translatable="false">Z</string>
+    <string name="ms" translatable="false">m/s&#xB2;</string>
     <string name="metal_detector_details">
         \u25BA Sensor Used: Magnetometer (Magnetic Field Sensor)\n\n
         \u25BA How it works: Detects changes in Earth\'s magnetic field caused by metal objects. When metal is nearby, it distorts the natural magnetic field, creating detectable variations.\n\n
@@ -59,7 +59,7 @@
     <string name="intial_z_value">Z-axis: 0:00 m/s&#xB2;</string>
     <string name="initial_phone_status">Status of phone</string>
     <string name="total_magnitude">Total: %.2f m/s&#xB2;</string>
-    <string name="axis_unit">m/s&#xB2;</string>
+    <string name="axis_unit" translatable="false">m/s&#xB2;</string>
     <string name="axis_label">%s-Axis</string>
     <string name="real_time_graph">Real-time Graph</string>
 
@@ -83,16 +83,17 @@
     <string name="sensor_name_bubble_level">Bubble Level</string>
 
     <!-- Metal Detector Strings -->
+    <string name="calibrating">Calibrating...</string>
     <string name="recalibrating">Recalibrating…</string>
     <string name="please_wait">Please wait</string>
     <string name="recalibrating_sensor">Recalibrating sensor…</string>
     <string name="recalibrating_baseline">Recalibrating baseline…</string>
-    <string name="unit_microtesla">µTesla</string>
+    <string name="unit_microtesla" translatable="false">µTesla</string>
     <string name="button_recalibrate">RECALIBRATE</string>
     <string name="label_status">STATUS</string>
     <string name="label_range">RANGE</string>
     <string name="label_signal_strength">SIGNAL STRENGTH</string>
-    <string name="no_data">---</string>
+    <string name="no_data" translatable="false">---</string>
 
     <!-- Onboarding Strings -->
     <!-- Screen 1: Welcome -->
@@ -121,4 +122,64 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_back">Back</string>
     <string name="onboarding_get_started_button">Get Started!</string>
+
+    <!-- Menu Items -->
+    <string name="menu_write_review">Write Us A Review</string>
+    <string name="menu_send_feedback">Send Feedback</string>
+
+    <!-- Metal Detector Mode Strings -->
+    <string name="mode_advanced">ADVANCED MODE</string>
+    <string name="mode_simple">SIMPLE MODE</string>
+    <string name="mode_advanced_desc">Raw magnetic field readings</string>
+    <string name="mode_simple_desc">Metal detection with alerts</string>
+
+    <!-- Metal Detector Status Levels -->
+    <string name="status_normal">NORMAL</string>
+    <string name="status_slight_anomaly">SLIGHT ANOMALY</string>
+    <string name="status_moderate">MODERATE</string>
+    <string name="status_strong">STRONG</string>
+    <string name="status_very_strong">VERY STRONG</string>
+    <string name="status_clear">CLEAR</string>
+    <string name="status_weak">WEAK</string>
+
+    <!-- Metal Detector Range -->
+    <string name="range_raw" translatable="false">25-1000+ µT</string>
+    <string name="range_detection" translatable="false">0-500+ µT</string>
+
+    <!-- Bubble Level Angle Labels -->
+    <string name="angle_pitch">Pitch</string>
+    <string name="angle_roll">Roll</string>
+
+    <!-- Navigation Labels -->
+    <string name="nav_label_metal_detector">Metal Detector</string>
+    <string name="nav_label_gravity_meter">Gravity Meter</string>
+    <string name="nav_label_bubble_level">Bubble Level</string>
+    <string name="nav_label_all_sensors">Android Sensors</string>
+
+    <!-- Bubble Level Sensitivity Modes -->
+    <string name="sensitivity_precision">Precision</string>
+    <string name="sensitivity_standard">Standard</string>
+    <string name="sensitivity_rough">Rough</string>
+
+    <!-- Bubble Level Status -->
+    <string name="level_status_level">LEVEL</string>
+    <string name="level_status_not_level">NOT LEVEL</string>
+    <string name="level_tolerance">Tolerance: ±%1$.1f°</string>
+    <string name="sensor_not_available">Sensor not available</string>
+    <string name="view_details">View Details</string>
+
+    <!-- Gravity Meter Orientation Labels -->
+    <string name="orientation_landscape">Landscape Mode</string>
+    <string name="orientation_portrait">Portrait Mode</string>
+    <string name="orientation_upside_down">Upside Down</string>
+    <string name="orientation_face_up">Face Up</string>
+    <string name="orientation_face_down">Face Down</string>
+    <string name="orientation_unknown">Unknown Position</string>
+
+    <!-- MainActivity Strings -->
+    <string name="feedback_subject">Android Sensors App Feedback</string>
+    <string name="feedback_email" translatable="false">akshayashokan1054@gmail.com</string>
+    <string name="update_downloaded">An update has just been downloaded.</string>
+    <string name="update_restart">RESTART</string>
+    <string name="feedback_body_template">Hi 👋\n\nThanks for using Android Sensors!\n\nPlease share your feedback below 👇\n(Write your feedback below — you can delete this text)\n\n• What were you trying to do?\n• What worked well?\n• What didn\'t work or felt confusing?\n• Any feature request?\n\n\n\n\n\n--------------------\nDevice Info:\n• Device: %1$s %2$s\n• Android Version: %3$s\n• App Version: %4$s\n--------------------</string>
 </resources>

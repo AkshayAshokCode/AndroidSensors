@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun SensorDetailsBottomSheet(
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = bottomSheetState,
-            containerColor = Color(0xFF2A2A3E),
+            containerColor = colorResource(R.color.gravity_card_outer),
             dragHandle = {
                 // Add drag handle for better UX
                 Box(
@@ -57,7 +58,7 @@ fun SensorDetailsBottomSheet(
                         .width(32.dp)
                         .height(4.dp)
                         .background(
-                            Color.White.copy(alpha = 0.3f),
+                            colorResource(R.color.overlay_light),
                             RoundedCornerShape(2.dp)
                         )
                 )
@@ -72,7 +73,7 @@ fun SensorDetailsBottomSheet(
                     text = title,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = colorResource(R.color.text_primary),
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
@@ -81,7 +82,7 @@ fun SensorDetailsBottomSheet(
                     text = stringResource(R.string.how_to_use_label),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF64B5F6),
+                    color = colorResource(R.color.sensor_detail_icon),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
@@ -89,14 +90,14 @@ fun SensorDetailsBottomSheet(
                     text = instruction,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFFE3F2FD),
+                    color = colorResource(R.color.sensor_detail_text),
                     lineHeight = 20.sp,
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
 
                 Text(
                     text = content,
-                    color = Color.White,
+                    color = colorResource(R.color.text_primary),
                     fontSize = 14.sp,
                     lineHeight = 20.sp
                 )

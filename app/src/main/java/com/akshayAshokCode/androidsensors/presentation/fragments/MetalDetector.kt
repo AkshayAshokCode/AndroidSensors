@@ -83,7 +83,7 @@ class MetalDetector : Fragment(), SensorEventListener {
         return ComposeView(requireContext()).apply {
             setContent {
                 val displayValue = when {
-                    isRecalibrating -> "Recalibrating..."
+                    isRecalibrating -> stringResource(R.string.recalibrating)
                     showRawValues -> rawMagneticValue
                     else -> magneticValue
                 }
@@ -123,6 +123,7 @@ class MetalDetector : Fragment(), SensorEventListener {
                         showBottomSheet = true
                         true
                     }
+
                     else -> false
                 }
             }
@@ -164,7 +165,7 @@ class MetalDetector : Fragment(), SensorEventListener {
                     isCalibrated = true
                     calibrationSamples.clear()
                 }
-                magneticValue = "Calibrating..."
+                magneticValue = context?.getString(R.string.calibrating) ?: "Calibrating..."
             } else {
                 val deviation = abs(magnitude - baselineMagnitude)
                 magneticValue = DECIMAL_FORMATTER.format(deviation)

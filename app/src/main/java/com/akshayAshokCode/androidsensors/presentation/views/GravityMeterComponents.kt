@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -89,8 +90,8 @@ fun GravityVectorVisualization(
         // Draw arrowhead pointing in gravity direction
         val arrowSize = 8.dp.toPx()
         val angle = atan2(
-             vectorEnd.y - center.y,
-             vectorEnd.x - center.x
+            vectorEnd.y - center.y,
+            vectorEnd.x - center.x
         )
 
         drawLine(
@@ -177,7 +178,7 @@ fun GravityVectorCard(
     xValue: Float,
     yValue: Float,
     zValue: Float,
-    phoneStatus: String,
+    phoneOrientation: SensorUtils.PhoneOrientation,
     modifier: Modifier = Modifier
 ) {
     val magnitude = sqrt(xValue * xValue + yValue * yValue + zValue * zValue)
@@ -203,15 +204,17 @@ fun GravityVectorCard(
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                val context = LocalContext.current
                 GravityMagnitudeHeader(magnitude)
                 Spacer(modifier = Modifier.height(16.dp))
                 GravityVectorVisualization(xValue, yValue, zValue)
                 Spacer(modifier = Modifier.height(12.dp))
                 // Phone orientation
                 Text(
-                    text = "${SensorUtils.getOrientationEmoji(phoneStatus)} ${
+                    text = "${SensorUtils.getOrientationEmoji(phoneOrientation)} ${
                         SensorUtils.getSimpleOrientationText(
-                            phoneStatus
+                            phoneOrientation,
+                            context
                         )
                     }",
                     color = colorResource(R.color.gravity_low),

@@ -74,10 +74,10 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
     private var wasLevel = false
 
     // Sensitivity modes
-    enum class SensitivityMode(val tolerance: Float, val displayName: String) {
-        PRECISION(0.5f, "Precision"),
-        STANDARD(2.0f, "Standard"),
-        ROUGH(5.0f, "Rough")
+    enum class SensitivityMode(val tolerance: Float, val displayNameResId: Int) {
+        PRECISION(0.5f, R.string.sensitivity_precision),
+        STANDARD(2.0f, R.string.sensitivity_standard),
+        ROUGH(5.0f, R.string.sensitivity_rough)
     }
 
     private var currentMode by mutableStateOf(SensitivityMode.STANDARD)
@@ -261,7 +261,7 @@ fun BubbleLevelToolScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Sensor not available",
+                text = stringResource(R.string.sensor_not_available),
                 fontSize = 16.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -296,13 +296,13 @@ fun BubbleLevelToolScreen(
             // Status Text with tolerance info
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = if (isLevel) "LEVEL" else "NOT LEVEL",
+                    text = if (isLevel) stringResource(R.string.level_status_level) else stringResource(R.string.level_status_not_level),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (isLevel) colorResource(R.color.gravity_low) else colorResource(R.color.gravity_high)
                 )
                 Text(
-                    text = "Tolerance: \u00B1${currentMode.tolerance}\u00B0",
+                    text = stringResource(R.string.level_tolerance, currentMode.tolerance),
                     fontSize = 14.sp,
                     color = Color.Gray
                 )
@@ -322,8 +322,8 @@ fun BubbleLevelToolScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                AngleCard("PITCH", pitch)
-                AngleCard("ROLL", roll)
+                AngleCard(stringResource(R.string.angle_pitch).uppercase(), pitch)
+                AngleCard(stringResource(R.string.angle_roll).uppercase(), roll)
             }
 
             // Bottom Info Section with Up Arrow - FIX THE CLICK BEHAVIOR
@@ -340,12 +340,12 @@ fun BubbleLevelToolScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = "View Details",
+                    contentDescription = stringResource(R.string.view_details),
                     tint = Color.Gray,
                     modifier = Modifier.size(32.dp)
                 )
                 Text(
-                    text = "Tap for sensor details",
+                    text = stringResource(R.string.tap_for_sensor_details),
                     fontSize = 12.sp,
                     color = Color.Gray
                 )

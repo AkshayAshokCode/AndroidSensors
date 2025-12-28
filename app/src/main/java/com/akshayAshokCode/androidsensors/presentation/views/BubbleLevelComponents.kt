@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +44,7 @@ fun SensitivityModeSelector(
                 onClick = { onModeChange(mode) },
                 label = {
                     Text(
-                        text = mode.displayName,
+                        text = stringResource(mode.displayNameResId),
                         fontSize = 12.sp
                     )
                 },

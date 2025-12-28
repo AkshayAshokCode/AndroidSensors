@@ -1,0 +1,173 @@
+<resources>
+    <string name="app_name">AndroidSensors</string>
+    <string name="max_progress">500 µTesla</string>
+    <string name="min_progress">0 µTesla</string>
+    <string name="average_value">45.00 µTesla</string>
+    <string name="metal_detector_not_available">Sensor de detector de metais não disponível\n no seu dispositivo</string>
+    <string name="gravity_meter_not_available">Sensor de medidor de gravidade não disponível\n no seu dispositivo</string>
+    <string name="thank_you_for_review">Obrigado</string>
+
+    <string name="gravity_x">Força da gravidade ao longo do eixo x:</string>
+    <string name="gravity_y">Força da gravidade ao longo do eixo y:</string>
+    <string name="gravity_z">Força da gravidade ao longo do eixo z:</string>
+    <string name="metal_detector_details">
+        \u25BA Sensor usado: Magnetômetro (Sensor de campo magnético)\n\n
+        \u25BA Como funciona: Detecta mudanças no campo magnético da Terra causadas por objetos metálicos. Quando há metal por perto, ele distorce o campo magnético natural, criando variações detectáveis.\n\n
+        \u25BA Modo simples: Mostra o desvio do campo magnético base. Valores acima de 10 µT indicam presença potencial de metal. Calibra automaticamente para o ambiente local.\n\n
+        \u25BA Modo avançado: Exibe a intensidade bruta do campo magnético (25-65 µT típico). Útil para analisar interferência magnética e condições ambientais.\n\n
+        \u25BA Alcance de detecção: Eficaz para objetos metálicos grandes dentro de 5-15cm. Objetos menores como moedas detectáveis dentro de 2-5cm. O alcance varia de acordo com o modelo do telefone.\n\n
+        \u25BA Campo magnético da Terra: A intensidade natural varia de 25-65 µTesla dependendo da localização. Mais forte nos polos, mais fraco no equador.\n\n
+        \u25BA Dicas de precisão: Calibre longe de superfícies metálicas, mova-se lentamente, mantenha o telefone plano, evite interferência eletrônica (WiFi/Bluetooth).\n\n
+        \u25BA Nota de segurança: Este não é um detector de metais profissional. Não confie nele para aplicações críticas de segurança ou caça ao tesouro.\n\n
+        \u25BA Curiosidade: O magnetômetro do seu telefone é a mesma tecnologia usada em bússolas de navegação e levantamentos geológicos profissionais!
+    </string>
+
+    <string name="status_of_phone">status do seu telefone</string>
+    <string name="positive_x_axis">Seu telefone está na horizontal</string>
+    <string name="negative_x_axis">Seu telefone está na horizontal</string>
+    <string name="positive_y_axis">Seu telefone está na vertical e talvez virado para você</string>
+    <string name="negative_y_axis">Seu telefone está de cabeça para baixo</string>
+    <string name="positive_z_axis">Seu telefone está virado para o teto</string>
+    <string name="negative_z_axis">Seu telefone está virado para o chão</string>
+
+    <string name="gravity_meter_details">
+        \u25BA Sensor usado: Sensor de gravidade (baseado em software)\n\n
+        \u25BA Como funciona: Usa dados do acelerômetro com filtragem para isolar a força gravitacional do movimento. Combina leituras de hardware com algoritmos inteligentes para separar a gravidade do movimento do dispositivo.\n\n
+        \u25BA Gravidade da Terra: A gravidade padrão é 9.8 m/s² para baixo. Os valores reais variam ligeiramente de acordo com a localização devido à altitude, latitude e geologia local.\n\n
+        \u25BA Exibição vetorial: Mostra componentes de gravidade nos eixos X, Y, Z. A seta aponta na direção em que a gravidade está puxando em relação à orientação do seu dispositivo.\n\n
+        \u25BA Gráfico em tempo real: Rastreia mudanças de gravidade ao longo do tempo. Útil para analisar padrões de movimento do dispositivo e estabilidade de orientação.\n\n
+        \u25BA Orientação do dispositivo: Detecta automaticamente a posição do telefone - horizontal, vertical, virado para cima/baixo. Baseado em qual eixo tem o componente de gravidade mais forte.\n\n
+        \u25BA Cálculo de magnitude: Gravidade total = √(X² + Y² + Z²). Deve estar próximo de 9.8 m/s² quando o dispositivo está parado.\n\n
+        \u25BA Aplicações: Usado em navegação, jogos, rotação de tela e medições científicas. Essencial para realidade aumentada e detecção de movimento.\n\n
+        \u25BA Curiosidade: Esta tecnologia de fusão de sensores permite que seu telefone conheça sua orientação no espaço 3D, alimentando recursos desde rotação automática até rastreamento de fitness!
+    </string>
+
+    <string name="tap_for_sensor_details">Toque para detalhes do sensor</string>
+    <string name="gravity_meter_details_title">Detalhes do medidor de gravidade</string>
+
+    <!-- Bottom Sheet Instructions -->
+    <string name="how_to_use_label">💡 Como usar:</string>
+    <string name="metal_detector_instruction">Mova seu telefone lentamente perto de objetos metálicos para detectar mudanças no campo magnético.</string>
+    <string name="gravity_meter_instruction">Incline e gire seu telefone para ver como a gravidade afeta cada eixo em tempo real.</string>
+    <string name="bubble_level_instruction">Coloque seu telefone plano na superfície que deseja nivelar, depois ajuste até que a bolha fique no centro.</string>
+    <string name="intial_x_value">Eixo-X: 0:00 m/s&#xB2;</string>
+    <string name="intial_y_value">Eixo-Y: 0:00 m/s&#xB2;</string>
+    <string name="intial_z_value">Eixo-Z: 0:00 m/s&#xB2;</string>
+    <string name="initial_phone_status">Status do telefone</string>
+    <string name="total_magnitude">Total: %.2f m/s&#xB2;</string>
+    <string name="axis_label">Eixo-%s</string>
+    <string name="real_time_graph">Gráfico em tempo real</string>
+
+    <string name="bubble_level_details_title">Detalhes do nível de bolha</string>
+    <string name="bubble_level_details">
+        \u25BA Sensores usados: Acelerômetro + Magnetômetro (Sensor de fusão)\n\n
+        \u25BA Como funciona: Combina dados do acelerômetro e magnetômetro para calcular a orientação precisa do dispositivo usando matriz de rotação.\n\n
+        \u25BA Inclinação (eixo Y): Inclinação para frente/trás - como inclinar seu telefone em sua direção ou para longe de você. Positivo = inclinado para cima, Negativo = inclinado para baixo.\n\n
+        \u25BA Rolagem (eixo X): Inclinação esquerda/direita - como girar seu telefone no sentido horário ou anti-horário. Positivo = inclinado para a direita, Negativo = inclinado para a esquerda.\n\n
+        \u25BA Detecção de nível: Quando tanto a inclinação quanto a rolagem estão dentro da faixa de tolerância (±0.5° a ±5°), a bolha fica verde e o feedback tátil é acionado.\n\n
+        \u25BA Recursos: Múltiplos modos de sensibilidade, feedback tátil e simulação de física de bolha em tempo real.\n\n
+        \u25BA Uso profissional: Perfeito para construção, carpintaria, pendurar quadros e qualquer tarefa de nivelamento que exija precisão.\n\n
+        \u25BA Curiosidade: Usa a mesma tecnologia de fusão de sensores encontrada em níveis digitais profissionais que custam centenas de dólares!
+    </string>
+    <string name="bubble_level_not_available">Sensor de nível de bolha não disponível\n no seu dispositivo</string>
+    <string name="metal_detector_details_title">Detector de metais</string>
+
+    <!-- Sensor Names -->
+    <string name="sensor_name_metal_detector">Detector de metais</string>
+    <string name="sensor_name_gravity_meter">Medidor de gravidade</string>
+    <string name="sensor_name_bubble_level">Nível de bolha</string>
+
+    <!-- Metal Detector Strings -->
+    <string name="calibrating">Calibrando...</string>
+    <string name="recalibrating">Recalibrando…</string>
+    <string name="please_wait">Por favor aguarde</string>
+    <string name="recalibrating_sensor">Recalibrando sensor…</string>
+    <string name="recalibrating_baseline">Recalibrando linha de base…</string>
+    <string name="button_recalibrate">RECALIBRAR</string>
+    <string name="label_status">STATUS</string>
+    <string name="label_range">ALCANCE</string>
+    <string name="label_signal_strength">INTENSIDADE DO SINAL</string>
+
+    <!-- Onboarding Strings -->
+    <!-- Screen 1: Welcome -->
+    <string name="onboarding_welcome_title">Bem-vindo ao\nAndroid Sensors</string>
+    <string name="onboarding_welcome_subtitle">Desbloqueie o poder oculto dos sensores do seu telefone</string>
+    <string name="onboarding_welcome_description">Transforme seu smartphone em um kit de ferramentas poderoso com ferramentas de sensores de nível profissional para uso diário.</string>
+
+    <!-- Screen 2: Features -->
+    <string name="onboarding_features_title">Recursos poderosos</string>
+    <string name="onboarding_features_subtitle">Tudo que você precisa em um único aplicativo</string>
+
+    <!-- Feature 1: Metal Detector -->
+    <string name="onboarding_feature_metal_detector_title">Detector de metais</string>
+    <string name="onboarding_feature_metal_detector_description">Detecte objetos metálicos ao seu redor</string>
+
+    <!-- Feature 2: Gravity Meter -->
+    <string name="onboarding_feature_gravity_meter_title">Medidor de gravidade</string>
+    <string name="onboarding_feature_gravity_meter_description">Veja as mudanças de gravidade enquanto você se move</string>
+
+    <!-- Feature 3: Bubble Level -->
+    <string name="onboarding_feature_bubble_level_title">Nível de bolha</string>
+    <string name="onboarding_feature_bubble_level_description">Verifique se as superfícies estão perfeitamente niveladas</string>
+
+    <!-- Navigation Buttons -->
+    <string name="onboarding_skip">Pular</string>
+    <string name="onboarding_next">Próximo</string>
+    <string name="onboarding_back">Voltar</string>
+    <string name="onboarding_get_started_button">Começar!</string>
+
+    <!-- Menu Items -->
+    <string name="menu_write_review">Escreva uma avaliação</string>
+    <string name="menu_send_feedback">Enviar feedback</string>
+
+    <!-- Metal Detector Mode Strings -->
+    <string name="mode_advanced">MODO AVANÇADO</string>
+    <string name="mode_simple">MODO SIMPLES</string>
+    <string name="mode_advanced_desc">Leituras brutas de campo magnético</string>
+    <string name="mode_simple_desc">Detecção de metais com alertas</string>
+
+    <!-- Metal Detector Status Levels -->
+    <string name="status_normal">NORMAL</string>
+    <string name="status_slight_anomaly">ANOMALIA LEVE</string>
+    <string name="status_moderate">MODERADO</string>
+    <string name="status_strong">FORTE</string>
+    <string name="status_very_strong">MUITO FORTE</string>
+    <string name="status_clear">LIMPO</string>
+    <string name="status_weak">FRACO</string>
+
+    <!-- Bubble Level Angle Labels -->
+    <string name="angle_pitch">Inclinação</string>
+    <string name="angle_roll">Rolagem</string>
+
+    <!-- Navigation Labels -->
+    <string name="nav_label_metal_detector">Detector de metais</string>
+    <string name="nav_label_gravity_meter">Medidor de gravidade</string>
+    <string name="nav_label_bubble_level">Nível de bolha</string>
+    <string name="nav_label_all_sensors">Android Sensors</string>
+
+    <!-- Bubble Level Sensitivity Modes -->
+    <string name="sensitivity_precision">Precisão</string>
+    <string name="sensitivity_standard">Padrão</string>
+    <string name="sensitivity_rough">Aproximado</string>
+
+    <!-- Bubble Level Status -->
+    <string name="level_status_level">NIVELADO</string>
+    <string name="level_status_not_level">NÃO NIVELADO</string>
+    <string name="level_tolerance">Tolerância: ±%1$.1f°</string>
+    <string name="sensor_not_available">Sensor não disponível</string>
+    <string name="view_details">Ver detalhes</string>
+
+    <!-- Gravity Meter Orientation Labels -->
+    <string name="orientation_landscape">Modo paisagem</string>
+    <string name="orientation_portrait">Modo retrato</string>
+    <string name="orientation_upside_down">De cabeça para baixo</string>
+    <string name="orientation_face_up">Virado para cima</string>
+    <string name="orientation_face_down">Virado para baixo</string>
+    <string name="orientation_unknown">Posição desconhecida</string>
+
+    <!-- MainActivity Strings -->
+    <string name="feedback_subject">Feedback do aplicativo Android Sensors</string>
+    <string name="update_downloaded">Uma atualização foi baixada.</string>
+    <string name="update_restart">REINICIAR</string>
+    <string name="feedback_body_template">Olá 👋\n\nObrigado por usar o Android Sensors!\n\nPor favor, compartilhe seu feedback abaixo 👇\n(Escreva seu feedback abaixo — você pode excluir este texto)\n\n• O que você estava tentando fazer?\n• O que funcionou bem?\n• O que não funcionou ou pareceu confuso?\n• Alguma solicitação de recurso?\n\n\n\n\n\n--------------------\nInformações do dispositivo:\n• Dispositivo: %1$s %2$s\n• Versão do Android: %3$s\n• Versão do aplicativo: %4$s\n--------------------</string>
+</resources>
