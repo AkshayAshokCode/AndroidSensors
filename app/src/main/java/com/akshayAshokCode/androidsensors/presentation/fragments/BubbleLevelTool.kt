@@ -54,13 +54,14 @@ import com.akshayAshokCode.androidsensors.presentation.views.AngleCard
 import com.akshayAshokCode.androidsensors.presentation.views.LevelBubbleView
 import com.akshayAshokCode.androidsensors.presentation.views.SensitivityModeSelector
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
+import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import com.akshayAshokCode.androidsensors.utils.SensorUtils
 
 class BubbleLevelTool : Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var vibrator: Vibrator
 
-    private val accelrometerData = FloatArray(3)
+    private val accelerometerData = FloatArray(3)
     private val magnetometerData = FloatArray(3)
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
@@ -84,7 +85,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
     private var pitch by mutableStateOf(0f)
     private var roll by mutableStateOf(0f)
     private var isLevel by mutableStateOf(false)
-    private var isAvailabe by mutableStateOf(true)
+    private var isAvailable by mutableStateOf(true)
 
     // Add calibration offset
     private var calibrationOffsetPitch = 0f
@@ -106,7 +107,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
                     roll = roll,
                     isLevel = isLevel,
                     currentMode = currentMode,
-                    isAvailable = isAvailabe,
+                    isAvailable = isAvailable,
                     onModeChange = { currentMode = it },
                     showBottomSheet = showBottomSheet,
                     onBottomSheetChange = { showBottomSheet = it }
@@ -144,7 +145,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
         val magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
         if (accelerometer == null && magnetometer == null) {
-            isAvailabe = false
+            isAvailable = false
             return
         }
 
@@ -168,7 +169,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         when (event?.sensor?.type) {
             Sensor.TYPE_ACCELEROMETER -> {
-                System.arraycopy(event.values, 0, accelrometerData, 0, event.values.size)
+                System.arraycopy(event.values, 0, accelerometerData, 0, event.values.size)
             }
 
             Sensor.TYPE_MAGNETIC_FIELD -> {
@@ -184,7 +185,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
         if (SensorManager.getRotationMatrix(
                 rotationMatrix,
                 null,
-                accelrometerData,
+                accelerometerData,
                 magnetometerData
             )
         ) {
@@ -326,7 +327,7 @@ fun BubbleLevelToolScreen(
                 AngleCard(stringResource(R.string.angle_roll).uppercase(), roll)
             }
 
-            // Bottom Info Section with Up Arrow - FIX THE CLICK BEHAVIOR
+            // Bottom Info Section with Up Arrow
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -334,6 +335,7 @@ fun BubbleLevelToolScreen(
                         indication = null, // Remove ripple effect
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
+                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.BUBBLE_LEVEL)
                         onBottomSheetChange(true)
                     }
                     .padding(vertical = 8.dp)

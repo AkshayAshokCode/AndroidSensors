@@ -19,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.ActivityMainBinding
+import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +30,8 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,6 +71,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
+
+        // Initialize Firebase Analytics
+        AnalyticsManager.initialize(Firebase.analytics)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         toolbar = binding.activityMainToolbar
         setSupportActionBar(toolbar)
@@ -78,6 +85,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.d(TAG, "Clicked Item:" + it.itemId)
             when (it.itemId) {
                 R.id.inAppReview -> {
+                    AnalyticsManager.logReviewRequested()
+
                     val manager = ReviewManagerFactory.create(this)
                     val request = manager.requestReviewFlow()
                     request.addOnCompleteListener { task ->
@@ -99,6 +108,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 R.id.sendFeedback -> {
+                    AnalyticsManager.logFeedbackSent()
+
                     val subject = getString(R.string.feedback_subject)
                     val body = feedbackBody()
                     val encodedSubject = Uri.encode(subject)

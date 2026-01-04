@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.akshayAshokCode.androidsensors.presentation.onboarding.components.OnboardingBottomBar
 import com.akshayAshokCode.androidsensors.presentation.onboarding.components.SkipButton
+import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import kotlinx.coroutines.launch
 
 /**
@@ -78,6 +79,8 @@ fun OnboardingScreen(
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
                             }
                         } else {
+                            // User clicked "Get Started" on the last page
+                            AnalyticsManager.logOnboardingGetStarted()
                             onFinish()
                         }
                     }
@@ -94,7 +97,10 @@ fun OnboardingScreen(
                 .align(Alignment.TopEnd)
         ) {
             SkipButton(
-                onClick = onFinish,
+                onClick = {
+                    AnalyticsManager.logOnboardingSkipped()
+                    onFinish()
+                },
                 modifier = Modifier.align(Alignment.CenterEnd)
             )
         }

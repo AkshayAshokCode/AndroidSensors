@@ -10,6 +10,7 @@ import androidx.core.content.edit
 object PreferencesManager {
     private const val PREFS_NAME = "android_sensors_prefs"
     private const val KEY_FIRST_LAUNCH = "is_first_launch"
+    private const val KEY_FIRST_FEATURE_OPENED = "first_feature_opened"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -27,5 +28,19 @@ object PreferencesManager {
      */
     fun setFirstLaunchComplete(context: Context) {
         getPreferences(context).edit { putBoolean(KEY_FIRST_LAUNCH, false) }
+    }
+
+    /**
+     * Check if user has opened their first feature
+     */
+    fun hasOpenedFirstFeature(context: Context): Boolean {
+        return getPreferences(context).getBoolean(KEY_FIRST_FEATURE_OPENED, false)
+    }
+
+    /**
+     * Mark that user has opened their first feature
+     */
+    fun setFirstFeatureOpened(context: Context) {
+        getPreferences(context).edit { putBoolean(KEY_FIRST_FEATURE_OPENED, true) }
     }
 }

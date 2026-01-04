@@ -23,6 +23,7 @@ import androidx.lifecycle.Lifecycle
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.presentation.views.MetalDetectorScreen
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
+import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -94,7 +95,10 @@ class MetalDetector : Fragment(), SensorEventListener {
                     showRawValues = showRawValues,
                     onToggleMode = { showRawValues = !showRawValues },
                     onRecalibrate = { recalibrate() },
-                    onBottomSheetToggleClick = { showBottomSheet = true }
+                    onBottomSheetToggleClick = {
+                        showBottomSheet = true
+                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.METAL_DETECTOR)
+                    }
                 )
 
                 SensorDetailsBottomSheet(
