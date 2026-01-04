@@ -15,6 +15,8 @@ import com.akshayAshokCode.androidsensors.adapter.SensorAdapter
 import com.akshayAshokCode.androidsensors.data.SensorModel
 import com.akshayAshokCode.androidsensors.databinding.AllSensorsBinding
 import com.akshayAshokCode.androidsensors.presentation.AllSensorsViewModel
+import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
+import com.akshayAshokCode.androidsensors.utils.PreferencesManager
 
 class AllSensors : Fragment() {
     private val TAG = "AllSensors"
@@ -43,10 +45,23 @@ class AllSensors : Fragment() {
         if(navController.currentDestination?.id != R.id.allSensors) {
             return // Already navigated away
         }
-        when (sensor.id) {
-            Constants.METAL_DETECTOR -> findNavController().navigate(R.id.action_allSensors_to_metalDetector)
-            Constants.GRAVITY_METER -> findNavController().navigate(R.id.action_allSensors_to_gravityMeter)
-            Constants.BUBBLE_LEVEL_TOOL -> findNavController().navigate(R.id.action_allSensors_to_bubbleLevelTool)
+
+        // Determine feature name and navigation action
+        val (featureName, navigationAction) = when (sensor.id) {
+            Constants.METAL_DETECTOR -> AnalyticsManager.Features.METAL_DETECTOR to R.id.action_allSensors_to_metalDetector
+            Constants.GRAVITY_METER -> AnalyticsManager.Features.GRAVITY_METER to R.id.action_allSensors_to_gravityMeter
+            Constants.BUBBLE_LEVEL_TOOL -> AnalyticsManager.Features.BUBBLE_LEVEL to R.id.action_allSensors_to_bubbleLevelTool
+            else -> return
         }
+
+        // Log analytics
+        AnalyticsManager.logFeatureOpened(featureName)
+        if (!PreferencesManager.hasOpenedFirstFeature(requireContext())) {
+            AnalyticsManager.logFirstFeatureOpened(featureName)
+            PreferencesManager.setFirstFeatureOpened(requireContext())
+        }
+
+        // Navigate
+        findNavController().navigate(navigationAction)
     }
 }

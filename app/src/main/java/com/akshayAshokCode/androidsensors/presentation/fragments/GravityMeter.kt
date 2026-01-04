@@ -54,6 +54,7 @@ import com.akshayAshokCode.androidsensors.presentation.views.GravityAxisCard
 import com.akshayAshokCode.androidsensors.presentation.views.GravityGraph
 import com.akshayAshokCode.androidsensors.presentation.views.GravityVectorCard
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
+import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import com.akshayAshokCode.androidsensors.utils.SensorUtils
 
 class GravityMeter : Fragment(), SensorEventListener {
@@ -92,7 +93,10 @@ class GravityMeter : Fragment(), SensorEventListener {
                     phoneOrientation = phoneOrientation,
                     isAvailable = isAvailable,
                     gravityHistory = gravityHistory.toList(),
-                    onBottomSheetToggleClick = { showBottomSheet = true }
+                    onBottomSheetToggleClick = {
+                        showBottomSheet = true
+                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.GRAVITY_METER)
+                    }
                 )
 
                 SensorDetailsBottomSheet(
