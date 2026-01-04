@@ -3,6 +3,7 @@ package com.akshayAshokCode.androidsensors.presentation.onboarding
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.graphics.toColorInt
-import androidx.core.view.WindowCompat
 import com.akshayAshokCode.androidsensors.presentation.MainActivity
 import com.akshayAshokCode.androidsensors.presentation.onboarding.screens.OnboardingScreen
 import com.akshayAshokCode.androidsensors.presentation.onboarding.theme.OnboardingTheme
@@ -27,18 +27,14 @@ class OnboardingActivity : ComponentActivity() {
         // Initialize Firebase Analytics
         AnalyticsManager.initialize(Firebase.analytics)
 
-        // Enable edge-to-edge display
-        enableEdgeToEdge()
+        // Enable edge-to-edge display with custom system bar styling
+        val statusBarColor = "#1E1E32".toColorInt()  // toolbar_background
+        val navigationBarColor = "#2A2A3E".toColorInt()  // gravity_card_outer
 
-        // Set status bar and navigation bar colors to match app theme
-        window.statusBarColor = "#1E1E32".toColorInt()  // toolbar_background
-        window.navigationBarColor = "#2A2A3E".toColorInt()  // gravity_card_outer
-
-        // Set status bar icons to light (white) for dark background
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = false  // false = light icons (white)
-            isAppearanceLightNavigationBars = false  // false = light icons (white)
-        }
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(statusBarColor),
+            navigationBarStyle = SystemBarStyle.dark(navigationBarColor)
+        )
 
         // Check if this is the first launch
         if (!PreferencesManager.isFirstLaunch(this)) {

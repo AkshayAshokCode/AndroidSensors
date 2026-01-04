@@ -1,7 +1,5 @@
 package com.akshayAshokCode.androidsensors.utils
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 
