@@ -54,20 +54,16 @@ This repository demonstrates integration of following **Android sensors** in a a
 
 
 ## Screenshots:
-<a><img src="https://github.com/user-attachments/assets/cae82a79-8a63-4213-b2f2-ffc878c4c9a5" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a><img src="https://github.com/user-attachments/assets/d1955a23-ef46-4a3b-8c92-166b8be77565" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<br/>
-<br/>
-<a><img src="https://github.com/user-attachments/assets/68703744-23d6-4a70-b029-52ea587aa7c0" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a><img src="https://github.com/user-attachments/assets/1fe20576-978f-467e-b6fe-5cd6c465d88e" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<br/>
-<br/>
-<a><img src="https://github.com/user-attachments/assets/d1905311-f4b9-4051-83ff-be86e2869d1d" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a><img src="https://github.com/user-attachments/assets/477fa0a3-18ea-490c-a71c-cee4c34705e3" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<br/>
-<br/>
-<a><img src="https://github.com/user-attachments/assets/b2980917-8dab-454e-9e94-bfc46d207991" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a><img src="https://github.com/user-attachments/assets/a7cfd77e-5e73-4035-8745-d36954621309" height="700"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<img height="1200" alt="5" src="https://github.com/user-attachments/assets/4754e10d-a856-40e5-a130-4aebe4e94e50" />
+&nbsp;&nbsp;
+<img height="1200" alt="1" src="https://github.com/user-attachments/assets/9c3cf95f-8790-462f-8191-00d65bfa1e16" />
+&nbsp;&nbsp;
+<img height="1200" alt="3" src="https://github.com/user-attachments/assets/210a3aed-97af-4f1f-ac4e-baf9c20e3dad" />
+&nbsp;&nbsp;
+<img height="1200" alt="2" src="https://github.com/user-attachments/assets/7966386b-859f-4b6f-ba43-7a9b018c29c9" />
+&nbsp;&nbsp;
+<img height="1200" alt="4" src="https://github.com/user-attachments/assets/77df04d9-dd68-4ff4-9f3c-f42c481cd491" />
+&nbsp;&nbsp;
 
 *You can Install the latest AndroidSensors app from here 👉* [<img align=center src="https://www.logo.wine/a/logo/Google_Play/Google_Play-Badge-Logo.wine.svg" width="200" />](https://play.google.com/store/apps/details?id=com.akshayAshokCode.androidsensors)
 
