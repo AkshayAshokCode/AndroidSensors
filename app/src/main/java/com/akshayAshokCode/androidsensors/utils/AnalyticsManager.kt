@@ -40,7 +40,7 @@ object AnalyticsManager {
         const val METAL_DETECTOR = "metal_detector"
         const val GRAVITY_METER = "gravity_meter"
         const val BUBBLE_LEVEL = "bubble_level"
-        const val GRAVITY_BALL = "gravity_ball"
+        const val SPACE_BALL = "space_ball"
     }
 
     /**

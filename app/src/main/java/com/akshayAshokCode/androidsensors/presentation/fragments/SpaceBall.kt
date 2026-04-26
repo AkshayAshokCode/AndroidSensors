@@ -1,6 +1,5 @@
 package com.akshayAshokCode.androidsensors.presentation.fragments
 
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -35,7 +34,7 @@ import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import kotlin.math.abs
 import kotlin.random.Random
 
-class GravityBall : Fragment(), SensorEventListener {
+class SpaceBall : Fragment(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
     private var isAvailable by mutableStateOf(true)
@@ -108,7 +107,7 @@ class GravityBall : Fragment(), SensorEventListener {
                 onDrag = { x, y -> handleDrag(x, y) },
                 onDragEnd = { handleDragEnd() },
                 onBottomSheetToggleClick = {
-                    AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.GRAVITY_BALL)
+                    AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.SPACE_BALL)
                     showBottomSheet = true
                 }
             )
@@ -116,9 +115,9 @@ class GravityBall : Fragment(), SensorEventListener {
             SensorDetailsBottomSheet(
                 isVisible = showBottomSheet,
                 onDismiss = { showBottomSheet = false },
-                title = stringResource(R.string.gravity_ball_details_title),
-                instruction = stringResource(R.string.gravity_ball_instruction),
-                content = stringResource(R.string.gravity_ball_details)
+                title = stringResource(R.string.space_ball_details_title),
+                instruction = stringResource(R.string.space_ball_instruction),
+                content = stringResource(R.string.space_ball_details)
             )
         }
 
@@ -137,7 +136,7 @@ class GravityBall : Fragment(), SensorEventListener {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_info -> {
-                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.GRAVITY_BALL)
+                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.SPACE_BALL)
                         showBottomSheet = true
                         true
                     }

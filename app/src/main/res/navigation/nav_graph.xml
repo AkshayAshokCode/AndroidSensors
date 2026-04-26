@@ -18,9 +18,9 @@
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.BubbleLevelTool"
         android:label="@string/nav_label_bubble_level" />
     <fragment
-        android:id="@+id/gravityBall"
-        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.GravityBall"
-        android:label="@string/nav_label_gravity_ball" />
+        android:id="@+id/spaceBall"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.SpaceBall"
+        android:label="@string/nav_label_space_ball" />
     <fragment
         android:id="@+id/allSensors"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.AllSensors"
@@ -35,7 +35,7 @@
             android:id="@+id/action_allSensors_to_bubbleLevelTool"
             app:destination="@id/bubbleLevelTool" />
         <action
-            android:id="@+id/action_allSensors_to_gravityBall"
-            app:destination="@id/gravityBall" />
+            android:id="@+id/action_allSensors_to_spaceBall"
+            app:destination="@id/spaceBall" />
     </fragment>
 </navigation>

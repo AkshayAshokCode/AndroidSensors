@@ -4,21 +4,12 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -91,7 +82,7 @@ fun GravityBallScreen(
     ) {
         if (!isAvailable) {
             Text(
-                text = stringResource(R.string.gravity_ball_not_available),
+                text = stringResource(R.string.space_ball_not_available),
                 color = Color.White,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
@@ -164,9 +155,9 @@ private fun DrawScope.drawGravityBall(ballX: Float, ballY: Float, isDragging: Bo
     drawCircle(
         brush = Brush.radialGradient(
             colors = listOf(
-                Color(0xFF4FC3F7), // Light blue
-                Color(0xFF0288D1), // Medium blue
-                Color(0xFF01579B)  // Dark blue
+                Color(0xFFFFFFFF), // Light blue
+                Color(0xFFE0E0E0), // Medium blue
+                Color(0xFFB0B0B0)  // Dark blue
             ),
             center = Offset(actualX - ballRadius * 0.3f, actualY - ballRadius * 0.3f),
             radius = ballRadius * 1.2f

@@ -26,8 +26,8 @@ class SensorRepository {
                 Sensor.TYPE_ACCELEROMETER
             ),
             SensorModel(
-                Constants.GRAVITY_BALL,
-                R.string.sensor_name_gravity_ball,
+                Constants.SPACE_BALL,
+                R.string.sensor_name_space_ball,
                 R.drawable.gravity_ball_icon,
                 Sensor.TYPE_GRAVITY
             )

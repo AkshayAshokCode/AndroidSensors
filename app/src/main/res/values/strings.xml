@@ -54,7 +54,7 @@
     <string name="metal_detector_instruction">Move your phone slowly near metal objects to detect magnetic field changes.</string>
     <string name="gravity_meter_instruction">Tilt and rotate your phone to see how gravity affects each axis in real-time.</string>
     <string name="bubble_level_instruction">Place your phone flat on the surface you want to level, then adjust until the bubble stays in the center.</string>
-    <string name="gravity_ball_instruction">Tilt your device to move the ball, or drag it to throw! Watch the ball and starfield respond to gravity in real-time.</string>
+    <string name="space_ball_instruction">Tilt your device to move the ball, or drag it to throw! Watch the ball and starfield respond to gravity in real-time.</string>
     <string name="intial_x_value">X-axis: 0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Y-axis: 0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Z-axis: 0:00 m/s&#xB2;</string>
@@ -78,8 +78,8 @@
     <string name="bubble_level_not_available">Bubble Level Sensor not available\n on your device</string>
     <string name="metal_detector_details_title">Metal Detector</string>
 
-    <string name="gravity_ball_details_title">Gravity Ball Details</string>
-    <string name="gravity_ball_details">
+    <string name="space_ball_details_title">Space Ball Details</string>
+    <string name="space_ball_details">
     \u25BA Sensor Used: Gravity Sensor\n\n
     \u25BA How it works: The ball responds to your device\'s tilt using real-time gravity data. Tilt your phone and watch the ball roll naturally across the screen with a beautiful drifting starfield background.\n\n
     \u25BA Physics Simulation: Features realistic velocity-based movement, friction, and edge bouncing with dampening for natural ball behavior.\n\n
@@ -89,13 +89,13 @@
     \u25BA Performance: Optimized for smooth 60fps animation with efficient sensor sampling and rendering.\n\n
     \u25BA Fun Fact: This same gravity sensor technology powers racing games, marble maze games, and augmented reality applications on your phone!
 </string>
-    <string name="gravity_ball_not_available">Gravity Sensor not available\n on your device</string>
+    <string name="space_ball_not_available">Gravity Sensor not available\n on your device</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">Metal detector</string>
     <string name="sensor_name_gravity_meter">Gravity meter</string>
     <string name="sensor_name_bubble_level">Bubble Level</string>
-    <string name="sensor_name_gravity_ball">Gravity Ball</string>
+    <string name="sensor_name_space_ball">Space Ball</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">Calibrating...</string>
@@ -172,7 +172,7 @@
     <string name="nav_label_metal_detector">Metal Detector</string>
     <string name="nav_label_gravity_meter">Gravity Meter</string>
     <string name="nav_label_bubble_level">Bubble Level</string>
-    <string name="nav_label_gravity_ball">Gravity Ball</string>
+    <string name="nav_label_space_ball">Space Ball</string>
     <string name="nav_label_all_sensors">All Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->

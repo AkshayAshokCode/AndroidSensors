@@ -50,7 +50,7 @@
     <string name="metal_detector_instruction">将手机缓慢移动到金属物体附近以检测磁场变化。</string>
     <string name="gravity_meter_instruction">倾斜和旋转手机以实时查看重力如何影响每个轴。</string>
     <string name="bubble_level_instruction">将手机平放在要调平的表面上，然后调整直到气泡保持在中心。</string>
-    <string name="gravity_ball_instruction">倾斜设备以移动球，或拖动它来投掷！观看球和星空实时响应重力。</string>
+    <string name="space_ball_instruction">倾斜设备以移动球，或拖动它来投掷！观看球和星空实时响应重力。</string>
     <string name="intial_x_value">X轴：0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Y轴：0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Z轴：0:00 m/s&#xB2;</string>
@@ -73,8 +73,8 @@
     <string name="bubble_level_not_available">水平仪传感器不可用\n 在您的设备上</string>
     <string name="metal_detector_details_title">金属探测器</string>
 
-    <string name="gravity_ball_details_title">重力球详情</string>
-    <string name="gravity_ball_details">
+    <string name="space_ball_details_title">太空球详情</string>
+    <string name="space_ball_details">
     \u25BA 使用的传感器：重力传感器\n\n
     \u25BA 工作原理：球使用实时重力数据响应设备的倾斜。倾斜手机，观看球在美丽的漂移星空背景中自然滚动。\n\n
     \u25BA 物理模拟：具有基于速度的运动、摩擦力和边缘反弹与阻尼的真实特性，实现自然的球行为。\n\n
@@ -84,13 +84,13 @@
     \u25BA 性能：通过高效的传感器采样和渲染优化，实现流畅的60fps动画。\n\n
     \u25BA 趣味事实：这种重力传感器技术为您手机上的赛车游戏、弹珠迷宫游戏和增强现实应用提供动力！
 </string>
-    <string name="gravity_ball_not_available">重力传感器不可用\n 在您的设备上</string>
+    <string name="space_ball_not_available">重力传感器不可用\n 在您的设备上</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">金属探测器</string>
     <string name="sensor_name_gravity_meter">重力计</string>
     <string name="sensor_name_bubble_level">水平仪</string>
-    <string name="sensor_name_gravity_ball">重力球</string>
+    <string name="sensor_name_space_ball">太空球</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">正在校准...</string>
@@ -161,7 +161,7 @@
     <string name="nav_label_metal_detector">金属探测器</string>
     <string name="nav_label_gravity_meter">重力计</string>
     <string name="nav_label_bubble_level">水平仪</string>
-    <string name="nav_label_gravity_ball">重力球</string>
+    <string name="nav_label_space_ball">太空球</string>
     <string name="nav_label_all_sensors">Android Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->

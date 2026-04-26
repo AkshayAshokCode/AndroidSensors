@@ -50,7 +50,7 @@
     <string name="metal_detector_instruction">Mova seu telefone lentamente perto de objetos metálicos para detectar mudanças no campo magnético.</string>
     <string name="gravity_meter_instruction">Incline e gire seu telefone para ver como a gravidade afeta cada eixo em tempo real.</string>
     <string name="bubble_level_instruction">Coloque seu telefone plano na superfície que deseja nivelar, depois ajuste até que a bolha fique no centro.</string>
-    <string name="gravity_ball_instruction">Incline seu dispositivo para mover a bola, ou arraste para lançá-la! Veja a bola e o campo estelar responderem à gravidade em tempo real.</string>
+    <string name="space_ball_instruction">Incline seu dispositivo para mover a bola, ou arraste para lançá-la! Veja a bola e o campo estelar responderem à gravidade em tempo real.</string>
     <string name="intial_x_value">Eixo-X: 0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Eixo-Y: 0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Eixo-Z: 0:00 m/s&#xB2;</string>
@@ -73,8 +73,8 @@
     <string name="bubble_level_not_available">Sensor de nível de bolha não disponível\n no seu dispositivo</string>
     <string name="metal_detector_details_title">Detector de metais</string>
 
-    <string name="gravity_ball_details_title">Detalhes da bola de gravidade</string>
-    <string name="gravity_ball_details">
+    <string name="space_ball_details_title">Detalhes da bola espacial</string>
+    <string name="space_ball_details">
     \u25BA Sensor usado: Sensor de gravidade\n\n
     \u25BA Como funciona: A bola responde à inclinação do seu dispositivo usando dados de gravidade em tempo real. Incline seu telefone e observe a bola rolar naturalmente pela tela com um belo fundo de campo estelar flutuante.\n\n
     \u25BA Simulação física: Apresenta movimento realista baseado em velocidade, fricção e rebote nas bordas com amortecimento para comportamento natural da bola.\n\n
@@ -84,13 +84,13 @@
     \u25BA Desempenho: Otimizado para animação suave de 60fps com amostragem e renderização eficiente do sensor.\n\n
     \u25BA Curiosidade: Esta mesma tecnologia de sensor de gravidade alimenta jogos de corrida, jogos de labirinto de bolinhas e aplicações de realidade aumentada no seu telefone!
 </string>
-    <string name="gravity_ball_not_available">Sensor de gravidade não disponível\n no seu dispositivo</string>
+    <string name="space_ball_not_available">Sensor de gravidade não disponível\n no seu dispositivo</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">Detector de metais</string>
     <string name="sensor_name_gravity_meter">Medidor de gravidade</string>
     <string name="sensor_name_bubble_level">Nível de bolha</string>
-    <string name="sensor_name_gravity_ball">Bola de gravidade</string>
+    <string name="sensor_name_space_ball">Bola espacial</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">Calibrando...</string>
@@ -161,7 +161,7 @@
     <string name="nav_label_metal_detector">Detector de metais</string>
     <string name="nav_label_gravity_meter">Medidor de gravidade</string>
     <string name="nav_label_bubble_level">Nível de bolha</string>
-    <string name="nav_label_gravity_ball">Bola de gravidade</string>
+    <string name="nav_label_space_ball">Bola espacial</string>
     <string name="nav_label_all_sensors">Android Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->
