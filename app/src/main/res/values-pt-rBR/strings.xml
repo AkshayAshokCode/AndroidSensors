@@ -50,6 +50,7 @@
     <string name="metal_detector_instruction">Mova seu telefone lentamente perto de objetos metálicos para detectar mudanças no campo magnético.</string>
     <string name="gravity_meter_instruction">Incline e gire seu telefone para ver como a gravidade afeta cada eixo em tempo real.</string>
     <string name="bubble_level_instruction">Coloque seu telefone plano na superfície que deseja nivelar, depois ajuste até que a bolha fique no centro.</string>
+    <string name="space_ball_instruction">Incline seu dispositivo para mover a bola, ou arraste para lançá-la! Veja a bola e o campo estelar responderem à gravidade em tempo real.</string>
     <string name="intial_x_value">Eixo-X: 0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Eixo-Y: 0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Eixo-Z: 0:00 m/s&#xB2;</string>
@@ -60,22 +61,36 @@
 
     <string name="bubble_level_details_title">Detalhes do nível de bolha</string>
     <string name="bubble_level_details">
-        \u25BA Sensores usados: Acelerômetro + Magnetômetro (Sensor de fusão)\n\n
-        \u25BA Como funciona: Combina dados do acelerômetro e magnetômetro para calcular a orientação precisa do dispositivo usando matriz de rotação.\n\n
-        \u25BA Inclinação (eixo Y): Inclinação para frente/trás - como inclinar seu telefone em sua direção ou para longe de você. Positivo = inclinado para cima, Negativo = inclinado para baixo.\n\n
-        \u25BA Rolagem (eixo X): Inclinação esquerda/direita - como girar seu telefone no sentido horário ou anti-horário. Positivo = inclinado para a direita, Negativo = inclinado para a esquerda.\n\n
-        \u25BA Detecção de nível: Quando tanto a inclinação quanto a rolagem estão dentro da faixa de tolerância (±0.5° a ±5°), a bolha fica verde e o feedback tátil é acionado.\n\n
-        \u25BA Recursos: Múltiplos modos de sensibilidade, feedback tátil e simulação de física de bolha em tempo real.\n\n
-        \u25BA Uso profissional: Perfeito para construção, carpintaria, pendurar quadros e qualquer tarefa de nivelamento que exija precisão.\n\n
-        \u25BA Curiosidade: Usa a mesma tecnologia de fusão de sensores encontrada em níveis digitais profissionais que custam centenas de dólares!
-    </string>
+    \u25BA Sensores usados: Acelerômetro + Magnetômetro (Sensor de fusão)\n\n
+    \u25BA Como funciona: Combina dados do acelerômetro e magnetômetro para calcular a orientação precisa do dispositivo usando matriz de rotação.\n\n
+    \u25BA Inclinação (eixo Y): Inclinação para frente/trás - como inclinar seu telefone em sua direção ou para longe de você. Positivo = inclinado para cima, Negativo = inclinado para baixo.\n\n
+    \u25BA Rolagem (eixo X): Inclinação esquerda/direita - como girar seu telefone no sentido horário ou anti-horário. Positivo = inclinado para a direita, Negativo = inclinado para a esquerda.\n\n
+    \u25BA Detecção de nível: Quando tanto a inclinação quanto a rolagem estão dentro da faixa de tolerância (±0.5° a ±5°), a bolha fica verde e o feedback tátil é acionado.\n\n
+    \u25BA Recursos: Múltiplos modos de sensibilidade, feedback tátil e simulação de física de bolha em tempo real.\n\n
+    \u25BA Uso profissional: Perfeito para construção, carpintaria, pendurar quadros e qualquer tarefa de nivelamento que exija precisão.\n\n
+    \u25BA Curiosidade: Usa a mesma tecnologia de fusão de sensores encontrada em níveis digitais profissionais que custam centenas de dólares!
+</string>
     <string name="bubble_level_not_available">Sensor de nível de bolha não disponível\n no seu dispositivo</string>
     <string name="metal_detector_details_title">Detector de metais</string>
+
+    <string name="space_ball_details_title">Detalhes da bola espacial</string>
+    <string name="space_ball_details">
+    \u25BA Sensor usado: Sensor de gravidade\n\n
+    \u25BA Como funciona: A bola responde à inclinação do seu dispositivo usando dados de gravidade em tempo real. Incline seu telefone e observe a bola rolar naturalmente pela tela com um belo fundo de campo estelar flutuante.\n\n
+    \u25BA Simulação física: Apresenta movimento realista baseado em velocidade, fricção e rebote nas bordas com amortecimento para comportamento natural da bola.\n\n
+    \u25BA Recursos interativos: Arraste e lance a bola para impulso instantâneo! Observe o rastro de movimento seguir o caminho da bola e veja faíscas amarelas explodirem nos impactos nas paredes com feedback tátil.\n\n
+    \u25BA Estética espacial: Fundo de campo estelar imersivo com rolagem paralaxe - as partículas flutuam mais devagar que a bola, criando uma sensação de profundidade e flutuação no espaço.\n\n
+    \u25BA Educacional: Perfeito para entender como os sensores de gravidade permitem jogos, rotação de tela e recursos baseados em movimento nos aplicativos.\n\n
+    \u25BA Desempenho: Otimizado para animação suave de 60fps com amostragem e renderização eficiente do sensor.\n\n
+    \u25BA Curiosidade: Esta mesma tecnologia de sensor de gravidade alimenta jogos de corrida, jogos de labirinto de bolinhas e aplicações de realidade aumentada no seu telefone!
+</string>
+    <string name="space_ball_not_available">Sensor de gravidade não disponível\n no seu dispositivo</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">Detector de metais</string>
     <string name="sensor_name_gravity_meter">Medidor de gravidade</string>
     <string name="sensor_name_bubble_level">Nível de bolha</string>
+    <string name="sensor_name_space_ball">Bola espacial</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">Calibrando...</string>
@@ -110,6 +125,9 @@
     <string name="onboarding_feature_bubble_level_title">Nível de bolha</string>
     <string name="onboarding_feature_bubble_level_description">Verifique se as superfícies estão perfeitamente niveladas</string>
 
+    <!-- And More Hint -->
+    <string name="onboarding_and_more">...e muito mais para descobrir!</string>
+
     <!-- Navigation Buttons -->
     <string name="onboarding_skip">Pular</string>
     <string name="onboarding_next">Próximo</string>
@@ -143,6 +161,7 @@
     <string name="nav_label_metal_detector">Detector de metais</string>
     <string name="nav_label_gravity_meter">Medidor de gravidade</string>
     <string name="nav_label_bubble_level">Nível de bolha</string>
+    <string name="nav_label_space_ball">Bola espacial</string>
     <string name="nav_label_all_sensors">Android Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->

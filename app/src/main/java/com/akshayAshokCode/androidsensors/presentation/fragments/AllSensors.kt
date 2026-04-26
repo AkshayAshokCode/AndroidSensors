@@ -51,6 +51,7 @@ class AllSensors : Fragment() {
             Constants.METAL_DETECTOR -> AnalyticsManager.Features.METAL_DETECTOR to R.id.action_allSensors_to_metalDetector
             Constants.GRAVITY_METER -> AnalyticsManager.Features.GRAVITY_METER to R.id.action_allSensors_to_gravityMeter
             Constants.BUBBLE_LEVEL_TOOL -> AnalyticsManager.Features.BUBBLE_LEVEL to R.id.action_allSensors_to_bubbleLevelTool
+            Constants.SPACE_BALL -> AnalyticsManager.Features.SPACE_BALL to R.id.action_allSensors_to_spaceBall
             else -> return
         }
 

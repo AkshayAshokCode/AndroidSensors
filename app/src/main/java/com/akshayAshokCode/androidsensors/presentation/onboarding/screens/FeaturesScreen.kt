@@ -100,6 +100,16 @@ fun FeaturesScreen() {
                 description = stringResource(R.string.onboarding_feature_bubble_level_description),
                 delay = 300
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = stringResource(R.string.onboarding_and_more),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }

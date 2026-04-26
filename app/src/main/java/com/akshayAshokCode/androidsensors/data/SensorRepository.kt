@@ -24,6 +24,12 @@ class SensorRepository {
                 R.string.sensor_name_bubble_level,
                 R.drawable.bubble_level_icon,
                 Sensor.TYPE_ACCELEROMETER
+            ),
+            SensorModel(
+                Constants.SPACE_BALL,
+                R.string.sensor_name_space_ball,
+                R.drawable.gravity_ball_icon,
+                Sensor.TYPE_GRAVITY
             )
         )
     }
