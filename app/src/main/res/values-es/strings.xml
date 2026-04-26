@@ -50,6 +50,7 @@
     <string name="metal_detector_instruction">Mueve tu teléfono lentamente cerca de objetos metálicos para detectar cambios en el campo magnético.</string>
     <string name="gravity_meter_instruction">Inclina y rota tu teléfono para ver cómo la gravedad afecta cada eje en tiempo real.</string>
     <string name="bubble_level_instruction">Coloca tu teléfono plano sobre la superficie que deseas nivelar, luego ajusta hasta que la burbuja permanezca en el centro.</string>
+    <string name="gravity_ball_instruction">Inclina tu dispositivo para mover la bola, ¡o arrástrala para lanzarla! Observa cómo la bola y el campo estelar responden a la gravedad en tiempo real.</string>
     <string name="intial_x_value">Eje-X: 0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Eje-Y: 0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Eje-Z: 0:00 m/s&#xB2;</string>
@@ -60,22 +61,36 @@
 
     <string name="bubble_level_details_title">Detalles del nivel de burbuja</string>
     <string name="bubble_level_details">
-        \u25BA Sensores utilizados: Acelerómetro + Magnetómetro (Sensor de fusión)\n\n
-        \u25BA Cómo funciona: Combina datos del acelerómetro y magnetómetro para calcular la orientación precisa del dispositivo usando matriz de rotación.\n\n
-        \u25BA Inclinación (eje Y): Inclinación hacia adelante/atrás, como inclinar tu teléfono hacia ti o alejándolo. Positivo = inclinado hacia arriba, Negativo = inclinado hacia abajo.\n\n
-        \u25BA Balanceo (eje X): Inclinación izquierda/derecha, como rotar tu teléfono en sentido horario o antihorario. Positivo = inclinado a la derecha, Negativo = inclinado a la izquierda.\n\n
-        \u25BA Detección de nivel: Cuando tanto la inclinación como el balanceo están dentro del rango de tolerancia (±0.5° a ±5°), la burbuja se vuelve verde y se activa la retroalimentación háptica.\n\n
-        \u25BA Características: Múltiples modos de sensibilidad, retroalimentación háptica y simulación de física de burbujas en tiempo real.\n\n
-        \u25BA Uso profesional: Perfecto para construcción, carpintería, colgar cuadros y cualquier tarea de nivelación que requiera precisión.\n\n
-        \u25BA Dato curioso: ¡Utiliza la misma tecnología de fusión de sensores que se encuentra en niveles digitales profesionales que cuestan cientos de dólares!
-    </string>
+    \u25BA Sensores utilizados: Acelerómetro + Magnetómetro (Sensor de fusión)\n\n
+    \u25BA Cómo funciona: Combina datos del acelerómetro y magnetómetro para calcular la orientación precisa del dispositivo usando matriz de rotación.\n\n
+    \u25BA Inclinación (eje Y): Inclinación hacia adelante/atrás, como inclinar tu teléfono hacia ti o alejándolo. Positivo = inclinado hacia arriba, Negativo = inclinado hacia abajo.\n\n
+    \u25BA Balanceo (eje X): Inclinación izquierda/derecha, como rotar tu teléfono en sentido horario o antihorario. Positivo = inclinado a la derecha, Negativo = inclinado a la izquierda.\n\n
+    \u25BA Detección de nivel: Cuando tanto la inclinación como el balanceo están dentro del rango de tolerancia (±0.5° a ±5°), la burbuja se vuelve verde y se activa la retroalimentación háptica.\n\n
+    \u25BA Características: Múltiples modos de sensibilidad, retroalimentación háptica y simulación de física de burbujas en tiempo real.\n\n
+    \u25BA Uso profesional: Perfecto para construcción, carpintería, colgar cuadros y cualquier tarea de nivelación que requiera precisión.\n\n
+    \u25BA Dato curioso: ¡Utiliza la misma tecnología de fusión de sensores que se encuentra en niveles digitales profesionales que cuestan cientos de dólares!
+</string>
     <string name="bubble_level_not_available">Sensor de nivel de burbuja no disponible\n en tu dispositivo</string>
     <string name="metal_detector_details_title">Detector de metales</string>
+
+    <string name="gravity_ball_details_title">Detalles de la bola de gravedad</string>
+    <string name="gravity_ball_details">
+    \u25BA Sensor utilizado: Sensor de gravedad\n\n
+    \u25BA Cómo funciona: La bola responde a la inclinación de tu dispositivo usando datos de gravedad en tiempo real. Inclina tu teléfono y observa cómo la bola rueda naturalmente por la pantalla con un hermoso fondo de campo estelar flotante.\n\n
+    \u25BA Simulación física: Presenta movimiento realista basado en velocidad, fricción y rebote en los bordes con amortiguación para un comportamiento natural de la bola.\n\n
+    \u25BA Características interactivas: ¡Arrastra y lanza la bola para obtener impulso instantáneo! Observa el rastro de movimiento seguir el camino de la bola y ve chispas amarillas explotar en los impactos con las paredes con retroalimentación háptica.\n\n
+    \u25BA Estética espacial: Fondo de campo estelar inmersivo con desplazamiento de paralaje: las partículas flotan más lento que la bola, creando una sensación de profundidad y flotación en el espacio.\n\n
+    \u25BA Educativo: Perfecto para entender cómo los sensores de gravedad permiten juegos, rotación de pantalla y funciones basadas en movimiento en las aplicaciones.\n\n
+    \u25BA Rendimiento: Optimizado para animación suave de 60fps con muestreo y renderizado eficiente del sensor.\n\n
+    \u25BA Dato curioso: ¡Esta misma tecnología de sensor de gravedad impulsa juegos de carreras, juegos de laberinto de canicas y aplicaciones de realidad aumentada en tu teléfono!
+</string>
+    <string name="gravity_ball_not_available">Sensor de gravedad no disponible\n en tu dispositivo</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">Detector de metales</string>
     <string name="sensor_name_gravity_meter">Medidor de gravedad</string>
     <string name="sensor_name_bubble_level">Nivel de burbuja</string>
+    <string name="sensor_name_gravity_ball">Bola de gravedad</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">Calibrando...</string>
@@ -110,6 +125,9 @@
     <string name="onboarding_feature_bubble_level_title">Nivel de burbuja</string>
     <string name="onboarding_feature_bubble_level_description">Verifica si las superficies están perfectamente niveladas</string>
 
+    <!-- And More Hint -->
+    <string name="onboarding_and_more">...¡y mucho más por descubrir!</string>
+
     <!-- Navigation Buttons -->
     <string name="onboarding_skip">Saltar</string>
     <string name="onboarding_next">Siguiente</string>
@@ -143,6 +161,7 @@
     <string name="nav_label_metal_detector">Detector de metales</string>
     <string name="nav_label_gravity_meter">Medidor de gravedad</string>
     <string name="nav_label_bubble_level">Nivel de burbuja</string>
+    <string name="nav_label_gravity_ball">Bola de gravedad</string>
     <string name="nav_label_all_sensors">Android Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->

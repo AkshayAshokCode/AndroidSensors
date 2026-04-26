@@ -50,6 +50,7 @@
     <string name="metal_detector_instruction">将手机缓慢移动到金属物体附近以检测磁场变化。</string>
     <string name="gravity_meter_instruction">倾斜和旋转手机以实时查看重力如何影响每个轴。</string>
     <string name="bubble_level_instruction">将手机平放在要调平的表面上，然后调整直到气泡保持在中心。</string>
+    <string name="gravity_ball_instruction">倾斜设备以移动球，或拖动它来投掷！观看球和星空实时响应重力。</string>
     <string name="intial_x_value">X轴：0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Y轴：0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Z轴：0:00 m/s&#xB2;</string>
@@ -60,22 +61,36 @@
 
     <string name="bubble_level_details_title">水平仪详情</string>
     <string name="bubble_level_details">
-        \u25BA 使用的传感器：加速度计 + 磁力计（融合传感器）\n\n
-        \u25BA 工作原理：结合加速度计和磁力计数据，使用旋转矩阵计算精确的设备方向。\n\n
-        \u25BA 俯仰（Y轴）：前后倾斜 - 就像将手机向您倾斜或远离您。正值 = 向上倾斜，负值 = 向下倾斜。\n\n
-        \u25BA 横滚（X轴）：左右倾斜 - 就像顺时针或逆时针旋转手机。正值 = 向右倾斜，负值 = 向左倾斜。\n\n
-        \u25BA 水平检测：当俯仰和横滚都在容差范围内（±0.5°至±5°）时，气泡变绿并触发触觉反馈。\n\n
-        \u25BA 功能：多种灵敏度模式、触觉反馈和实时气泡物理模拟。\n\n
-        \u25BA 专业用途：非常适合建筑、木工、挂画以及任何需要精确调平的任务。\n\n
-        \u25BA 趣味事实：使用与价值数百美元的专业数字水平仪相同的传感器融合技术！
-    </string>
+    \u25BA 使用的传感器：加速度计 + 磁力计（融合传感器）\n\n
+    \u25BA 工作原理：结合加速度计和磁力计数据，使用旋转矩阵计算精确的设备方向。\n\n
+    \u25BA 俯仰（Y轴）：前后倾斜 - 就像将手机向您倾斜或远离您。正值 = 向上倾斜，负值 = 向下倾斜。\n\n
+    \u25BA 横滚（X轴）：左右倾斜 - 就像顺时针或逆时针旋转手机。正值 = 向右倾斜，负值 = 向左倾斜。\n\n
+    \u25BA 水平检测：当俯仰和横滚都在容差范围内（±0.5°至±5°）时，气泡变绿并触发触觉反馈。\n\n
+    \u25BA 功能：多种灵敏度模式、触觉反馈和实时气泡物理模拟。\n\n
+    \u25BA 专业用途：非常适合建筑、木工、挂画以及任何需要精确调平的任务。\n\n
+    \u25BA 趣味事实：使用与价值数百美元的专业数字水平仪相同的传感器融合技术！
+</string>
     <string name="bubble_level_not_available">水平仪传感器不可用\n 在您的设备上</string>
     <string name="metal_detector_details_title">金属探测器</string>
+
+    <string name="gravity_ball_details_title">重力球详情</string>
+    <string name="gravity_ball_details">
+    \u25BA 使用的传感器：重力传感器\n\n
+    \u25BA 工作原理：球使用实时重力数据响应设备的倾斜。倾斜手机，观看球在美丽的漂移星空背景中自然滚动。\n\n
+    \u25BA 物理模拟：具有基于速度的运动、摩擦力和边缘反弹与阻尼的真实特性，实现自然的球行为。\n\n
+    \u25BA 互动功能：拖动并投掷球以获得即时动量！观看运动轨迹跟随球的路径，并在撞击墙壁时看到黄色火花爆发，伴有触觉反馈。\n\n
+    \u25BA 太空美学：具有视差滚动的沉浸式星空背景 - 粒子比球漂移得更慢，营造出深度感和在太空中漂浮的感觉。\n\n
+    \u25BA 教育性：非常适合了解重力传感器如何在应用中实现游戏、屏幕旋转和基于运动的功能。\n\n
+    \u25BA 性能：通过高效的传感器采样和渲染优化，实现流畅的60fps动画。\n\n
+    \u25BA 趣味事实：这种重力传感器技术为您手机上的赛车游戏、弹珠迷宫游戏和增强现实应用提供动力！
+</string>
+    <string name="gravity_ball_not_available">重力传感器不可用\n 在您的设备上</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">金属探测器</string>
     <string name="sensor_name_gravity_meter">重力计</string>
     <string name="sensor_name_bubble_level">水平仪</string>
+    <string name="sensor_name_gravity_ball">重力球</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">正在校准...</string>
@@ -110,6 +125,9 @@
     <string name="onboarding_feature_bubble_level_title">水平仪</string>
     <string name="onboarding_feature_bubble_level_description">检查表面是否完全水平</string>
 
+    <!-- And More Hint -->
+    <string name="onboarding_and_more">...还有更多功能等你发现！</string>
+
     <!-- Navigation Buttons -->
     <string name="onboarding_skip">跳过</string>
     <string name="onboarding_next">下一步</string>
@@ -143,6 +161,7 @@
     <string name="nav_label_metal_detector">金属探测器</string>
     <string name="nav_label_gravity_meter">重力计</string>
     <string name="nav_label_bubble_level">水平仪</string>
+    <string name="nav_label_gravity_ball">重力球</string>
     <string name="nav_label_all_sensors">Android Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->

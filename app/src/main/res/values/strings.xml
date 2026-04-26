@@ -54,6 +54,7 @@
     <string name="metal_detector_instruction">Move your phone slowly near metal objects to detect magnetic field changes.</string>
     <string name="gravity_meter_instruction">Tilt and rotate your phone to see how gravity affects each axis in real-time.</string>
     <string name="bubble_level_instruction">Place your phone flat on the surface you want to level, then adjust until the bubble stays in the center.</string>
+    <string name="gravity_ball_instruction">Tilt your device to move the ball, or drag it to throw! Watch the ball and starfield respond to gravity in real-time.</string>
     <string name="intial_x_value">X-axis: 0:00 m/s&#xB2;</string>
     <string name="intial_y_value">Y-axis: 0:00 m/s&#xB2;</string>
     <string name="intial_z_value">Z-axis: 0:00 m/s&#xB2;</string>
@@ -65,22 +66,36 @@
 
     <string name="bubble_level_details_title">Bubble Level Details</string>
     <string name="bubble_level_details">
-        \u25BA Sensors Used: Accelerometer + Magnetometer (Fusion Sensor)\n\n
-        \u25BA How it works: Combines accelerometer and magnetometer data to calculate precise device orientation using rotation matrix.\n\n
-        \u25BA Pitch (Y-axis): Forward/backward tilt - like tilting your phone toward or away from you. Positive = tilted up, Negative = tilted down.\n\n
-        \u25BA Roll (X-axis): Left/right tilt - like rotating your phone clockwise or counterclockwise. Positive = tilted right, Negative = tilted left.\n\n
-        \u25BA Level Detection: When both pitch and roll are within tolerance range (±0.5° to ±5°), the bubble turns green and haptic feedback triggers.\n\n
-        \u25BA Features: Multiple sensitivity modes, haptic feedback, and real-time bubble physics simulation.\n\n
-        \u25BA Professional Use: Perfect for construction, carpentry, picture hanging, and any leveling task requiring precision.\n\n
-        \u25BA Fun Fact: Uses the same sensor fusion technology found in professional digital levels costing hundreds of dollars!
-    </string>
+    \u25BA Sensors Used: Accelerometer + Magnetometer (Fusion Sensor)\n\n
+    \u25BA How it works: Combines accelerometer and magnetometer data to calculate precise device orientation using rotation matrix.\n\n
+    \u25BA Pitch (Y-axis): Forward/backward tilt - like tilting your phone toward or away from you. Positive = tilted up, Negative = tilted down.\n\n
+    \u25BA Roll (X-axis): Left/right tilt - like rotating your phone clockwise or counterclockwise. Positive = tilted right, Negative = tilted left.\n\n
+    \u25BA Level Detection: When both pitch and roll are within tolerance range (±0.5° to ±5°), the bubble turns green and haptic feedback triggers.\n\n
+    \u25BA Features: Multiple sensitivity modes, haptic feedback, and real-time bubble physics simulation.\n\n
+    \u25BA Professional Use: Perfect for construction, carpentry, picture hanging, and any leveling task requiring precision.\n\n
+    \u25BA Fun Fact: Uses the same sensor fusion technology found in professional digital levels costing hundreds of dollars!
+</string>
     <string name="bubble_level_not_available">Bubble Level Sensor not available\n on your device</string>
     <string name="metal_detector_details_title">Metal Detector</string>
+
+    <string name="gravity_ball_details_title">Gravity Ball Details</string>
+    <string name="gravity_ball_details">
+    \u25BA Sensor Used: Gravity Sensor\n\n
+    \u25BA How it works: The ball responds to your device\'s tilt using real-time gravity data. Tilt your phone and watch the ball roll naturally across the screen with a beautiful drifting starfield background.\n\n
+    \u25BA Physics Simulation: Features realistic velocity-based movement, friction, and edge bouncing with dampening for natural ball behavior.\n\n
+    \u25BA Interactive Features: Drag and throw the ball for instant momentum! Watch the motion trail follow the ball\'s path, and see yellow sparkles burst on wall impacts with haptic feedback.\n\n
+    \u25BA Space Aesthetic: Immersive starfield background with parallax scrolling - particles drift slower than the ball, creating a sense of depth and floating in space.\n\n
+    \u25BA Educational: Perfect for understanding how gravity sensors enable gaming, screen rotation, and motion-based features in apps.\n\n
+    \u25BA Performance: Optimized for smooth 60fps animation with efficient sensor sampling and rendering.\n\n
+    \u25BA Fun Fact: This same gravity sensor technology powers racing games, marble maze games, and augmented reality applications on your phone!
+</string>
+    <string name="gravity_ball_not_available">Gravity Sensor not available\n on your device</string>
 
     <!-- Sensor Names -->
     <string name="sensor_name_metal_detector">Metal detector</string>
     <string name="sensor_name_gravity_meter">Gravity meter</string>
     <string name="sensor_name_bubble_level">Bubble Level</string>
+    <string name="sensor_name_gravity_ball">Gravity Ball</string>
 
     <!-- Metal Detector Strings -->
     <string name="calibrating">Calibrating...</string>
@@ -116,6 +131,9 @@
     <!-- Feature 3: Bubble Level -->
     <string name="onboarding_feature_bubble_level_title">Bubble Level</string>
     <string name="onboarding_feature_bubble_level_description">Check if surfaces are perfectly level</string>
+
+    <!-- And More Hint -->
+    <string name="onboarding_and_more">...and more to discover!</string>
 
     <!-- Navigation Buttons -->
     <string name="onboarding_skip">Skip</string>
@@ -154,7 +172,8 @@
     <string name="nav_label_metal_detector">Metal Detector</string>
     <string name="nav_label_gravity_meter">Gravity Meter</string>
     <string name="nav_label_bubble_level">Bubble Level</string>
-    <string name="nav_label_all_sensors">Android Sensors</string>
+    <string name="nav_label_gravity_ball">Gravity Ball</string>
+    <string name="nav_label_all_sensors">All Sensors</string>
 
     <!-- Bubble Level Sensitivity Modes -->
     <string name="sensitivity_precision">Precision</string>
