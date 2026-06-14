@@ -84,11 +84,8 @@ fun MetalDetectorScreen(
     onBottomSheetToggleClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // Layer 0 — reactive background
-        ReactiveBackground(
-            signalStrength = signalStrength,
-            modifier       = Modifier.fillMaxSize()
-        )
+        // Layer 0 — dot grid background
+        ReactiveBackground(modifier = Modifier.fillMaxSize())
 
         if (!isAvailable) {
             Text(
@@ -149,34 +146,8 @@ fun MetalDetectorScreen(
 // ReactiveBackground — concentric pulse rings that scale with signal strength
 // ─────────────────────────────────────────────────────────────────────────────
 @Composable
-private fun ReactiveBackground(
-    signalStrength: Float,
-    modifier      : Modifier = Modifier
-) {
-    // Pulse speed: 2.5s at zero → 0.5s at full signal
-    val pulseDuration = ((2500 - signalStrength * 2000).toInt()).coerceIn(500, 2500)
-    val color         = signalColor(signalStrength)
-
-    val pulse = rememberInfiniteTransition(label = "bg_pulse")
-    // Three rings staggered at 0 / 33% / 66% phase
-    val p0 by pulse.animateFloat(
-        0f, 1f,
-        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
-        label = "p0"
-    )
-    val p1 by pulse.animateFloat(
-        0.333f, 1.333f,
-        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
-        label = "p1"
-    )
-    val p2 by pulse.animateFloat(
-        0.666f, 1.666f,
-        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
-        label = "p2"
-    )
-
+private fun ReactiveBackground(modifier: Modifier = Modifier) {
     Canvas(modifier = modifier.background(MDVoid)) {
-        // Dot grid
         val dotSpacing = 28.dp.toPx()
         val dotRadius  = 1.1.dp.toPx()
         val cols = (size.width  / dotSpacing).toInt() + 2
@@ -184,24 +155,6 @@ private fun ReactiveBackground(
         repeat(rows) { r -> repeat(cols) { c ->
             drawCircle(MDGrid, dotRadius, Offset(c * dotSpacing, r * dotSpacing))
         }}
-
-        if (signalStrength < 0.04f) return@Canvas
-
-        val center    = Offset(size.width / 2f, size.height / 2f)
-        val maxRadius = size.maxDimension * 0.75f
-
-        listOf(p0, p1 % 1f, p2 % 1f).forEach { phase ->
-            val r     = phase * maxRadius
-            val alpha = signalStrength * (1f - phase).coerceIn(0f, 1f) * 0.35f
-            if (alpha > 0.005f) {
-                drawCircle(
-                    color  = color.copy(alpha = alpha),
-                    radius = r,
-                    center = center,
-                    style  = Stroke(width = 1.5.dp.toPx())
-                )
-            }
-        }
     }
 }
 
@@ -252,6 +205,25 @@ private fun SonarRadar(
 ) {
     val color = signalColor(signalStrength)
 
+    // Pulse rings — emanate from radar centre
+    val pulseDuration = ((2500 - signalStrength * 2000).toInt()).coerceIn(500, 2500)
+    val pulseTransition = rememberInfiniteTransition(label = "pulse")
+    val p0 by pulseTransition.animateFloat(
+        0f, 1f,
+        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
+        label = "p0"
+    )
+    val p1 by pulseTransition.animateFloat(
+        0.333f, 1.333f,
+        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
+        label = "p1"
+    )
+    val p2 by pulseTransition.animateFloat(
+        0.666f, 1.666f,
+        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
+        label = "p2"
+    )
+
     // Sweep rotation — faster when signal is higher
     val sweepDuration = ((3000 - signalStrength * 1800).toInt()).coerceIn(1200, 3000)
     val sweepTransition = rememberInfiniteTransition(label = "sweep")
@@ -271,6 +243,23 @@ private fun SonarRadar(
             val cy     = size.height / 2f
             val center = Offset(cx, cy)
             val maxR   = size.minDimension / 2f * 0.88f
+
+            // ── Pulse rings from radar centre ───────────────────────────
+            if (!isCalibrating && signalStrength > 0.04f) {
+                val maxPulseR = size.minDimension * 3f
+                listOf(p0, p1 % 1f, p2 % 1f).forEach { phase ->
+                    val r     = phase * maxPulseR
+                    val alpha = signalStrength * (1f - phase).coerceIn(0f, 1f) * 0.35f
+                    if (alpha > 0.005f) {
+                        drawCircle(
+                            color  = color.copy(alpha = alpha),
+                            radius = r,
+                            center = center,
+                            style  = Stroke(width = 1.5.dp.toPx())
+                        )
+                    }
+                }
+            }
 
             // ── 5 concentric rings ──────────────────────────────────────
             val ringAlphas = listOf(0.55f, 0.40f, 0.28f, 0.18f, 0.10f)
