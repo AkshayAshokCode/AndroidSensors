@@ -30,6 +30,11 @@
     <color name="metal_detector_green">#00FF41</color>
     <color name="metal_detector_background">#0A0A0A</color>
 
+    <!-- Futuristic design system -->
+    <color name="dash_void">#050510</color>
+    <color name="dash_cyan">#00D4FF</color>
+    <color name="dash_grid">#1A1A3E</color>
+
     <!-- Common UI Colors -->
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#B0B0B0</color>

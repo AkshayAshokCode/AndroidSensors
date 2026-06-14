@@ -1,353 +1,266 @@
 package com.akshayAshokCode.androidsensors.presentation.views
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.utils.SensorUtils
-import java.util.Locale
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
+import kotlin.math.abs
 import kotlin.math.sqrt
 
+private val GMVoid    = DashVoid
+private val GMCyan    = DashCyan
+private val GMGrid    = DashGrid
+private val GMSurface = DashSurface
+private val GMGreen   = DashGreen
+private val GMRed     = Color(0xFFE91E63)   // X axis — intentionally distinct from DashRed
+private val GMYellow  = Color(0xFFFFB800)   // Y axis
+private val GMBlue    = Color(0xFF2196F3)   // Z axis
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GravityBackground — same dot-grid void as the dashboard
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
-fun GravityVectorVisualization(
-    xValue: Float,
-    yValue: Float,
-    zValue: Float,
-    modifier: Modifier = Modifier
-) {
-
-    val magnitude = sqrt(xValue * xValue + yValue * yValue + zValue * zValue)
-    val vectorColor = colorResource(SensorUtils.getGravityMagnitudeColorRes(magnitude))
-
-    Canvas(modifier = modifier.size(200.dp)) {
-        val center = Offset(size.width / 2f, size.height / 2f)
-        val scale = size.minDimension / 20f
-
-        // Draw phone outline
-        drawRoundRect(
-            color = Color.White,
-            topLeft = Offset(center.x - 40.dp.toPx(), center.y - 60.dp.toPx()),
-            size = Size(80.dp.toPx(), 120.dp.toPx()),
-            cornerRadius = CornerRadius(8.dp.toPx()),
-            style = Stroke(width = 2.dp.toPx())
-        )
-
-        // Draw small to indicate "screen side"
-        drawCircle(
-            color = Color.White,
-            radius = 4.dp.toPx(),
-            center = Offset(center.x, center.y - 40.dp.toPx())
-        )
-
-        // Direct gravity direction: Arrow points where gravity is pulling.
-        // When phone is tilt left, gravity pulls left (negative X), arrow points left.
-        // When phone is tilt down, as gravity always pulls downward towards earth, arrow points right.
-        val vectorEnd = Offset(
-            x = center.x - (xValue * scale),
-            y = center.y + (yValue * scale)
-        )
-
-        drawLine(
-            color = vectorColor,
-            start = center,
-            end = vectorEnd,
-            strokeWidth = 4.dp.toPx()
-        )
-
-        // Draw arrowhead pointing in gravity direction
-        val arrowSize = 8.dp.toPx()
-        val angle = atan2(
-            vectorEnd.y - center.y,
-            vectorEnd.x - center.x
-        )
-
-        drawLine(
-            color = vectorColor,
-            start = vectorEnd,
-            end = Offset(
-                x = vectorEnd.x - arrowSize * cos(angle - 0.5f),
-                y = vectorEnd.y - arrowSize * sin(angle - 0.5f)
-            ),
-            strokeWidth = 3.dp.toPx()
-        )
-
-        drawLine(
-            color = vectorColor,
-            start = vectorEnd,
-            end = Offset(
-                x = vectorEnd.x - arrowSize * cos(angle + 0.5f),
-                y = vectorEnd.y - arrowSize * sin(angle + 0.5f)
-            ),
-            strokeWidth = 3.dp.toPx()
-        )
-
-        // Draw magnitude circle
-        drawCircle(
-            color = vectorColor.copy(alpha = 0.2f),
-            radius = magnitude * scale / 4f,
-            center = center
-        )
+fun GravityBackground(modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.background(GMVoid)) {
+        val sp = 28.dp.toPx(); val r = 1.1.dp.toPx()
+        val cols = (size.width / sp).toInt() + 2
+        val rows = (size.height / sp).toInt() + 2
+        repeat(rows) { row -> repeat(cols) { col ->
+            drawCircle(GMGrid, r, Offset(col * sp, row * sp))
+        }}
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// OrientationBadge — tells user what position their phone is in
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
-fun GravityAxisCard(
-    axis: String,
-    value: String,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            color.copy(alpha = 0.3f),
-                            color.copy(alpha = 0.1f)
-                        )
-                    ),
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .padding(12.dp)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = stringResource(R.string.axis_label, axis),
-                    color = color,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = String.format(Locale.US, "%.2f", SensorUtils.extractNumericValue(value)),
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = stringResource(R.string.axis_unit),
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 10.sp
-                )
-            }
-        }
+fun OrientationBadge(orientation: SensorUtils.PhoneOrientation) {
+    val (label, color) = when (orientation) {
+        SensorUtils.PhoneOrientation.PORTRAIT    -> "↑  PORTRAIT"     to GMGreen
+        SensorUtils.PhoneOrientation.UPSIDE_DOWN -> "↓  UPSIDE DOWN"  to GMYellow
+        SensorUtils.PhoneOrientation.LANDSCAPE   -> "↔  LANDSCAPE"    to GMCyan
+        SensorUtils.PhoneOrientation.FACE_UP     -> "⊙  FACE UP"      to GMCyan
+        SensorUtils.PhoneOrientation.FACE_DOWN   -> "⊗  FACE DOWN"    to GMYellow
+        else                                     -> "·  UNKNOWN"       to GMGrid
     }
-}
-
-@Composable
-fun GravityVectorCard(
-    xValue: Float,
-    yValue: Float,
-    zValue: Float,
-    phoneOrientation: SensorUtils.PhoneOrientation,
-    modifier: Modifier = Modifier
-) {
-    val magnitude = sqrt(xValue * xValue + yValue * yValue + zValue * zValue)
-
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            colorResource(R.color.gravity_card_outer),
-                            colorResource(R.color.gravity_card_inner)
-                        )
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .padding(20.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                val context = LocalContext.current
-                GravityMagnitudeHeader(magnitude)
-                Spacer(modifier = Modifier.height(16.dp))
-                GravityVectorVisualization(xValue, yValue, zValue)
-                Spacer(modifier = Modifier.height(12.dp))
-                // Phone orientation
-                Text(
-                    text = "${SensorUtils.getOrientationEmoji(phoneOrientation)} ${
-                        SensorUtils.getSimpleOrientationText(
-                            phoneOrientation,
-                            context
-                        )
-                    }",
-                    color = colorResource(R.color.gravity_low),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun GravityMagnitudeHeader(
-    magnitude: Float,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = Modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier
+            .background(GMSurface.copy(alpha = 0.9f), RoundedCornerShape(20.dp))
+            .border(0.5.dp, color.copy(alpha = 0.5f), RoundedCornerShape(20.dp))
+            .padding(horizontal = 14.dp, vertical = 6.dp)
     ) {
         Text(
-            text = stringResource(R.string.total_magnitude, magnitude),
-            color = colorResource(SensorUtils.getGravityMagnitudeColorRes(magnitude)),
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
+            text          = label,
+            color         = color,
+            fontSize      = 10.sp,
+            fontFamily    = FontFamily.Monospace,
+            letterSpacing = 1.sp
         )
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// GravitySphere — globe visualization where dot = direction of "down"
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
-fun GravityGraph(
-    history: List<Triple<Float, Float, Float>>,
-    modifier: Modifier = Modifier
+fun GravitySphere(
+    rawGX    : Float,
+    rawGY    : Float,
+    rawGZ    : Float,
+    modifier : Modifier = Modifier
 ) {
-    // Get colors outside Canvas block
-    val axisXColor = colorResource(R.color.axis_x_color)
-    val axisYColor = colorResource(R.color.axis_y_color)
-    val axisZColor = colorResource(R.color.axis_z_color)
+    // Smooth dot position with spring animation
+    val dotX by animateFloatAsState(
+        (rawGX / 9.8f).coerceIn(-1f, 1f),
+        spring(dampingRatio = 0.6f, stiffness = 120f), label = "dx"
+    )
+    val dotY by animateFloatAsState(
+        (rawGY / 9.8f).coerceIn(-1f, 1f),
+        spring(dampingRatio = 0.6f, stiffness = 120f), label = "dy"
+    )
+    val magnitude = sqrt(rawGX * rawGX + rawGY * rawGY + rawGZ * rawGZ)
 
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val cx = size.width  / 2f
+            val cy = size.height / 2f
+            val r  = size.minDimension / 2f * 0.85f
+
+            // Outer border
+            drawCircle(GMCyan.copy(alpha = 0.7f), r, Offset(cx, cy), style = Stroke(1.dp.toPx()))
+
+            // Latitude rings (33%, 66%)
+            drawCircle(GMGrid.copy(alpha = 0.5f), r * 0.66f, Offset(cx, cy), style = Stroke(0.5.dp.toPx()))
+            drawCircle(GMGrid.copy(alpha = 0.3f), r * 0.33f, Offset(cx, cy), style = Stroke(0.5.dp.toPx()))
+
+            // Cross-hair grid lines
+            drawLine(GMGrid.copy(alpha = 0.5f), Offset(cx - r, cy), Offset(cx + r, cy), 0.5.dp.toPx())
+            drawLine(GMGrid.copy(alpha = 0.5f), Offset(cx, cy - r), Offset(cx, cy + r), 0.5.dp.toPx())
+
+            // Gravity dot position (clamped to sphere radius)
+            val px = cx + dotX * r * 0.9f
+            val py = cy + dotY * r * 0.9f
+            val dotR = (6f + (magnitude / 9.8f) * 4f).dp.toPx()
+
+            // Glow
+            drawCircle(GMCyan.copy(alpha = 0.15f), dotR * 2.8f, Offset(px, py))
+            drawCircle(GMCyan.copy(alpha = 0.35f), dotR * 1.6f, Offset(px, py))
+            // Solid dot
+            drawCircle(GMCyan, dotR, Offset(px, py))
+        }
+
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AxisMeters — X / Y / Z horizontal fill bars with values
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+fun AxisMeters(rawGX: Float, rawGY: Float, rawGZ: Float) {
+    val axes = listOf(
+        Triple("X", rawGX, GMRed),
+        Triple("Y", rawGY, GMYellow),
+        Triple("Z", rawGZ, GMBlue)
+    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier            = Modifier.fillMaxWidth()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            colorResource(R.color.gravity_card_outer),
-                            colorResource(R.color.gravity_card_inner)
-                        )
-                    ),
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .padding(16.dp)
-        ) {
-            Column {
+        axes.forEach { (label, value, color) ->
+            val fill by animateFloatAsState(
+                (abs(value) / 9.8f).coerceIn(0f, 1f),
+                spring(stiffness = 150f), label = "f$label"
+            )
+            Row(
+                verticalAlignment     = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier              = Modifier.fillMaxWidth()
+            ) {
                 Text(
-                    text = stringResource(R.string.real_time_graph),
-                    color = Color.White,
-                    fontSize = 16.sp,
+                    text       = label,
+                    color      = color,
+                    fontSize   = 10.sp,
+                    fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier   = Modifier.width(14.dp)
                 )
-
-                Canvas(
+                // Bar track
+                Box(
                     modifier = Modifier
-                        .height(100.dp)
-                        .fillMaxWidth()
+                        .weight(1f)
+                        .height(5.dp)
+                        .background(GMGrid, RoundedCornerShape(3.dp))
                 ) {
-                    if (history.isEmpty()) return@Canvas
-
-                    val width = size.width
-                    val height = size.height
-                    val stepX = width / maxOf(1, history.size - 1)
-
-                    val colors = listOf(axisXColor, axisYColor, axisZColor)
-
-                    for (axis in 0..2) {
-                        val path = Path()
-                        history.forEachIndexed { index, (x, y, z) ->
-                            val value = when (axis) {
-                                0 -> x
-                                1 -> y
-                                else -> z
-                            }
-                            val normalizedValue = (value + 10f) / 20f
-                            val yPos = height - (normalizedValue * height).coerceIn(0f, height)
-
-                            if (index == 0) {
-                                path.moveTo(0f, yPos)
-                            } else {
-                                path.lineTo(stepX * index, yPos)
-                            }
-                        }
-
-                        drawPath(
-                            path = path,
-                            color = colors[axis],
-                            style = Stroke(width = 2.dp.toPx())
-                        )
-                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(fill)
+                            .height(5.dp)
+                            .background(
+                                Brush.horizontalGradient(
+                                    listOf(color.copy(alpha = 0.6f), color)
+                                ),
+                                RoundedCornerShape(3.dp)
+                            )
+                    )
                 }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    LegendItem(stringResource(R.string.x_axis), colorResource(R.color.axis_x_color))
-                    LegendItem(stringResource(R.string.y_axis), colorResource(R.color.axis_y_color))
-                    LegendItem(stringResource(R.string.z_axis), colorResource(R.color.axis_z_color))
-                }
+                Text(
+                    text       = "${"%.2f".format(value)}",
+                    color      = Color.White.copy(alpha = 0.7f),
+                    fontSize   = 9.sp,
+                    fontFamily = FontFamily.Monospace,
+                    modifier   = Modifier.width(48.dp)
+                )
             }
-
         }
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// OscilloscopeGraph — 3-channel waveform (X=red, Y=yellow, Z=blue)
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
-private fun LegendItem(
-    label: String,
-    color: Color
+fun OscilloscopeGraph(
+    history : List<Triple<Float, Float, Float>>,
+    modifier: Modifier = Modifier
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(12.dp)
-                .background(color, RoundedCornerShape(2.dp))
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(text = label, color = Color.White, fontSize = 12.sp)
+    // Pre-allocate paths once and reset before each draw — avoids 3 allocations per frame
+    val xPath = remember { Path() }
+    val yPath = remember { Path() }
+    val zPath = remember { Path() }
+
+    Box(
+        modifier = modifier
+            .background(GMSurface.copy(alpha = 0.8f), RoundedCornerShape(12.dp))
+            .border(0.5.dp, GMGrid, RoundedCornerShape(12.dp))
+    ) {
+        if (history.size < 2) return@Box
+        Canvas(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+            val w       = size.width
+            val h       = size.height
+            val mid     = h / 2f
+            val scl     = h / 2f / 11f   // ±11 m/s² range
+            val n       = history.size
+            val strokeW = 1.5.dp.toPx()
+
+            // Grid centre line
+            drawLine(GMGrid, Offset(0f, mid), Offset(w, mid), 0.5.dp.toPx())
+
+            fun buildAndDraw(path: Path, extract: (Triple<Float,Float,Float>) -> Float, color: Color) {
+                path.reset()
+                history.forEachIndexed { i, pt ->
+                    val x = w * i / (n - 1).toFloat()
+                    val y = (mid - extract(pt) * scl).coerceIn(0f, h)
+                    if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                }
+                drawPath(path, color.copy(alpha = 0.85f), style = Stroke(strokeW, cap = StrokeCap.Round))
+            }
+
+            buildAndDraw(xPath, { it.first  }, GMRed)
+            buildAndDraw(yPath, { it.second }, GMYellow)
+            buildAndDraw(zPath, { it.third  }, GMBlue)
+        }
+
+        // Channel labels — top right
+        Row(
+            modifier              = Modifier.align(Alignment.TopEnd).padding(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            listOf("X" to GMRed, "Y" to GMYellow, "Z" to GMBlue).forEach { (l, c) ->
+                Text(l, color = c, fontSize = 8.sp, fontFamily = FontFamily.Monospace)
+            }
+        }
     }
 }

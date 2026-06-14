@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/allSensors">
+    app:startDestination="@id/dashboard">
 
     <fragment
         android:id="@+id/metalDetector"
@@ -22,20 +22,20 @@
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.SpaceBall"
         android:label="@string/nav_label_space_ball" />
     <fragment
-        android:id="@+id/allSensors"
-        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.AllSensors"
+        android:id="@+id/dashboard"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.Dashboard"
         android:label="@string/nav_label_all_sensors" >
         <action
-            android:id="@+id/action_allSensors_to_metalDetector"
+            android:id="@+id/action_dashboard_to_metalDetector"
             app:destination="@id/metalDetector" />
         <action
-            android:id="@+id/action_allSensors_to_gravityMeter"
+            android:id="@+id/action_dashboard_to_gravityMeter"
             app:destination="@id/gravityMeter" />
         <action
-            android:id="@+id/action_allSensors_to_bubbleLevelTool"
+            android:id="@+id/action_dashboard_to_bubbleLevelTool"
             app:destination="@id/bubbleLevelTool" />
         <action
-            android:id="@+id/action_allSensors_to_spaceBall"
+            android:id="@+id/action_dashboard_to_spaceBall"
             app:destination="@id/spaceBall" />
     </fragment>
 </navigation>

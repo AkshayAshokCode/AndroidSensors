@@ -6,47 +6,43 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// App colors matching the main theme
-private val DarkPurpleBlue = Color(0xFF1A1A2E)
-private val MediumPurpleBlue = Color(0xFF16213E)
-private val DeepBlue = Color(0xFF0F3460)
-private val CardOuter = Color(0xFF2A2A3E)
-private val CardInner = Color(0xFF1E1E32)
-private val ToolbarBackground = Color(0xFF1E1E32)
-private val White = Color(0xFFFFFFFF)
-private val GravityLow = Color(0xFF4CAF50)
-private val GravityNormal = Color(0xFFFFC107)
-private val GravityHigh = Color(0xFFFF5722)
-private val Orange = Color(0xFFFF9800)
+// Futuristic design system tokens
+private val Void    = Color(0xFF050510)
+private val Surface = Color(0xFF0D0D2B)
+private val Cyan    = Color(0xFF00D4FF)
+private val Purple  = Color(0xFF7B2FFF)
+private val Green   = Color(0xFF00FF88)
+private val Red     = Color(0xFFFF3355)
+private val White   = Color(0xFFFFFFFF)
+private val Grid    = Color(0xFF1A1A3E)
 
-// Dark color scheme matching the app
 private val DarkColorScheme = darkColorScheme(
-    primary = GravityLow,
-    onPrimary = White,
-    primaryContainer = CardOuter,
-    onPrimaryContainer = White,
+    primary             = Cyan,
+    onPrimary           = Void,
+    primaryContainer    = Surface,
+    onPrimaryContainer  = Cyan,
 
-    secondary = GravityNormal,
-    onSecondary = DarkPurpleBlue,
-    secondaryContainer = CardInner,
+    secondary           = Purple,
+    onSecondary         = White,
+    secondaryContainer  = Grid,
     onSecondaryContainer = White,
 
-    tertiary = Orange,
-    onTertiary = White,
+    tertiary            = Green,
+    onTertiary          = Void,
 
-    background = DarkPurpleBlue,
-    onBackground = White,
+    background          = Void,
+    onBackground        = White,
 
-    surface = CardOuter,
-    onSurface = White,
-    surfaceVariant = CardInner,
-    onSurfaceVariant = White.copy(alpha = 0.7f),
+    surface             = Surface,
+    onSurface           = White,
+    surfaceVariant      = Grid,
+    onSurfaceVariant    = White.copy(alpha = 0.6f),
 
-    error = GravityHigh,
-    onError = White,
+    error               = Red,
+    onError             = White,
 
-    outline = White.copy(alpha = 0.2f),
-    outlineVariant = White.copy(alpha = 0.1f)
+    outline             = Cyan.copy(alpha = 0.25f),
+    outlineVariant      = Grid
 )
 
 /**

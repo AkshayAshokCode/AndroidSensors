@@ -1,15 +1,17 @@
 package com.akshayAshokCode.androidsensors.presentation.views
 
-import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,594 +23,515 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.akshayAshokCode.androidsensors.R
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.spring
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.PI
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Local colour aliases (shared with DashboardComponents tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+private val MDVoid   = DashVoid
+private val MDCyan   = DashCyan
+private val MDGrid   = DashGrid
+private val MDAmber  = DashAmber
+private val MDOrange = DashOrange
+private val MDRed    = DashRed
+private val MDGreen  = DashGreen
+
+// Maps 0-1 signal strength to a colour (cyan → amber → orange → red)
+private fun signalColor(strength: Float): Color = when {
+    strength < 0.25f -> MDCyan
+    strength < 0.55f -> MDAmber
+    strength < 0.80f -> MDOrange
+    else             -> MDRed
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MetalDetectorScreen — public entry point
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
 fun MetalDetectorScreen(
-    magneticValue: String,
-    isAvailable: Boolean,
-    showRawValues: Boolean,
-    onToggleMode: () -> Unit,
-    onRecalibrate: () -> Unit,
+    magneticValue       : String,
+    signalStrength      : Float,   // 0-1 normalised deviation
+    calibrationProgress : Int,     // 0-20 samples collected
+    isCalibrating       : Boolean,
+    isAvailable         : Boolean,
+    showRawValues       : Boolean,
+    onToggleMode        : () -> Unit,
+    onRecalibrate       : () -> Unit,
     onBottomSheetToggleClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        colorResource(R.color.metal_detector_background),
-                        colorResource(R.color.gravity_background_start),
-                        colorResource(R.color.gravity_background_middle)
-                    )
-                )
-            )
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Layer 0 — reactive background
+        ReactiveBackground(
+            signalStrength = signalStrength,
+            modifier       = Modifier.fillMaxSize()
+        )
+
         if (!isAvailable) {
             Text(
-                text = stringResource(R.string.metal_detector_not_available),
-                color = Color.White,
-                fontSize = 16.sp,
+                text      = "Magnetometer not available\non this device",
+                color     = MDCyan.copy(alpha = 0.7f),
+                fontSize  = 16.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
+                modifier  = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center)
-                    .padding(16.dp)
+                    .padding(32.dp)
             )
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Mode toggle
-                ModeToggleCard(showRawValues, onToggleMode, onRecalibrate)
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Main detector display
-                MetalDetectorRadar(magneticValue, showRawValues)
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                // Value and status cards
-                MetalDetectorStatusCards(magneticValue, showRawValues)
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Signal strength indicator
-                SignalStrengthIndicator(magneticValue, showRawValues)
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                // Bottom info
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onBottomSheetToggleClick() }
-                        .padding(16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = null,
-                        tint = Color.White.copy(alpha = 0.7f),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.tap_for_sensor_details),
-                        color = Color.White.copy(alpha = 0.7f),
-                        fontSize = 12.sp
-                    )
-                }
-            }
+            return@Box
         }
-    }
-}
 
-@Composable
-fun MetalDetectorRadar(magneticValue: String, showRawValues: Boolean) {
-    // Handle recalibration state for both modes
-    if (magneticValue == stringResource(R.string.recalibrating)) {
-        Box(
-            modifier = Modifier.size(280.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator(
-                    color = colorResource(R.color.metal_detector_green),
-                    modifier = Modifier.size(48.dp)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.recalibrating),
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = stringResource(R.string.please_wait),
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 12.sp
-                )
-            }
-        }
-        return
-    }
-
-    val value = magneticValue.toDoubleOrNull() ?: 0.0
-    val normalizedValue = if (showRawValues) {
-        ((value - 25.0) / 1000.0).coerceIn(0.0, 1.0) // Raw: 25-1025 µT range
-    } else {
-        (value / 1000.0).coerceIn(0.0, 1.0) // Deviation: 0-1000 µT range
-    }
-
-    // Get colors outside Canvas block
-    val greenColor = colorResource(R.color.metal_detector_green)
-    val orangeColor = colorResource(R.color.orange)
-    val redColor = colorResource(R.color.dark_red)
-
-    // Pulsing animation based on magnetic field strength
-    val infiniteTransition = rememberInfiniteTransition(label = "radar")
-    val pulseScale by infiniteTransition.animateFloat(
-        initialValue = 0.8f,
-        targetValue = 1.2f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = (1000 - (normalizedValue * 800)).toInt().coerceAtLeast(200),
-                easing = EaseInOutCubic
-            ),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "pulse"
-    )
-
-    val sweepAngle by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(3000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "sweep"
-    )
-
-    Box(
-        modifier = Modifier.size(280.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        // Radar background
-        Canvas(
-            modifier = Modifier
+        // Layer 1 — main content
+        Column(
+            modifier            = Modifier
                 .fillMaxSize()
-                .scale(if (normalizedValue > 0.7) pulseScale else 1f)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            val center = Offset(size.width / 2, size.height / 2)
-            val radius = size.minDimension / 2 * 0.9f
-
-            // Draw concentric circles
-            val circleColors = listOf(
-                greenColor.copy(alpha = 0.1f),
-                greenColor.copy(alpha = 0.2f),
-                greenColor.copy(alpha = 0.3f)
+            // Status label
+            SignalStatusLabel(
+                signalStrength = signalStrength,
+                isCalibrating  = isCalibrating
             )
 
-            circleColors.forEachIndexed { index, color ->
-                drawCircle(
-                    color = color,
-                    radius = radius * (0.3f + index * 0.35f),
-                    center = center,
-                    style = Stroke(width = 2.dp.toPx())
-                )
+            // Sonar radar
+            SonarRadar(
+                magneticValue  = magneticValue,
+                signalStrength = signalStrength,
+                isCalibrating  = isCalibrating,
+                showRawValues  = showRawValues,
+                modifier       = Modifier.size(300.dp)
+            )
+
+            // Progress / signal bar
+            if (isCalibrating) {
+                CalibrationBar(progress = calibrationProgress)
+            } else {
+                SignalStrengthBar(signalStrength = signalStrength)
             }
 
-            // Draw crosshairs
-            drawLine(
-                color = greenColor.copy(alpha = 0.5f),
-                start = Offset(center.x - radius, center.y),
-                end = Offset(center.x + radius, center.y),
-                strokeWidth = 1.dp.toPx()
-            )
-            drawLine(
-                color = greenColor.copy(alpha = 0.5f),
-                start = Offset(center.x, center.y - radius),
-                end = Offset(center.x, center.y + radius),
-                strokeWidth = 1.dp.toPx()
-            )
-
-            // Draw sweep line
-            val sweepX = center.x + cos(Math.toRadians(sweepAngle.toDouble())).toFloat() * radius
-            val sweepY = center.y + sin(Math.toRadians(sweepAngle.toDouble())).toFloat() * radius
-
-            drawLine(
-                color = greenColor.copy(alpha = 0.8f),
-                start = center,
-                end = Offset(sweepX, sweepY),
-                strokeWidth = 3.dp.toPx()
-            )
-
-            // Draw detection blips using pre-fetched colors
-            if (normalizedValue > 0.3) {
-                val blipRadius = (normalizedValue * 20).toFloat()
-                val blipColor = when {
-                    normalizedValue > 0.8 -> redColor
-                    normalizedValue > 0.5 -> orangeColor
-                    else -> greenColor
-                }
-
-                drawCircle(
-                    color = blipColor.copy(alpha = 0.8f),
-                    radius = blipRadius,
-                    center = center
-                )
-                drawCircle(
-                    color = blipColor,
-                    radius = blipRadius * 0.5f,
-                    center = center
-                )
-            }
-        }
-
-        // Center value display
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "${String.format("%.1f", value)}",
-                color = Color.White,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = stringResource(R.string.unit_microtesla),
-                color = Color.White.copy(alpha = 0.7f),
-                fontSize = 14.sp
+            // Controls
+            ControlsRow(
+                showRawValues        = showRawValues,
+                onToggleMode         = onToggleMode,
+                onRecalibrate        = onRecalibrate,
+                onBottomSheetToggleClick = onBottomSheetToggleClick
             )
         }
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ReactiveBackground — concentric pulse rings that scale with signal strength
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
-fun ModeToggleCard(
-    showRawValues: Boolean,
-    onToggleMode: () -> Unit,
-    onRecalibrate: () -> Unit
+private fun ReactiveBackground(
+    signalStrength: Float,
+    modifier      : Modifier = Modifier
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.gravity_card_outer)
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = if (showRawValues) stringResource(R.string.mode_advanced) else stringResource(R.string.mode_simple),
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = if (showRawValues) stringResource(R.string.mode_advanced_desc) else stringResource(R.string.mode_simple_desc),
-                        color = Color.White.copy(alpha = 0.7f),
-                        fontSize = 12.sp
-                    )
-                }
+    // Pulse speed: 2.5s at zero → 0.5s at full signal
+    val pulseDuration = ((2500 - signalStrength * 2000).toInt()).coerceIn(500, 2500)
+    val color         = signalColor(signalStrength)
 
-                Switch(
-                    checked = showRawValues,
-                    onCheckedChange = { onToggleMode() },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = colorResource(R.color.metal_detector_green),
-                        checkedTrackColor = colorResource(R.color.metal_detector_green).copy(alpha = 0.5f),
-                        uncheckedThumbColor = Color.White,
-                        uncheckedTrackColor = Color.Gray
-                    )
-                )
-            }
+    val pulse = rememberInfiniteTransition(label = "bg_pulse")
+    // Three rings staggered at 0 / 33% / 66% phase
+    val p0 by pulse.animateFloat(
+        0f, 1f,
+        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
+        label = "p0"
+    )
+    val p1 by pulse.animateFloat(
+        0.333f, 1.333f,
+        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
+        label = "p1"
+    )
+    val p2 by pulse.animateFloat(
+        0.666f, 1.666f,
+        infiniteRepeatable(tween(pulseDuration, easing = LinearEasing), RepeatMode.Restart),
+        label = "p2"
+    )
 
-            // Recalibration button (show for both modes)
-            Spacer(modifier = Modifier.height(12.dp))
-            Button(
-                onClick = onRecalibrate,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.metal_detector_green).copy(alpha = 0.2f)
-                )
-            ) {
-                Text(
-                    text = stringResource(R.string.button_recalibrate),
-                    color = colorResource(R.color.metal_detector_green),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
+    Canvas(modifier = modifier.background(MDVoid)) {
+        // Dot grid
+        val dotSpacing = 28.dp.toPx()
+        val dotRadius  = 1.1.dp.toPx()
+        val cols = (size.width  / dotSpacing).toInt() + 2
+        val rows = (size.height / dotSpacing).toInt() + 2
+        repeat(rows) { r -> repeat(cols) { c ->
+            drawCircle(MDGrid, dotRadius, Offset(c * dotSpacing, r * dotSpacing))
+        }}
+
+        if (signalStrength < 0.04f) return@Canvas
+
+        val center    = Offset(size.width / 2f, size.height / 2f)
+        val maxRadius = size.maxDimension * 0.75f
+
+        listOf(p0, p1 % 1f, p2 % 1f).forEach { phase ->
+            val r     = phase * maxRadius
+            val alpha = signalStrength * (1f - phase).coerceIn(0f, 1f) * 0.35f
+            if (alpha > 0.005f) {
+                drawCircle(
+                    color  = color.copy(alpha = alpha),
+                    radius = r,
+                    center = center,
+                    style  = Stroke(width = 1.5.dp.toPx())
                 )
             }
         }
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SignalStatusLabel — single animated line replacing the old 4 status cards
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
-fun MetalDetectorStatusCards(magneticValue: String, showRawValues: Boolean) {
-    val recalibratingText = stringResource(R.string.recalibrating)
+private fun SignalStatusLabel(signalStrength: Float, isCalibrating: Boolean) {
+    val (label, color) = when {
+        isCalibrating        -> "● CALIBRATING" to MDCyan
+        signalStrength < 0.05f -> "● SCANNING..." to MDCyan.copy(alpha = 0.6f)
+        signalStrength < 0.25f -> "◈ WEAK SIGNAL" to MDAmber
+        signalStrength < 0.55f -> "▲ ANOMALY DETECTED" to MDOrange
+        else                 -> "⚠ STRONG SIGNATURE" to MDRed
+    }
 
-    if (magneticValue == recalibratingText) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+    // Flicker the label at high signal
+    val flickerTransition = rememberInfiniteTransition(label = "flicker")
+    val flickerAlpha by flickerTransition.animateFloat(
+        initialValue = 1f, targetValue = if (signalStrength > 0.55f) 0.4f else 1f,
+        animationSpec = infiniteRepeatable(
+            tween(if (signalStrength > 0.55f) 180 else 1000, easing = FastOutSlowInEasing),
+            RepeatMode.Reverse
+        ),
+        label = "fa"
+    )
+
+    Text(
+        text          = label,
+        color         = color.copy(alpha = flickerAlpha),
+        fontSize      = 11.sp,
+        fontFamily    = FontFamily.Monospace,
+        letterSpacing = 1.2.sp,
+        fontWeight    = FontWeight.Bold
+    )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SonarRadar — 5 rings + comet-tail sweep + blips + centre readout
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun SonarRadar(
+    magneticValue : String,
+    signalStrength: Float,
+    isCalibrating : Boolean,
+    showRawValues : Boolean,
+    modifier      : Modifier = Modifier
+) {
+    val color = signalColor(signalStrength)
+
+    // Sweep rotation — faster when signal is higher
+    val sweepDuration = ((3000 - signalStrength * 1800).toInt()).coerceIn(1200, 3000)
+    val sweepTransition = rememberInfiniteTransition(label = "sweep")
+    val sweepAngle by sweepTransition.animateFloat(
+        initialValue  = 0f,
+        targetValue   = 360f,
+        animationSpec = infiniteRepeatable(
+            tween(sweepDuration, easing = LinearEasing), RepeatMode.Restart
+        ),
+        label = "sa"
+    )
+
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        // Radar canvas
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val cx     = size.width  / 2f
+            val cy     = size.height / 2f
+            val center = Offset(cx, cy)
+            val maxR   = size.minDimension / 2f * 0.88f
+
+            // ── 5 concentric rings ──────────────────────────────────────
+            val ringAlphas = listOf(0.55f, 0.40f, 0.28f, 0.18f, 0.10f)
+            ringAlphas.forEachIndexed { i, alpha ->
+                val r = maxR * (i + 1) / 5f
+                drawCircle(
+                    color  = color.copy(alpha = alpha * 0.6f),
+                    radius = r,
+                    center = center,
+                    style  = Stroke(width = if (i == 0) 1.dp.toPx() else 0.5.dp.toPx())
+                )
+            }
+
+            // ── 8 radial grid lines ─────────────────────────────────────
+            repeat(8) { i ->
+                val angle  = i * 45.0
+                val angleR = Math.toRadians(angle)
+                drawLine(
+                    color       = MDGrid.copy(alpha = 0.5f),
+                    start       = center,
+                    end         = Offset(
+                        cx + maxR * cos(angleR).toFloat(),
+                        cy + maxR * sin(angleR).toFloat()
+                    ),
+                    strokeWidth = 0.5.dp.toPx()
+                )
+            }
+
+            // ── Comet-tail sweep (30 lines fanning 120°) ────────────────
+            val trailSteps = 36
+            val trailSpan  = 120f
+            repeat(trailSteps) { i ->
+                val fraction = i.toFloat() / trailSteps
+                val angle    = Math.toRadians(
+                    (sweepAngle - trailSpan + fraction * trailSpan).toDouble()
+                )
+                val alpha    = fraction * 0.55f
+                drawLine(
+                    color       = color.copy(alpha = alpha),
+                    start       = center,
+                    end         = Offset(
+                        cx + maxR * cos(angle).toFloat(),
+                        cy + maxR * sin(angle).toFloat()
+                    ),
+                    strokeWidth = 1.5.dp.toPx()
+                )
+            }
+            // Bright leading edge
+            val leadRad = Math.toRadians(sweepAngle.toDouble())
+            drawLine(
+                color       = color,
+                start       = center,
+                end         = Offset(
+                    cx + maxR * cos(leadRad).toFloat(),
+                    cy + maxR * sin(leadRad).toFloat()
+                ),
+                strokeWidth = 2.dp.toPx(),
+                cap         = StrokeCap.Round
+            )
+
+            // ── Outer ring clip border ──────────────────────────────────
+            drawCircle(
+                color  = color.copy(alpha = 0.8f),
+                radius = maxR,
+                center = center,
+                style  = Stroke(width = 1.dp.toPx())
+            )
+        }
+
+        // Centre readout — monospace value over the radar
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            repeat(2) {
-                Card(
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = colorResource(R.color.gravity_card_outer)
-                    )
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .height(48.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.no_data),
-                            color = Color.White.copy(alpha = 0.5f),
-                            fontSize = 16.sp
+            Text(
+                text          = if (isCalibrating) "---" else magneticValue,
+                color         = Color.White,
+                fontSize      = 28.sp,
+                fontFamily    = FontFamily.Monospace,
+                fontWeight    = FontWeight.Bold,
+                letterSpacing = 1.sp
+            )
+            Text(
+                text          = if (showRawValues) "µT  RAW" else "µT  DEV",
+                color         = signalColor(signalStrength).copy(alpha = 0.75f),
+                fontSize      = 9.sp,
+                fontFamily    = FontFamily.Monospace,
+                letterSpacing = 1.5.sp
+            )
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CalibrationBar — 20 segments filling one-by-one during baseline collection
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun CalibrationBar(progress: Int) {
+    val total = 20
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Text(
+            text          = if (progress == 0) "INITIALIZING..." else "CALIBRATING BASELINE",
+            color         = MDCyan.copy(alpha = 0.8f),
+            fontSize      = 10.sp,
+            fontFamily    = FontFamily.Monospace,
+            letterSpacing = 1.sp
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            repeat(total) { i ->
+                val filled = i < progress
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(6.dp)
+                        .background(
+                            color = if (filled) MDCyan else MDGrid,
+                            shape = RoundedCornerShape(2.dp)
                         )
-                    }
-                }
+                )
             }
         }
-        return
+        Text(
+            text          = "${progress}/${total}",
+            color         = MDCyan.copy(alpha = 0.5f),
+            fontSize      = 9.sp,
+            fontFamily    = FontFamily.Monospace
+        )
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SignalStrengthBar — 20 segments cyan → amber → red
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun SignalStrengthBar(signalStrength: Float) {
+    val total   = 20
+    val filled  by animateIntAsState(
+        targetValue   = (signalStrength * total).toInt().coerceIn(0, total),
+        animationSpec = spring(stiffness = Spring.StiffnessMedium),
+        label         = "bar"
+    )
+    val label = when {
+        signalStrength < 0.05f -> "NO SIGNAL"
+        signalStrength < 0.25f -> "WEAK"
+        signalStrength < 0.55f -> "MODERATE"
+        signalStrength < 0.80f -> "STRONG"
+        else                   -> "VERY STRONG"
     }
 
-    val value = magneticValue.toDoubleOrNull() ?: 0.0
-
-    // Get string resources
-    val statusNormal = stringResource(R.string.status_normal)
-    val statusSlightAnomaly = stringResource(R.string.status_slight_anomaly)
-    val statusModerate = stringResource(R.string.status_moderate)
-    val statusStrong = stringResource(R.string.status_strong)
-    val statusVeryStrong = stringResource(R.string.status_very_strong)
-    val statusClear = stringResource(R.string.status_clear)
-    val statusWeak = stringResource(R.string.status_weak)
-    val rangeRaw = stringResource(R.string.range_raw)
-    val rangeDetection = stringResource(R.string.range_detection)
-
-    val (detectionLevel, statusColor, rangeText) = if (showRawValues) {
-        // Raw magnetic field thresholds
-        val level = when {
-            value < 30 -> statusNormal
-            value < 100 -> statusSlightAnomaly
-            value < 300 -> statusModerate
-            value < 600 -> statusStrong
-            else -> statusVeryStrong
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+            modifier              = Modifier.fillMaxWidth(),
+            verticalAlignment     = Alignment.CenterVertically
+        ) {
+            repeat(total) { i ->
+                val segStrength = (i + 1).toFloat() / total
+                val segColor    = signalColor(segStrength)
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(6.dp)
+                        .background(
+                            color = if (i < filled) segColor else MDGrid,
+                            shape = RoundedCornerShape(2.dp)
+                        )
+                )
+            }
         }
-        val color = when {
-            value < 30 -> colorResource(R.color.gravity_low)
-            value < 100 -> colorResource(R.color.gravity_low)
-            value < 300 -> colorResource(R.color.gravity_normal)
-            value < 600 -> colorResource(R.color.orange)
-            else -> colorResource(R.color.dark_red)
-        }
-        Triple(level, color, rangeRaw)
-    } else {
-        // Metal detection thresholds (deviation from baseline)
-        val level = when {
-            value < 10 -> statusClear
-            value < 50 -> statusWeak
-            value < 200 -> statusModerate
-            value < 500 -> statusStrong
-            else -> statusVeryStrong
-        }
-        val color = when {
-            value < 10 -> colorResource(R.color.gravity_low)
-            value < 50 -> colorResource(R.color.gravity_low)
-            value < 200 -> colorResource(R.color.gravity_normal)
-            value < 500 -> colorResource(R.color.orange)
-            else -> colorResource(R.color.dark_red)
-        }
-        Triple(level, color, rangeDetection)
+        Text(
+            text          = label,
+            color         = signalColor(signalStrength).copy(alpha = 0.8f),
+            fontSize      = 9.sp,
+            fontFamily    = FontFamily.Monospace,
+            letterSpacing = 1.sp
+        )
     }
+}
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ControlsRow — recalibrate + mode toggle
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun ControlsRow(
+    showRawValues        : Boolean,
+    onToggleMode         : () -> Unit,
+    onRecalibrate        : () -> Unit,
+    onBottomSheetToggleClick: () -> Unit
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier              = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Card(
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.gravity_card_outer)
-            )
+        // Recalibrate button
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .height(44.dp)
+                .background(MDGrid, RoundedCornerShape(10.dp))
+                .border(0.5.dp, MDCyan.copy(alpha = 0.4f), RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication        = null,
+                    onClick           = onRecalibrate
+                ),
+            contentAlignment = Alignment.Center
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.label_status),
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = detectionLevel,
-                    color = statusColor,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            Text(
+                text          = "◉  RECALIBRATE",
+                color         = MDCyan,
+                fontSize      = 10.sp,
+                fontFamily    = FontFamily.Monospace,
+                letterSpacing = 0.8.sp
+            )
         }
 
-        Card(
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.gravity_card_outer)
-            )
+        // Mode toggle button
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .height(44.dp)
+                .background(MDGrid, RoundedCornerShape(10.dp))
+                .border(0.5.dp, MDCyan.copy(alpha = 0.4f), RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication        = null,
+                    onClick           = onToggleMode
+                ),
+            contentAlignment = Alignment.Center
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.label_range),
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = rangeText,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            Text(
+                text          = if (showRawValues) "⇄  DEVIATION" else "⇄  RAW",
+                color         = MDCyan,
+                fontSize      = 10.sp,
+                fontFamily    = FontFamily.Monospace,
+                letterSpacing = 0.8.sp
+            )
         }
     }
-}
 
-@Composable
-fun SignalStrengthIndicator(magneticValue: String, showRawValues: Boolean) {
-    val recalibratingText = stringResource(R.string.recalibrating)
-
-    if (magneticValue == recalibratingText) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.gravity_card_outer)
-            )
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .height(80.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = if (showRawValues) stringResource(R.string.recalibrating_sensor) else stringResource(R.string.recalibrating_baseline),
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 14.sp
-                )
-            }
-        }
-        return
-    }
-
-    val value = magneticValue.toDoubleOrNull() ?: 0.0
-    val normalizedValue = if (showRawValues) {
-        ((value - 25.0) / 1000.0).coerceIn(0.0, 1.0) // Raw: 25-1025 µT range
-    } else {
-        (value / 1000.0).coerceIn(0.0, 1.0) // Deviation: 0-1000 µT range
-    }
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.gravity_card_outer)
+    // Info tap
+    Text(
+        text          = "TAP  ↑  FOR SENSOR DETAILS",
+        color         = MDCyan.copy(alpha = 0.35f),
+        fontSize      = 9.sp,
+        fontFamily    = FontFamily.Monospace,
+        letterSpacing = 1.sp,
+        modifier      = Modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication        = null,
+            onClick           = onBottomSheetToggleClick
         )
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.label_signal_strength),
-                color = Color.White.copy(alpha = 0.7f),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            // Signal bars
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.Bottom
-            ) {
-                repeat(20) { index ->
-                    val barHeight = 8.dp + (index * 2).dp
-                    val isActive = normalizedValue >= (index / 20.0)
-
-                    val barColor = when {
-                        index < 7 -> colorResource(R.color.gravity_low) // Green
-                        index < 14 -> colorResource(R.color.gravity_normal) // Yellow
-                        else -> colorResource(R.color.dark_red) // Red
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(barHeight)
-                            .clip(RoundedCornerShape(2.dp))
-                            .background(
-                                if (isActive) barColor else colorResource(R.color.white).copy(alpha = 0.1f)
-                            )
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Percentage display
-            Text(
-                text = "${(normalizedValue * 100).toInt()}%",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-    }
+    )
 }

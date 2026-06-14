@@ -1,18 +1,20 @@
 package com.akshayAshokCode.androidsensors.presentation
 
 import android.content.Intent
-import android.content.IntentSender.SendIntentException
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.annotation.Nullable
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
-import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -25,13 +27,12 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.analytics
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,29 +41,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityMainBinding
     private lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
-    private val REQUEST_CODE = 11
     private val TAG = "MainActivity"
     private lateinit var appUpdateManager: AppUpdateManager
+    private var pendingToolbarEntry: NavBackStackEntry? = null
+    private val toolbarShowObserver = LifecycleEventObserver { _, event ->
+        if (event == Lifecycle.Event.ON_RESUME) supportActionBar?.show()
+    }
+
+    // Modern replacement for the deprecated startUpdateFlowForResult(Activity, requestCode) API.
+    private val updateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode != RESULT_OK) {
+            Log.e(TAG, "Update flow failed: ${result.resultCode}")
+        }
+    }
 
     override fun onStart() {
         super.onStart()
-        checkUpdate()
+        appUpdateManager.registerListener(listener)
+        checkForAvailableUpdate()
     }
 
     override fun onResume() {
         super.onResume()
-        if (appUpdateManager != null) {
-            appUpdateManager
-                .appUpdateInfo
-                .addOnSuccessListener { appUpdateInfo ->
-                    // If the update is downloaded but not installed,
-                    // notify the user to complete the update.
-                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                        popupSnackbarForCompleteUpdate()
-                    } else {
-                        Log.d(TAG, "State of update: ${appUpdateInfo.installStatus()}")
-                    }
-                }
+        // Check if an update finished downloading while the app was in the background.
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackbarForCompleteUpdate()
+            }
         }
     }
 
@@ -71,11 +78,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-
-        // Initialize Firebase Analytics
-        AnalyticsManager.initialize(Firebase.analytics)
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         toolbar = binding.activityMainToolbar
         setSupportActionBar(toolbar)
         navigationView = binding.navView
@@ -85,24 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.d(TAG, "Clicked Item:" + it.itemId)
             when (it.itemId) {
                 R.id.inAppReview -> {
-                    AnalyticsManager.logReviewRequested()
-
-                    val manager = ReviewManagerFactory.create(this)
-                    val request = manager.requestReviewFlow()
-                    request.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            // We got the ReviewInfo object
-                            val reviewInfo = task.result
-                            val flow = manager.launchReviewFlow(this, reviewInfo)
-                            flow.addOnCompleteListener { task ->
-                                // The flow has finished. The API does not indicate whether the user
-                                // reviewed or not, or even whether the review dialog was shown. Thus, no
-                                // matter the result, we continue our app flow.
-                            }
-                        } else {
-                            // There was some problem, log or handle the error code.
-                        }
-                    }
+                    triggerInAppReview()
                     drawerLayout.closeDrawers()
                     true
                 }
@@ -139,57 +126,62 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navController = navHostFrag.navController
 
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.allSensors),
+            setOf(R.id.dashboard),
             drawerLayout
         )
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        // Lock drawer on feature screens, unlock on home screen
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.allSensors -> {
-                    // Enable drawer
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                }
+        // Toolbar visibility tracks the destination lifecycle rather than a fixed delay.
+        // ON_RESUME fires immediately when transitions are off, and after the enter
+        // transition ends when they are on — so this works correctly in both modes.
+        val homeDestinations = setOf(R.id.dashboard)
+        navController.addOnDestinationChangedListener { controller, destination, _ ->
+            pendingToolbarEntry?.lifecycle?.removeObserver(toolbarShowObserver)
+            pendingToolbarEntry = null
 
-                else -> {
-                    // disable drawer
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            if (destination.id in homeDestinations) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                supportActionBar?.hide()
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                controller.currentBackStackEntry?.also { entry ->
+                    pendingToolbarEntry = entry
+                    entry.lifecycle.addObserver(toolbarShowObserver)
                 }
             }
         }
+
+        // Create the update manager once — reused across onStart/onStop cycles.
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isOpen) {
+                    drawerLayout.close()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            }
+        })
     }
 
-    private fun checkUpdate() {
-        if (::appUpdateManager.isInitialized) {
-            appUpdateManager.unregisterListener(listener)
-        }
-
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-        // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-            ) {
-                try {
+    private fun checkForAvailableUpdate() {
+        appUpdateManager.appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                ) {
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.FLEXIBLE,
-                        this,
-                        REQUEST_CODE
+                        updateLauncher,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
                     )
-                } catch (e: SendIntentException) {
-                    Log.e(TAG, "Update flow failed", e)
                 }
-            } else {
-                Log.e(TAG, "No update available or not allowed")
+            }.addOnFailureListener { exception ->
+                Log.e(TAG, "Update check failed", exception)
             }
-        }.addOnFailureListener { exception ->
-            Log.e(TAG, "Update check failed", exception)
-        }
-
-        appUpdateManager.registerListener(listener)
     }
 
     // Create a listener to track request state updates.
@@ -215,35 +207,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE) {
-            Log.d(TAG, "onActivityResult: Updated to Latest Features")
-            if (resultCode != RESULT_OK) {
-                Log.e(TAG, "onActivityResult: app download failed")
-            }
-        }
-    }
-
     override fun onStop() {
-        if (appUpdateManager != null) {
-            appUpdateManager.unregisterListener(listener)
-        }
+        appUpdateManager.unregisterListener(listener)
         super.onStop()
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isOpen) {
-            drawerLayout.close()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         Log.d(TAG, "Clicked Item:" + id)
         return true
+    }
+
+    fun triggerInAppReview() {
+        AnalyticsManager.logReviewRequested()
+        val manager = ReviewManagerFactory.create(this)
+        manager.requestReviewFlow().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                manager.launchReviewFlow(this, task.result)
+            }
+        }
     }
 
     private fun feedbackBody(): String {

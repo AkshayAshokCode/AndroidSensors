@@ -24,17 +24,16 @@ class OnboardingActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize Firebase Analytics
-        AnalyticsManager.initialize(Firebase.analytics)
-
         // Enable edge-to-edge display with custom system bar styling
-        val statusBarColor = "#1E1E32".toColorInt()  // toolbar_background
-        val navigationBarColor = "#2A2A3E".toColorInt()  // gravity_card_outer
+        val statusBarColor     = "#050510".toColorInt()  // DashVoid
+        val navigationBarColor = "#050510".toColorInt()  // DashVoid
 
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(statusBarColor),
             navigationBarStyle = SystemBarStyle.dark(navigationBarColor)
         )
+
+        AnalyticsManager.initialize(Firebase.analytics)
 
         // Check if this is the first launch
         if (!PreferencesManager.isFirstLaunch(this)) {
