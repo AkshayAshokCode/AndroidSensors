@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +39,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,6 +57,7 @@ import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottom
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import com.akshayAshokCode.androidsensors.utils.PreferencesManager
 import com.akshayAshokCode.androidsensors.utils.SensorUtils
+import kotlin.math.sqrt
 
 class GravityMeter : Fragment(), SensorEventListener {
 
@@ -254,8 +255,29 @@ fun GravityMeterScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             OrientationBadge(phoneOrientation)
-            GravitySphere(rawGX = rawGX, rawGY = rawGY, rawGZ = rawGZ,
-                modifier = Modifier.size(260.dp))
+            val magnitude = sqrt(rawGX * rawGX + rawGY * rawGY + rawGZ * rawGZ)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GravitySphere(rawGX = rawGX, rawGY = rawGY, rawGZ = rawGZ,
+                    modifier = Modifier.size(260.dp))
+                Text(
+                    text          = "${"%.2f".format(magnitude)} m/s²",
+                    color         = Color.White,
+                    fontSize      = 13.sp,
+                    fontFamily    = FontFamily.Monospace,
+                    fontWeight    = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
+                )
+                Text(
+                    text          = "TOTAL G-FORCE",
+                    color         = Color(0xFF00D4FF).copy(alpha = 0.5f),
+                    fontSize      = 8.sp,
+                    fontFamily    = FontFamily.Monospace,
+                    letterSpacing = 1.sp
+                )
+            }
             AxisMeters(rawGX = rawGX, rawGY = rawGY, rawGZ = rawGZ)
             if (gravityHistory.size >= 3) {
                 OscilloscopeGraph(history = gravityHistory,

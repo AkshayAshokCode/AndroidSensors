@@ -38,8 +38,8 @@ class MetalDetector : Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var DECIMAL_FORMATTER: DecimalFormat
 
-    private var magneticValue by mutableStateOf("0.000")
-    private var rawMagneticValue by mutableStateOf("0.000")
+    private var magneticValue by mutableStateOf("0.0")
+    private var rawMagneticValue by mutableStateOf("0.0")
     private var isAvailable by mutableStateOf(true)
     private var showBottomSheet by mutableStateOf(false)
     private var showRawValues by mutableStateOf(false)
@@ -94,7 +94,7 @@ class MetalDetector : Fragment(), SensorEventListener {
         // Initialize formatter
         val symbols = DecimalFormatSymbols(Locale.US)
         symbols.decimalSeparator = '.'
-        DECIMAL_FORMATTER = DecimalFormat("#.000", symbols)
+        DECIMAL_FORMATTER = DecimalFormat("#.0", symbols)
 
         // Initialize sensor manager
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager

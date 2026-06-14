@@ -331,27 +331,6 @@ private fun SonarRadar(
                 cap         = StrokeCap.Round
             )
 
-            // ── Blips when signal present ───────────────────────────────
-            if (!isCalibrating && signalStrength > 0.05f) {
-                // Blip radius scales with signal (appears at 40-90% of radar radius)
-                val blipR = maxR * (0.4f + signalStrength * 0.5f)
-                // Place blip where sweep last crossed it
-                val blipAngle = Math.toRadians((sweepAngle - 10.0))
-                val blipX = cx + blipR * cos(blipAngle).toFloat()
-                val blipY = cy + blipR * sin(blipAngle).toFloat()
-                drawCircle(
-                    color  = color,
-                    radius = (3f + signalStrength * 5f).dp.toPx(),
-                    center = Offset(blipX, blipY)
-                )
-                // Blip glow
-                drawCircle(
-                    color  = color.copy(alpha = 0.25f),
-                    radius = (6f + signalStrength * 10f).dp.toPx(),
-                    center = Offset(blipX, blipY)
-                )
-            }
-
             // ── Outer ring clip border ──────────────────────────────────
             drawCircle(
                 color  = color.copy(alpha = 0.8f),

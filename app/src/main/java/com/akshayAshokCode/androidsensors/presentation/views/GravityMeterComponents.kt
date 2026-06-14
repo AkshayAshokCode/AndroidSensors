@@ -142,27 +142,6 @@ fun GravitySphere(
             drawCircle(GMCyan, dotR, Offset(px, py))
         }
 
-        // Magnitude readout centred below the sphere dot (bottom of Box)
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 6.dp)
-        ) {
-            Text(
-                text          = "${"%.2f".format(magnitude)} m/s²",
-                color         = Color.White,
-                fontSize      = 13.sp,
-                fontFamily    = FontFamily.Monospace,
-                fontWeight    = FontWeight.Bold,
-                letterSpacing = 0.5.sp
-            )
-            Text(
-                text          = "TOTAL G-FORCE",
-                color         = GMCyan.copy(alpha = 0.5f),
-                fontSize      = 8.sp,
-                fontFamily    = FontFamily.Monospace,
-                letterSpacing = 1.sp
-            )
-        }
     }
 }
 

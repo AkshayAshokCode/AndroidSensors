@@ -101,7 +101,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
         savedInstanceState: Bundle?
     ): View? {
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-        vibrator = context?.getSystemService(AppCompatActivity.VIBRATOR_SERVICE) as Vibrator
+        vibrator = requireContext().getSystemService(Vibrator::class.java)
 
         return ComposeView(requireContext()).apply {
             setContent {
