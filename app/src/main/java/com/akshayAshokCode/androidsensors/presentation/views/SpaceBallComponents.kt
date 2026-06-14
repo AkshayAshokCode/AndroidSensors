@@ -1,260 +1,291 @@
 package com.akshayAshokCode.androidsensors.presentation.views
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.akshayAshokCode.androidsensors.R
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.hypot
+import kotlin.math.sin
 
-// Data class for sparkle particles
+// ─────────────────────────────────────────────────────────────────────────────
+// Data classes — kept unchanged so SpaceBall.kt physics layer is unaffected
+// ─────────────────────────────────────────────────────────────────────────────
 data class Particle(
-    var x: Float,
-    var y: Float,
-    var velocityX: Float,
-    var velocityY: Float,
-    var alpha: Float = 1f,
-    var lifetime: Float = 0f,
+    var x          : Float,
+    var y          : Float,
+    var velocityX  : Float,
+    var velocityY  : Float,
+    var alpha      : Float = 1f,
+    var lifetime   : Float = 0f,
     var maxLifetime: Float = 0.5f,
-    var color: Color = Color(0xFF4FC3F7) // Default blue, but will be set to wall color
+    var color      : Color = DashCyan
 )
 
-// Data class for ball trail effect
 data class TrailPoint(
-    val x: Float,
-    val y: Float,
+    val x    : Float,
+    val y    : Float,
     var alpha: Float = 1f
 )
 
-// Data class for background particle field
 data class BackgroundParticle(
-    var x: Float,
-    var y: Float,
+    var x        : Float,
+    var y        : Float,
     var velocityX: Float = 0f,
     var velocityY: Float = 0f,
-    val size: Float = 2f,
-    val alpha: Float = 0.1f
+    val size     : Float = 2f,
+    val alpha    : Float = 0.1f
 )
 
+// ─────────────────────────────────────────────────────────────────────────────
+// GravityBallScreen — main screen composable
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
 fun GravityBallScreen(
-    ballX: Float,
-    ballY: Float,
-    particles: SnapshotStateList<Particle>,
-    trailPoints: SnapshotStateList<TrailPoint>,
-    backgroundParticles: SnapshotStateList<BackgroundParticle>,
-    isDragging: Boolean,
-    isAvailable: Boolean,
-    onDragStart: (Float, Float, Float, Float) -> Unit,
-    onDrag: (Float, Float) -> Unit,
-    onDragEnd: () -> Unit,
-    onBottomSheetToggleClick: () -> Unit
+    ballX               : Float,
+    ballY               : Float,
+    particles           : SnapshotStateList<Particle>,
+    trailPoints         : SnapshotStateList<TrailPoint>,
+    backgroundParticles : SnapshotStateList<BackgroundParticle>,
+    isDragging          : Boolean,
+    isAvailable         : Boolean,
+    onDragStart         : (Float, Float, Float, Float) -> Unit,
+    onDrag              : (Float, Float) -> Unit,
+    onDragEnd           : () -> Unit,
+    onBottomSheetToggle : () -> Unit
 ) {
+    // Pulse animation for the energy orb glow
+    val pulseTransition = rememberInfiniteTransition(label = "orb_pulse")
+    val pulse by pulseTransition.animateFloat(
+        initialValue  = 0.55f,
+        targetValue   = 1f,
+        animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
+        label         = "pulse"
+    )
+
+    // Hint shown once — disappears on first drag
+    var hintVisible by remember { mutableStateOf(true) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        colorResource(R.color.gravity_background_start),
-                        colorResource(R.color.gravity_background_middle),
-                        colorResource(R.color.gravity_background_end)
-                    )
-                )
-            )
+            .background(DashVoid)
     ) {
         if (!isAvailable) {
             Text(
-                text = stringResource(R.string.space_ball_not_available),
-                color = Color.White,
-                fontSize = 16.sp,
+                text      = "Gravity sensor not available\non this device",
+                color     = DashCyan.copy(alpha = 0.7f),
+                fontSize  = 16.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
+                fontFamily = FontFamily.Monospace,
+                modifier  = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center)
-                    .padding(16.dp)
+                    .padding(32.dp)
             )
-        } else {
-            // Main canvas for ball and particles with drag gesture
-            Canvas(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDragStart = { offset ->
-                                // Convert pixel coordinates to normalized (0-1)
-                                val normalizedX = offset.x / size.width
-                                val normalizedY = offset.y / size.height
-                                onDragStart(normalizedX, normalizedY, size.width.toFloat(), size.height.toFloat())
-                            },
-                            onDrag = { change, _ ->
-                                // Convert pixel coordinates to normalized (0-1)
-                                val normalizedX = change.position.x / size.width
-                                val normalizedY = change.position.y / size.height
-                                onDrag(normalizedX, normalizedY)
-                                change.consume()
-                            },
-                            onDragEnd = {
-                                onDragEnd()
-                            }
-                        )
-                    }
-            ) {
-                drawBackgroundParticles(backgroundParticles)
-                drawTrail(trailPoints)
-                drawGravityBall(ballX, ballY, isDragging)
-                drawParticles(particles)
-            }
+            return@Box
         }
+
+        // Main physics canvas
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectDragGestures(
+                        onDragStart = { offset ->
+                            hintVisible = false
+                            val nx = offset.x / size.width
+                            val ny = offset.y / size.height
+                            onDragStart(nx, ny, size.width.toFloat(), size.height.toFloat())
+                        },
+                        onDrag = { change, _ ->
+                            val nx = change.position.x / size.width
+                            val ny = change.position.y / size.height
+                            onDrag(nx, ny)
+                            change.consume()
+                        },
+                        onDragEnd = { onDragEnd() }
+                    )
+                }
+        ) {
+            drawStarfield(backgroundParticles)
+            drawCometTrail(trailPoints)
+            drawEnergySparks(particles)
+            drawEnergyOrb(ballX, ballY, isDragging, pulse)
+        }
+
+        // First-time hint overlay
+        if (hintVisible) {
+            HintOverlay(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 80.dp))
+        }
+
     }
 }
 
-private fun DrawScope.drawGravityBall(ballX: Float, ballY: Float, isDragging: Boolean) {
-    val ballRadius = 40.dp.toPx()
-    val borderWidth = 6.dp.toPx()
-
-    // Draw subtle border at the screen edges
-    drawRect(
-        color = Color.White.copy(alpha = 0.25f),
-        topLeft = Offset(0f, 0f),
-        size = androidx.compose.ui.geometry.Size(size.width, size.height),
-        style = androidx.compose.ui.graphics.drawscope.Stroke(width = borderWidth)
+// ─────────────────────────────────────────────────────────────────────────────
+// HintOverlay — "DRAG TO LAUNCH · TILT TO ROLL" shown on first open
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun HintOverlay(modifier: Modifier = Modifier) {
+    val pulse = rememberInfiniteTransition(label = "hint")
+    val alpha by pulse.animateFloat(
+        0.4f, 0.9f,
+        infiniteRepeatable(tween(1000), RepeatMode.Reverse),
+        label = "ha"
     )
-
-    // Calculate actual pixel position from normalized coordinates
-    val actualX = ballX * (size.width - ballRadius * 2) + ballRadius
-    val actualY = ballY * (size.height - ballRadius * 2) + ballRadius
-
-    val ballCenter = Offset(actualX, actualY)
-
-    // Draw shadow (offset slightly down and right)
-    drawCircle(
-        color = Color.Black.copy(alpha = 0.3f),
-        radius = ballRadius * 0.9f,
-        center = Offset(actualX + 8f, actualY + 8f)
+    Text(
+        text          = "DRAG  TO  LAUNCH\nTILT  TO  ROLL",
+        color         = DashCyan.copy(alpha = alpha),
+        fontSize      = 11.sp,
+        fontFamily    = FontFamily.Monospace,
+        letterSpacing = 1.5.sp,
+        textAlign     = TextAlign.Center,
+        modifier      = modifier
     )
+}
 
-    // Draw ball with gradient for 3D effect
+// ─────────────────────────────────────────────────────────────────────────────
+// Draw functions
+// ─────────────────────────────────────────────────────────────────────────────
+
+private val OrbCyan   = DashCyan
+private val OrbPurple = DashPurple
+
+private fun DrawScope.drawEnergyOrb(
+    ballX    : Float,
+    ballY    : Float,
+    isDragging: Boolean,
+    pulse    : Float
+) {
+    val r  = 38.dp.toPx()
+    val ax = ballX * (size.width  - r * 2) + r
+    val ay = ballY * (size.height - r * 2) + r
+    val c  = Offset(ax, ay)
+
+    // Outer ambient aura
+    drawCircle(OrbCyan.copy(alpha = pulse * 0.06f), r * 2.8f, c)
+    drawCircle(OrbCyan.copy(alpha = pulse * 0.10f), r * 2.0f, c)
+
+    // Glowing border ring
+    drawCircle(OrbCyan.copy(alpha = 0.6f + pulse * 0.3f), r, c,
+        style = Stroke(width = 2.dp.toPx()))
+
+    // Ball body — radial gradient from white-cyan center to deep purple edge
     drawCircle(
         brush = Brush.radialGradient(
             colors = listOf(
-                Color(0xFFFFFFFF), // Light blue
-                Color(0xFFE0E0E0), // Medium blue
-                Color(0xFFB0B0B0)  // Dark blue
+                Color.White.copy(alpha = 0.9f),
+                OrbCyan.copy(alpha     = 0.85f),
+                OrbPurple.copy(alpha   = 0.7f)
             ),
-            center = Offset(actualX - ballRadius * 0.3f, actualY - ballRadius * 0.3f),
-            radius = ballRadius * 1.2f
+            center = Offset(ax - r * 0.2f, ay - r * 0.2f),
+            radius = r * 1.1f
         ),
-        radius = ballRadius,
-        center = ballCenter
+        radius = r,
+        center = c
     )
 
-    // Draw highlight for shine effect
-    drawCircle(
-        color = Color.White.copy(alpha = 0.4f),
-        radius = ballRadius * 0.3f,
-        center = Offset(actualX - ballRadius * 0.4f, actualY - ballRadius * 0.4f)
-    )
+    // Specular highlight (top-left bright spot)
+    drawCircle(Color.White.copy(alpha = 0.55f), r * 0.28f,
+        Offset(ax - r * 0.38f, ay - r * 0.38f))
 
-    // Draw outer rim for depth
-    drawCircle(
-        color = Color(0xFF01579B).copy(alpha = 0.5f),
-        radius = ballRadius,
-        center = ballCenter,
-        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp.toPx())
-    )
-
-    // Draw subtle glow overlay when dragging
+    // Drag halo
     if (isDragging) {
-        drawCircle(
-            color = Color.White.copy(alpha = 0.25f),
-            radius = ballRadius * 1.3f,
-            center = ballCenter
-        )
-        drawCircle(
-            color = Color(0xFF4FC3F7).copy(alpha = 0.15f),
-            radius = ballRadius * 1.15f,
-            center = ballCenter
+        drawCircle(OrbCyan.copy(alpha = 0.18f), r * 1.8f, c)
+        drawCircle(OrbCyan.copy(alpha = 0.4f),  r * 1.1f, c,
+            style = Stroke(1.5.dp.toPx()))
+    }
+}
+
+private fun DrawScope.drawCometTrail(trail: SnapshotStateList<TrailPoint>) {
+    if (trail.size < 2) return
+    val r = 38.dp.toPx()
+
+    // Draw trail as a tapering path
+    for (i in 1 until trail.size) {
+        val prev = trail[i - 1]
+        val curr = trail[i]
+        val fraction = i.toFloat() / trail.size
+        val segAlpha = fraction * curr.alpha * 0.7f
+
+        val px = prev.x * (size.width  - r * 2) + r
+        val py = prev.y * (size.height - r * 2) + r
+        val cx = curr.x * (size.width  - r * 2) + r
+        val cy = curr.y * (size.height - r * 2) + r
+
+        drawLine(
+            color       = OrbCyan.copy(alpha = segAlpha),
+            start       = Offset(px, py),
+            end         = Offset(cx, cy),
+            strokeWidth = (fraction * 12.dp.toPx()).coerceAtLeast(1.dp.toPx()),
+            cap         = StrokeCap.Round
         )
     }
 }
 
-private fun DrawScope.drawParticles(particles: SnapshotStateList<Particle>) {
-    particles.forEach { particle ->
-        // Calculate actual pixel position from normalized coordinates
-        val actualX = particle.x * size.width
-        val actualY = particle.y * size.height
+private fun DrawScope.drawEnergySparks(particles: SnapshotStateList<Particle>) {
+    particles.forEach { p ->
+        val ax    = p.x * size.width
+        val ay    = p.y * size.height
+        val speed = hypot(p.velocityX, p.velocityY)
+        val len   = (speed * 40f).coerceIn(4f, 18f)
+        val angle = atan2(p.velocityY, p.velocityX)
 
-        // Draw particle with gradient for glow effect
-        val particleRadius = 3.dp.toPx()
+        // Streak in movement direction
+        val tailX = ax - cos(angle) * len
+        val tailY = ay - sin(angle) * len
 
-        // Outer glow - uses wall color
-        drawCircle(
-            color = particle.color.copy(alpha = particle.alpha * 0.3f),
-            radius = particleRadius * 2f,
-            center = Offset(actualX, actualY)
+        drawLine(
+            color       = p.color.copy(alpha = p.alpha * 0.9f),
+            start       = Offset(tailX, tailY),
+            end         = Offset(ax, ay),
+            strokeWidth = 2.dp.toPx(),
+            cap         = StrokeCap.Round
         )
 
-        // Inner bright core - white for brightness
-        drawCircle(
-            color = Color.White.copy(alpha = particle.alpha),
-            radius = particleRadius,
-            center = Offset(actualX, actualY)
-        )
+        // Bright tip
+        drawCircle(Color.White.copy(alpha = p.alpha * 0.8f), 2.dp.toPx(), Offset(ax, ay))
     }
 }
 
-private fun DrawScope.drawTrail(trailPoints: SnapshotStateList<TrailPoint>) {
-    val ballRadius = 40.dp.toPx()
-
-    // Draw trail points from oldest to newest
-    trailPoints.forEachIndexed { index, point ->
-        // Calculate actual position (accounting for ball radius offset)
-        val actualX = point.x * (size.width - ballRadius * 2) + ballRadius
-        val actualY = point.y * (size.height - ballRadius * 2) + ballRadius
-
-        // Trail circle size decreases for older points
-        val trailRadius = (8.dp.toPx() * point.alpha).coerceAtLeast(2.dp.toPx())
-
-        // Draw trail point with gradient
+private fun DrawScope.drawStarfield(stars: SnapshotStateList<BackgroundParticle>) {
+    stars.forEach { s ->
         drawCircle(
-            color = Color(0xFF4FC3F7).copy(alpha = point.alpha * 0.4f),
-            radius = trailRadius,
-            center = Offset(actualX, actualY)
-        )
-
-        drawCircle(
-            color = Color.White.copy(alpha = point.alpha * 0.6f),
-            radius = trailRadius * 0.5f,
-            center = Offset(actualX, actualY)
-        )
-    }
-}
-
-private fun DrawScope.drawBackgroundParticles(backgroundParticles: SnapshotStateList<BackgroundParticle>) {
-    backgroundParticles.forEach { particle ->
-        // Draw small subtle particles
-        drawCircle(
-            color = Color(0xFF4FC3F7).copy(alpha = particle.alpha),
-            radius = particle.size.dp.toPx(),
-            center = Offset(particle.x, particle.y)
+            color  = Color.White.copy(alpha = s.alpha * 0.6f),
+            radius = (s.size * 0.5f).dp.toPx(),
+            center = Offset(s.x, s.y)
         )
     }
 }

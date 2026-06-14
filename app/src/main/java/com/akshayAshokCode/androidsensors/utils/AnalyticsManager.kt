@@ -3,108 +3,108 @@ package com.akshayAshokCode.androidsensors.utils
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 
-/**
- * Centralized manager for Firebase Analytics events
- * Tracks user interactions and feature usage across the app
- */
 object AnalyticsManager {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    /**
-     * Initialize Firebase Analytics
-     * Call this in Application class or MainActivity onCreate
-     */
     fun initialize(analytics: FirebaseAnalytics) {
         firebaseAnalytics = analytics
     }
 
-    // Event Names
+    // ── Event names ───────────────────────────────────────────────────────────
     object Events {
-        const val FEATURE_OPENED = "feature_opened"
+        const val FEATURE_OPENED       = "feature_opened"
         const val FIRST_FEATURE_OPENED = "first_feature_opened"
-        const val BOTTOM_SHEET_OPENED = "bottom_sheet_opened"
-        const val ONBOARDING_SKIPPED = "onboarding_skipped"
+        const val BOTTOM_SHEET_OPENED  = "bottom_sheet_opened"
+        const val ONBOARDING_SKIPPED   = "onboarding_skipped"
         const val ONBOARDING_GET_STARTED = "onboarding_get_started"
-        const val FEEDBACK_SENT = "feedback_sent"
-        const val REVIEW_REQUESTED = "review_requested"
+        const val FEEDBACK_SENT        = "feedback_sent"
+        const val REVIEW_REQUESTED     = "review_requested"
+        const val WIN_ACHIEVED         = "win_achieved"
+        const val SENSITIVITY_CHANGED  = "sensitivity_changed"
+        const val RECALIBRATE_TAPPED   = "recalibrate_tapped"
+        const val BALL_THROWN          = "ball_thrown"
+        const val SENSOR_UNAVAILABLE   = "sensor_unavailable"
     }
 
-    // Parameter Names
+    // ── Parameter names ───────────────────────────────────────────────────────
     object Params {
-        const val FEATURE_NAME = "feature_name"
+        const val FEATURE_NAME     = "feature_name"
+        const val SENSITIVITY_MODE = "sensitivity_mode"
     }
 
-    // Feature Names
+    // ── Feature name constants ────────────────────────────────────────────────
     object Features {
         const val METAL_DETECTOR = "metal_detector"
-        const val GRAVITY_METER = "gravity_meter"
-        const val BUBBLE_LEVEL = "bubble_level"
-        const val SPACE_BALL = "space_ball"
+        const val GRAVITY_METER  = "gravity_meter"
+        const val BUBBLE_LEVEL   = "bubble_level"
+        const val SPACE_BALL     = "space_ball"
     }
 
-    /**
-     * Log when a feature/screen is opened
-     */
+    // ── Logging methods ───────────────────────────────────────────────────────
+
     fun logFeatureOpened(featureName: String) {
-        val bundle = Bundle().apply {
+        firebaseAnalytics.logEvent(Events.FEATURE_OPENED, Bundle().apply {
             putString(Params.FEATURE_NAME, featureName)
-        }
-        firebaseAnalytics.logEvent(Events.FEATURE_OPENED, bundle)
+        })
     }
 
-    /**
-     * Log the first feature opened by a new user
-     */
     fun logFirstFeatureOpened(featureName: String) {
-        val bundle = Bundle().apply {
+        firebaseAnalytics.logEvent(Events.FIRST_FEATURE_OPENED, Bundle().apply {
             putString(Params.FEATURE_NAME, featureName)
-        }
-        firebaseAnalytics.logEvent(Events.FIRST_FEATURE_OPENED, bundle)
+        })
     }
 
-    /**
-     * Log when bottom sheet is opened
-     */
     fun logBottomSheetOpened(featureName: String) {
-        val bundle = Bundle().apply {
+        firebaseAnalytics.logEvent(Events.BOTTOM_SHEET_OPENED, Bundle().apply {
             putString(Params.FEATURE_NAME, featureName)
-        }
-        firebaseAnalytics.logEvent(Events.BOTTOM_SHEET_OPENED, bundle)
+        })
     }
 
-    /**
-     * Log when user skips onboarding
-     */
     fun logOnboardingSkipped() {
         firebaseAnalytics.logEvent(Events.ONBOARDING_SKIPPED, null)
     }
 
-    /**
-     * Log when user clicks Get Started on onboarding
-     */
     fun logOnboardingGetStarted() {
         firebaseAnalytics.logEvent(Events.ONBOARDING_GET_STARTED, null)
     }
 
-    /**
-     * Log feedback sent
-     */
     fun logFeedbackSent() {
         firebaseAnalytics.logEvent(Events.FEEDBACK_SENT, null)
     }
 
-    /**
-     * Log review request
-     */
     fun logReviewRequested() {
         firebaseAnalytics.logEvent(Events.REVIEW_REQUESTED, null)
     }
 
-    /**
-     * Set user property for analytics segmentation
-     */
-    private fun setUserProperty(propertyName: String, propertyValue: String) {
-        firebaseAnalytics.setUserProperty(propertyName, propertyValue)
+    /** Fired when a user achieves a win condition in a feature (max once per visit). */
+    fun logWinAchieved(featureName: String) {
+        firebaseAnalytics.logEvent(Events.WIN_ACHIEVED, Bundle().apply {
+            putString(Params.FEATURE_NAME, featureName)
+        })
+    }
+
+    /** Fired when the user changes sensitivity mode in Bubble Level. */
+    fun logSensitivityChanged(mode: String) {
+        firebaseAnalytics.logEvent(Events.SENSITIVITY_CHANGED, Bundle().apply {
+            putString(Params.SENSITIVITY_MODE, mode)
+        })
+    }
+
+    /** Fired when the user manually taps Recalibrate in Metal Detector. */
+    fun logRecalibrateTapped() {
+        firebaseAnalytics.logEvent(Events.RECALIBRATE_TAPPED, null)
+    }
+
+    /** Fired when the user throws the ball in Space Ball (drag end with velocity). */
+    fun logBallThrown() {
+        firebaseAnalytics.logEvent(Events.BALL_THROWN, null)
+    }
+
+    /** Fired when a required sensor is unavailable on the device. */
+    fun logSensorUnavailable(featureName: String) {
+        firebaseAnalytics.logEvent(Events.SENSOR_UNAVAILABLE, Bundle().apply {
+            putString(Params.FEATURE_NAME, featureName)
+        })
     }
 }

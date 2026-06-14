@@ -5,6 +5,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -24,6 +26,7 @@ import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.presentation.views.MetalDetectorScreen
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
+import com.akshayAshokCode.androidsensors.utils.PreferencesManager
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -31,6 +34,7 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 class MetalDetector : Fragment(), SensorEventListener {
+
     private lateinit var sensorManager: SensorManager
     private lateinit var DECIMAL_FORMATTER: DecimalFormat
 
@@ -46,26 +50,40 @@ class MetalDetector : Fragment(), SensorEventListener {
     private val calibrationSamples = mutableListOf<Double>()
     private val maxCalibrationSamples = 20
 
-    // Add recalibration state for visual feedback
     private var isRecalibrating by mutableStateOf(false)
+    private var reviewFlaggedThisVisit = false
+
+    // New state for futuristic UI
+    private var signalStrength     by mutableStateOf(0f)  // 0-1 normalised deviation
+    private var calibrationProgress by mutableStateOf(0)  // 0-20 samples collected
+
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private var recalibrateRunnable: Runnable? = null
 
     private fun recalibrate() {
         isCalibrated = false
         calibrationSamples.clear()
         baselineMagnitude = 0.0
         isRecalibrating = true
+        signalStrength = 0f
+        calibrationProgress = 0
 
-        // Restart sensor with consistent delay for both modes
         sensorManager.unregisterListener(this)
 
-        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-            sensorManager.registerListener(
-                this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
+        // Cancel any pending recalibration before posting a new one
+        recalibrateRunnable?.let { mainHandler.removeCallbacks(it) }
+        val r = Runnable {
+            if (isResumed) {
+                sensorManager.registerListener(
+                    this,
+                    sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                    SensorManager.SENSOR_DELAY_NORMAL
+                )
+            }
             isRecalibrating = false
-        }, 1000)
+        }
+        recalibrateRunnable = r
+        mainHandler.postDelayed(r, 1000)
     }
 
     override fun onCreateView(
@@ -90,11 +108,17 @@ class MetalDetector : Fragment(), SensorEventListener {
                 }
 
                 MetalDetectorScreen(
-                    magneticValue = displayValue,
-                    isAvailable = isAvailable,
-                    showRawValues = showRawValues,
-                    onToggleMode = { showRawValues = !showRawValues },
-                    onRecalibrate = { recalibrate() },
+                    magneticValue       = displayValue,
+                    signalStrength      = signalStrength,
+                    calibrationProgress = calibrationProgress,
+                    isCalibrating       = isRecalibrating || !isCalibrated,
+                    isAvailable         = isAvailable,
+                    showRawValues       = showRawValues,
+                    onToggleMode        = { showRawValues = !showRawValues },
+                    onRecalibrate       = {
+                        AnalyticsManager.logRecalibrateTapped()
+                        recalibrate()
+                    },
                     onBottomSheetToggleClick = {
                         showBottomSheet = true
                         AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.METAL_DETECTOR)
@@ -136,10 +160,12 @@ class MetalDetector : Fragment(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
+        reviewFlaggedThisVisit = false
 
         // Check sensor availability
         if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null) {
             isAvailable = false
+            AnalyticsManager.logSensorUnavailable(AnalyticsManager.Features.METAL_DETECTOR)
         } else {
             recalibrate()
         }
@@ -147,21 +173,25 @@ class MetalDetector : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
+        recalibrateRunnable?.let { mainHandler.removeCallbacks(it) }
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recalibrateRunnable?.let { mainHandler.removeCallbacks(it) }
         sensorManager.unregisterListener(this)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            val magnitude = sqrt(
-                (event.values[0] * event.values[0] +
-                        event.values[1] * event.values[1] +
-                        event.values[2] * event.values[2]).toDouble()
-            )
+            // Compute on sensor thread using only local / non-Compose variables
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+            val magnitude = sqrt((x * x + y * y + z * z).toDouble())
 
-            // Update raw value
-            rawMagneticValue = DECIMAL_FORMATTER.format(magnitude)
-
-            // Handle calibration for metal detection mode
+            // Advance calibration state on sensor thread (no Compose state touched here)
             if (!isCalibrated) {
                 calibrationSamples.add(magnitude)
                 if (calibrationSamples.size >= maxCalibrationSamples) {
@@ -169,10 +199,29 @@ class MetalDetector : Fragment(), SensorEventListener {
                     isCalibrated = true
                     calibrationSamples.clear()
                 }
-                magneticValue = context?.getString(R.string.calibrating) ?: "Calibrating..."
-            } else {
-                val deviation = abs(magnitude - baselineMagnitude)
-                magneticValue = DECIMAL_FORMATTER.format(deviation)
+            }
+            val calibrated  = isCalibrated
+            val sampleCount = calibrationSamples.size
+            val deviation   = if (calibrated) abs(magnitude - baselineMagnitude) else 0.0
+            val strength    = if (calibrated) (deviation / 300.0).coerceIn(0.0, 1.0).toFloat() else 0f
+
+            // Push Compose state updates from the main thread.
+            // DecimalFormat is not thread-safe, so formatting happens here on the main thread.
+            mainHandler.post {
+                if (!isAdded) return@post
+                rawMagneticValue    = DECIMAL_FORMATTER.format(magnitude)
+                signalStrength      = strength
+                calibrationProgress = sampleCount
+                magneticValue = if (calibrated) {
+                    DECIMAL_FORMATTER.format(deviation)
+                } else {
+                    getString(R.string.calibrating)
+                }
+                if (calibrated && strength > 0.6f && !reviewFlaggedThisVisit) {
+                    reviewFlaggedThisVisit = true
+                    AnalyticsManager.logWinAchieved(AnalyticsManager.Features.METAL_DETECTOR)
+                    PreferencesManager.recordWin(requireContext())
+                }
             }
         }
     }

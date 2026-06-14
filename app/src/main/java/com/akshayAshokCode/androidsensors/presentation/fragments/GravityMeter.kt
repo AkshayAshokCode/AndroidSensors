@@ -5,6 +5,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -27,21 +29,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,26 +48,38 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.akshayAshokCode.androidsensors.R
-import com.akshayAshokCode.androidsensors.presentation.views.GravityAxisCard
-import com.akshayAshokCode.androidsensors.presentation.views.GravityGraph
-import com.akshayAshokCode.androidsensors.presentation.views.GravityVectorCard
+import com.akshayAshokCode.androidsensors.presentation.views.AxisMeters
+import com.akshayAshokCode.androidsensors.presentation.views.GravityBackground
+import com.akshayAshokCode.androidsensors.presentation.views.GravitySphere
+import com.akshayAshokCode.androidsensors.presentation.views.OrientationBadge
+import com.akshayAshokCode.androidsensors.presentation.views.OscilloscopeGraph
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
+import com.akshayAshokCode.androidsensors.utils.PreferencesManager
 import com.akshayAshokCode.androidsensors.utils.SensorUtils
 
 class GravityMeter : Fragment(), SensorEventListener {
+
     private val TAG = "GravityMeter"
     private lateinit var sensorManager: SensorManager
 
-    private var xValue by mutableStateOf("")
-    private var yValue by mutableStateOf("")
-    private var zValue by mutableStateOf("")
+    private var rawGX by mutableStateOf(0f)
+    private var rawGY by mutableStateOf(0f)
+    private var rawGZ by mutableStateOf(0f)
     private var phoneOrientation by mutableStateOf(SensorUtils.PhoneOrientation.UNKNOWN)
     private var isAvailable by mutableStateOf(true)
     private var showBottomSheet by mutableStateOf(false)
+    private var reviewFlaggedThisVisit = false
 
     private val gravityHistory = mutableStateListOf<Triple<Float, Float, Float>>()
     private val maxHistorySize = 50
+
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    // Accelerometer fallback when TYPE_GRAVITY is unavailable
+    @Volatile private var usingAccelerometerFallback = false
+    private val lowPassGravity = FloatArray(3)
+    private val lowPassAlpha = 0.8f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,22 +87,17 @@ class GravityMeter : Fragment(), SensorEventListener {
         savedInstanceState: Bundle?
     ): View {
         sensorManager = context?.getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-
-        // initialize string resources
-        xValue = getString(R.string.intial_x_value)
-        yValue = getString(R.string.intial_y_value)
-        zValue = getString(R.string.intial_z_value)
         phoneOrientation = SensorUtils.PhoneOrientation.UNKNOWN
 
         return ComposeView(requireContext()).apply {
             setContent {
                 GravityMeterScreen(
-                    xValue = xValue,
-                    yValue = yValue,
-                    zValue = zValue,
+                    rawGX            = rawGX,
+                    rawGY            = rawGY,
+                    rawGZ            = rawGZ,
                     phoneOrientation = phoneOrientation,
-                    isAvailable = isAvailable,
-                    gravityHistory = gravityHistory.toList(),
+                    isAvailable      = isAvailable,
+                    gravityHistory   = gravityHistory,
                     onBottomSheetToggleClick = {
                         showBottomSheet = true
                         AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.GRAVITY_METER)
@@ -133,12 +138,21 @@ class GravityMeter : Fragment(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(
-            this, sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) == null) {
-            isAvailable = false
+        reviewFlaggedThisVisit = false
+        val gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        if (gravitySensor != null) {
+            usingAccelerometerFallback = false
+            sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_NORMAL)
+        } else {
+            val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            if (accelerometer != null) {
+                usingAccelerometerFallback = true
+                lowPassGravity.fill(0f)
+                sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+            } else {
+                isAvailable = false
+                AnalyticsManager.logSensorUnavailable(AnalyticsManager.Features.GRAVITY_METER)
+            }
         }
     }
 
@@ -147,30 +161,56 @@ class GravityMeter : Fragment(), SensorEventListener {
         sensorManager.unregisterListener(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sensorManager.unregisterListener(this)
+    }
+
     override fun onSensorChanged(event: SensorEvent) {
-        if (event.sensor?.type == Sensor.TYPE_GRAVITY) {
+        val sensorType = event.sensor?.type
+        val isGravityEvent = sensorType == Sensor.TYPE_GRAVITY
+        val isAccelFallback = sensorType == Sensor.TYPE_ACCELEROMETER && usingAccelerometerFallback
+        if (!isGravityEvent && !isAccelFallback) return
 
-            val xAxis = getString(R.string.x_axis)
-            val yAxis = getString(R.string.y_axis)
-            val zAxis = getString(R.string.z_axis)
-            val gravityUnit = getString(R.string.ms)
+        // Apply low-pass filter on sensor thread to extract gravity from accelerometer
+        val gx: Float
+        val gy: Float
+        val gz: Float
+        if (isAccelFallback) {
+            lowPassGravity[0] = lowPassAlpha * lowPassGravity[0] + (1 - lowPassAlpha) * event.values[0]
+            lowPassGravity[1] = lowPassAlpha * lowPassGravity[1] + (1 - lowPassAlpha) * event.values[1]
+            lowPassGravity[2] = lowPassAlpha * lowPassGravity[2] + (1 - lowPassAlpha) * event.values[2]
+            gx = lowPassGravity[0]; gy = lowPassGravity[1]; gz = lowPassGravity[2]
+        } else {
+            gx = event.values[0]; gy = event.values[1]; gz = event.values[2]
+        }
 
+        // Determine orientation on sensor thread (no Compose state read/write)
+        val orientationResult = when {
+            gx > 7 -> SensorUtils.PhoneOrientation.LANDSCAPE
+            gx < -7 -> SensorUtils.PhoneOrientation.LANDSCAPE
+            gy > 7 -> SensorUtils.PhoneOrientation.PORTRAIT
+            gy < -7 -> SensorUtils.PhoneOrientation.UPSIDE_DOWN
+            gz > 7 -> SensorUtils.PhoneOrientation.FACE_UP
+            gz < -7 -> SensorUtils.PhoneOrientation.FACE_DOWN
+            else -> null // no change
+        }
 
-            xValue = "$xAxis ${String.format("%.2f", event.values[0])} $gravityUnit"
-            yValue = "$yAxis ${String.format("%.2f", event.values[1])} $gravityUnit"
-            zValue = "$zAxis ${String.format("%.2f", event.values[2])} $gravityUnit"
+        // Post all Compose state updates to main thread
+        mainHandler.post {
+            if (!isAdded) return@post
+            rawGX = gx; rawGY = gy; rawGZ = gz
 
-            gravityHistory.add(Triple(event.values[0], event.values[1], event.values[2]))
+            gravityHistory.add(Triple(gx, gy, gz))
             if (gravityHistory.size > maxHistorySize) gravityHistory.removeAt(0)
 
-            phoneOrientation = when {
-                event.values[0] > 7 -> SensorUtils.PhoneOrientation.LANDSCAPE
-                event.values[0] < -7 -> SensorUtils.PhoneOrientation.LANDSCAPE
-                event.values[1] > 7 -> SensorUtils.PhoneOrientation.PORTRAIT
-                event.values[1] < -7 -> SensorUtils.PhoneOrientation.UPSIDE_DOWN
-                event.values[2] > 7 -> SensorUtils.PhoneOrientation.FACE_UP
-                event.values[2] < -7 -> SensorUtils.PhoneOrientation.FACE_DOWN
-                else -> phoneOrientation
+            if (orientationResult != null) {
+                phoneOrientation = orientationResult
+                if (!reviewFlaggedThisVisit) {
+                    reviewFlaggedThisVisit = true
+                    AnalyticsManager.logWinAchieved(AnalyticsManager.Features.GRAVITY_METER)
+                    PreferencesManager.recordWin(requireContext())
+                }
             }
         }
     }
@@ -181,112 +221,57 @@ class GravityMeter : Fragment(), SensorEventListener {
 
 @Composable
 fun GravityMeterScreen(
-    xValue: String,
-    yValue: String,
-    zValue: String,
-    phoneOrientation: SensorUtils.PhoneOrientation,
-    isAvailable: Boolean,
-    gravityHistory: List<Triple<Float, Float, Float>>,
+    rawGX            : Float,
+    rawGY            : Float,
+    rawGZ            : Float,
+    phoneOrientation : SensorUtils.PhoneOrientation,
+    isAvailable      : Boolean,
+    gravityHistory   : List<Triple<Float, Float, Float>>,
     onBottomSheetToggleClick: () -> Unit
 ) {
-    val xFloat = SensorUtils.extractNumericValue(xValue)
-    val yFloat = SensorUtils.extractNumericValue(yValue)
-    val zFloat = SensorUtils.extractNumericValue(zValue)
+    Box(modifier = Modifier.fillMaxSize()) {
+        GravityBackground(modifier = Modifier.fillMaxSize())
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        colorResource(R.color.gravity_background_start),
-                        colorResource(R.color.gravity_background_middle),
-                        colorResource(R.color.gravity_background_end)
-                    )
-                )
-            )
-    ) {
         if (!isAvailable) {
             Text(
-                text = stringResource(R.string.gravity_meter_not_available),
-                color = Color.White,
-                fontSize = 16.sp,
+                text      = stringResource(R.string.gravity_meter_not_available),
+                color     = Color(0xFF00D4FF).copy(alpha = 0.7f),
+                fontSize  = 16.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
+                modifier  = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center)
-                    .padding(16.dp)
+                    .padding(32.dp)
             )
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
+            return@Box
+        }
 
-                GravityVectorCard(
-                    xValue = xFloat,
-                    yValue = yFloat,
-                    zValue = zFloat,
-                    phoneOrientation = phoneOrientation,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    GravityAxisCard(
-                        stringResource(R.string.x_axis),
-                        xValue,
-                        colorResource(R.color.axis_x_color),
-                        Modifier.weight(1f)
-                    )
-                    GravityAxisCard(
-                        stringResource(R.string.y_axis),
-                        yValue,
-                        colorResource(R.color.axis_y_color),
-                        Modifier.weight(1f)
-                    )
-                    GravityAxisCard(
-                        stringResource(R.string.z_axis),
-                        zValue,
-                        colorResource(R.color.axis_z_color),
-                        Modifier.weight(1f)
-                    )
-                }
-
-                if (gravityHistory.isNotEmpty()) {
-                    GravityGraph(
-                        history = gravityHistory,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .clickable { onBottomSheetToggleClick() }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = null,
-                        tint = Color.White.copy(alpha = 0.7f),
-                        modifier = Modifier.size(24.dp)
-                    )
-
-                    Text(
-                        text = stringResource(R.string.tap_for_sensor_details),
-                        color = Color.White.copy(alpha = 0.7f),
-                        fontSize = 12.sp
-                    )
-                }
+        Column(
+            modifier            = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            OrientationBadge(phoneOrientation)
+            GravitySphere(rawGX = rawGX, rawGY = rawGY, rawGZ = rawGZ,
+                modifier = Modifier.size(260.dp))
+            AxisMeters(rawGX = rawGX, rawGY = rawGY, rawGZ = rawGZ)
+            if (gravityHistory.size >= 3) {
+                OscilloscopeGraph(history = gravityHistory,
+                    modifier = Modifier.fillMaxWidth().height(80.dp))
             }
+            Text(
+                text     = "TAP  ↑  FOR SENSOR DETAILS",
+                color    = Color(0xFF00D4FF).copy(alpha = 0.35f),
+                fontSize = 9.sp,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                letterSpacing = 1.sp,
+                modifier = Modifier.clickable(
+                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                    indication = null, onClick = onBottomSheetToggleClick
+                )
+            )
         }
     }
 }

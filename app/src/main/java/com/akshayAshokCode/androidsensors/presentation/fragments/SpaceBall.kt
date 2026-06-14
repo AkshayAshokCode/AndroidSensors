@@ -6,6 +6,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.Menu
@@ -31,6 +34,7 @@ import com.akshayAshokCode.androidsensors.presentation.views.TrailPoint
 import com.akshayAshokCode.androidsensors.presentation.views.BackgroundParticle
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
+import com.akshayAshokCode.androidsensors.utils.PreferencesManager
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -45,12 +49,21 @@ class SpaceBall : Fragment(), SensorEventListener {
 
     // Store view reference for haptic feedback
     private var rootView: View? = null
+    private var reviewFlaggedThisVisit = false
 
     // Ball physics state - start at center for initial drop demo
     private var ballX by mutableStateOf(0.5f) // Normalized position (0-1)
     private var ballY by mutableStateOf(0.5f) // Start at center
-    private var velocityX by mutableStateOf(0f)
-    private var velocityY by mutableStateOf(0f)
+    // Velocity is internal physics state only — not displayed, no need for Compose state
+    private var velocityX = 0f
+    private var velocityY = 0f
+
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    // Accelerometer fallback when TYPE_GRAVITY is unavailable (~15-20% of devices)
+    @Volatile private var usingAccelerometerFallback = false
+    private val lowPassGravity = FloatArray(2)
+    private val lowPassAlpha = 0.8f
 
     // Drag & drop state
     private var isDragging by mutableStateOf(false)
@@ -58,7 +71,7 @@ class SpaceBall : Fragment(), SensorEventListener {
     private var lastDragY = 0f
     private var dragVelocityX = 0f
     private var dragVelocityY = 0f
-    private var lastDragTime = System.currentTimeMillis()
+    private var lastDragTime = SystemClock.elapsedRealtime()
 
     // Particle system for sparkle effects
     private val particles = mutableStateListOf<Particle>()
@@ -68,7 +81,7 @@ class SpaceBall : Fragment(), SensorEventListener {
 
     // Trail system for ball path
     private val trailPoints = mutableStateListOf<TrailPoint>()
-    private var lastTrailTime = System.currentTimeMillis()
+    private var lastTrailTime = SystemClock.elapsedRealtime()
 
     // Track previous position to detect actual bounces (separate for each edge)
     private var wasAtLeftEdge = false
@@ -81,7 +94,11 @@ class SpaceBall : Fragment(), SensorEventListener {
     private val sensitivity = 0.15f
     private val bounceDampening = 0.7f
 
-    private var lastUpdateTime = System.currentTimeMillis()
+    private var lastUpdateTime = SystemClock.elapsedRealtime()
+
+    // Cached canvas dimensions — updated via layout listener, avoids view.width/height on every frame
+    private var cachedWidth  = 0f
+    private var cachedHeight = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,17 +113,17 @@ class SpaceBall : Fragment(), SensorEventListener {
 
         composeView.setContent {
             GravityBallScreen(
-                ballX = ballX,
-                ballY = ballY,
-                particles = particles,
-                trailPoints = trailPoints,
+                ballX               = ballX,
+                ballY               = ballY,
+                particles           = particles,
+                trailPoints         = trailPoints,
                 backgroundParticles = backgroundParticles,
-                isDragging = isDragging,
-                isAvailable = isAvailable,
-                onDragStart = { x, y, width, height -> handleDragStart(x, y, width, height) },
-                onDrag = { x, y -> handleDrag(x, y) },
-                onDragEnd = { handleDragEnd() },
-                onBottomSheetToggleClick = {
+                isDragging          = isDragging,
+                isAvailable         = isAvailable,
+                onDragStart         = { x, y, width, height -> handleDragStart(x, y, width, height) },
+                onDrag              = { x, y -> handleDrag(x, y) },
+                onDragEnd           = { handleDragEnd() },
+                onBottomSheetToggle = {
                     AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.SPACE_BALL)
                     showBottomSheet = true
                 }
@@ -127,6 +144,11 @@ class SpaceBall : Fragment(), SensorEventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        view.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            cachedWidth  = v.width.toFloat()
+            cachedHeight = v.height.toFloat()
+        }
+
         // Add menu to toolbar using MenuProvider
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -136,7 +158,6 @@ class SpaceBall : Fragment(), SensorEventListener {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_info -> {
-                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.SPACE_BALL)
                         showBottomSheet = true
                         true
                     }
@@ -148,6 +169,8 @@ class SpaceBall : Fragment(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
+        reviewFlaggedThisVisit = false
+        lastUpdateTime = SystemClock.elapsedRealtime()
 
         // Lock screen orientation to current orientation
         activity?.let { activity ->
@@ -156,10 +179,23 @@ class SpaceBall : Fragment(), SensorEventListener {
         }
 
         val gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        if (gravitySensor == null) {
-            isAvailable = false
-            return
+        when {
+            gravitySensor != null -> {
+                usingAccelerometerFallback = false
+                sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_GAME)
+            }
+            accelerometer != null -> {
+                usingAccelerometerFallback = true
+                lowPassGravity.fill(0f)
+                sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+            }
+            else -> {
+                isAvailable = false
+                AnalyticsManager.logSensorUnavailable(AnalyticsManager.Features.SPACE_BALL)
+                return
+            }
         }
 
         // Initialize background particles if empty (post to ensure view has dimensions)
@@ -168,136 +204,126 @@ class SpaceBall : Fragment(), SensorEventListener {
                 initializeBackgroundParticles()
             }
         }
-
-        sensorManager.registerListener(
-            this,
-            gravitySensor,
-            SensorManager.SENSOR_DELAY_GAME
-        )
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
-
-        // Restore original orientation
         activity?.requestedOrientation = originalOrientation
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sensorManager.unregisterListener(this)
+        rootView = null
+    }
+
     override fun onSensorChanged(event: SensorEvent) {
-        if (event.sensor?.type == Sensor.TYPE_GRAVITY) {
-            val currentTime = System.currentTimeMillis()
-            val deltaTime = (currentTime - lastUpdateTime) / 1000f
-            lastUpdateTime = currentTime
+        val sensorType = event.sensor?.type
+        val isGravityEvent = sensorType == Sensor.TYPE_GRAVITY
+        val isAccelFallback = sensorType == Sensor.TYPE_ACCELEROMETER && usingAccelerometerFallback
+        if (!isGravityEvent && !isAccelFallback) return
 
-            // Get gravity values (m/s²)
-            val gravityX = event.values[0] // Left/Right tilt
-            val gravityY = event.values[1] // Forward/Backward tilt
-
-            // Update background particles with parallax effect (always, even when dragging)
-            updateBackgroundParticles(gravityX, gravityY, deltaTime)
-
-            // Skip ball physics update if ball is being dragged
-            if (isDragging) {
-                return
-            }
-
-            // Update velocity based on gravity (X inverted to match tilt direction)
-            velocityX -= gravityX * deltaTime * sensitivity
-            velocityY += gravityY * deltaTime * sensitivity
-
-            // Apply friction
-            velocityX *= friction
-            velocityY *= friction
-
-            // Stop very small velocities to prevent micro-bounces
-            val velocityThreshold = 0.001f
-            if (abs(velocityX) < velocityThreshold) velocityX = 0f
-            if (abs(velocityY) < velocityThreshold) velocityY = 0f
-
-            // Update position
-            ballX += velocityX
-            ballY += velocityY
-
-            // Bounce off edges with dampening and sparkle effects
-            // Left edge - Yellow sparkles
-            if (ballX < 0f) {
-                ballX = 0f
-                val collisionVelocity = abs(velocityX)
-                velocityX = -velocityX * bounceDampening
-                // Stop if velocity too small after bounce
-                if (abs(velocityX) < velocityThreshold) velocityX = 0f
-
-                // Create sparkles and haptic feedback only on NEW collision with sufficient impact
-                if (!wasAtLeftEdge && collisionVelocity > 0.01f) {
-                    createSparkleParticles(ballX, ballY, collisionVelocity)
-                    triggerHapticFeedback(collisionVelocity)
-                }
-                wasAtLeftEdge = true
-            } else {
-                wasAtLeftEdge = false
-            }
-
-            // Right edge - Yellow sparkles
-            if (ballX > 1f) {
-                ballX = 1f
-                val collisionVelocity = abs(velocityX)
-                velocityX = -velocityX * bounceDampening
-                // Stop if velocity too small after bounce
-                if (abs(velocityX) < velocityThreshold) velocityX = 0f
-
-                // Create sparkles and haptic feedback only on NEW collision with sufficient impact
-                if (!wasAtRightEdge && collisionVelocity > 0.01f) {
-                    createSparkleParticles(ballX, ballY, collisionVelocity)
-                    triggerHapticFeedback(collisionVelocity)
-                }
-                wasAtRightEdge = true
-            } else {
-                wasAtRightEdge = false
-            }
-
-            // Top edge - Yellow sparkles
-            if (ballY < 0f) {
-                ballY = 0f
-                val collisionVelocity = abs(velocityY)
-                velocityY = -velocityY * bounceDampening
-                // Stop if velocity too small after bounce
-                if (abs(velocityY) < velocityThreshold) velocityY = 0f
-
-                // Create sparkles and haptic feedback only on NEW collision with sufficient impact
-                if (!wasAtTopEdge && collisionVelocity > 0.01f) {
-                    createSparkleParticles(ballX, ballY, collisionVelocity)
-                    triggerHapticFeedback(collisionVelocity)
-                }
-                wasAtTopEdge = true
-            } else {
-                wasAtTopEdge = false
-            }
-
-            // Bottom edge - Yellow sparkles
-            if (ballY > 1f) {
-                ballY = 1f
-                val collisionVelocity = abs(velocityY)
-                velocityY = -velocityY * bounceDampening
-                // Stop if velocity too small after bounce
-                if (abs(velocityY) < velocityThreshold) velocityY = 0f
-
-                // Create sparkles and haptic feedback only on NEW collision with sufficient impact
-                if (!wasAtBottomEdge && collisionVelocity > 0.01f) {
-                    createSparkleParticles(ballX, ballY, collisionVelocity)
-                    triggerHapticFeedback(collisionVelocity)
-                }
-                wasAtBottomEdge = true
-            } else {
-                wasAtBottomEdge = false
-            }
-
-            // Update existing particles
-            updateParticles(deltaTime)
-
-            // Update trail
-            updateTrail(currentTime)
+        // Apply low-pass filter on sensor thread to extract gravity from accelerometer
+        val gx: Float
+        val gy: Float
+        if (isAccelFallback) {
+            lowPassGravity[0] = lowPassAlpha * lowPassGravity[0] + (1 - lowPassAlpha) * event.values[0]
+            lowPassGravity[1] = lowPassAlpha * lowPassGravity[1] + (1 - lowPassAlpha) * event.values[1]
+            gx = lowPassGravity[0]; gy = lowPassGravity[1]
+        } else {
+            gx = event.values[0]; gy = event.values[1]
         }
+        val capturedTime = SystemClock.elapsedRealtime()
+
+        // Post ALL Compose state mutations (ball physics, particles, trail) to main thread.
+        // This fixes both the thread-safety crash and the ConcurrentModificationException on
+        // the particle/trail SnapshotStateLists.
+        mainHandler.post {
+            if (!isAdded) return@post
+            processPhysics(gx, gy, capturedTime)
+        }
+    }
+
+    private fun processPhysics(gravityX: Float, gravityY: Float, currentTime: Long) {
+        val deltaTime = (currentTime - lastUpdateTime) / 1000f
+        lastUpdateTime = currentTime
+
+        updateBackgroundParticles(gravityX, gravityY, deltaTime)
+
+        if (isDragging) return
+
+        velocityX -= gravityX * deltaTime * sensitivity
+        velocityY += gravityY * deltaTime * sensitivity
+
+        velocityX *= friction
+        velocityY *= friction
+
+        val velocityThreshold = 0.001f
+        if (abs(velocityX) < velocityThreshold) velocityX = 0f
+        if (abs(velocityY) < velocityThreshold) velocityY = 0f
+
+        ballX += velocityX
+        ballY += velocityY
+
+        if (ballX < 0f) {
+            ballX = 0f
+            val collisionVelocity = abs(velocityX)
+            velocityX = -velocityX * bounceDampening
+            if (abs(velocityX) < velocityThreshold) velocityX = 0f
+            if (!wasAtLeftEdge && collisionVelocity > 0.01f) {
+                createSparkleParticles(ballX, ballY, collisionVelocity)
+                triggerHapticFeedback(collisionVelocity)
+            }
+            wasAtLeftEdge = true
+        } else {
+            wasAtLeftEdge = false
+        }
+
+        if (ballX > 1f) {
+            ballX = 1f
+            val collisionVelocity = abs(velocityX)
+            velocityX = -velocityX * bounceDampening
+            if (abs(velocityX) < velocityThreshold) velocityX = 0f
+            if (!wasAtRightEdge && collisionVelocity > 0.01f) {
+                createSparkleParticles(ballX, ballY, collisionVelocity)
+                triggerHapticFeedback(collisionVelocity)
+            }
+            wasAtRightEdge = true
+        } else {
+            wasAtRightEdge = false
+        }
+
+        if (ballY < 0f) {
+            ballY = 0f
+            val collisionVelocity = abs(velocityY)
+            velocityY = -velocityY * bounceDampening
+            if (abs(velocityY) < velocityThreshold) velocityY = 0f
+            if (!wasAtTopEdge && collisionVelocity > 0.01f) {
+                createSparkleParticles(ballX, ballY, collisionVelocity)
+                triggerHapticFeedback(collisionVelocity)
+            }
+            wasAtTopEdge = true
+        } else {
+            wasAtTopEdge = false
+        }
+
+        if (ballY > 1f) {
+            ballY = 1f
+            val collisionVelocity = abs(velocityY)
+            velocityY = -velocityY * bounceDampening
+            if (abs(velocityY) < velocityThreshold) velocityY = 0f
+            if (!wasAtBottomEdge && collisionVelocity > 0.01f) {
+                createSparkleParticles(ballX, ballY, collisionVelocity)
+                triggerHapticFeedback(collisionVelocity)
+            }
+            wasAtBottomEdge = true
+        } else {
+            wasAtBottomEdge = false
+        }
+
+        updateParticles(deltaTime)
+        updateTrail(currentTime)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -335,15 +361,13 @@ class SpaceBall : Fragment(), SensorEventListener {
     }
 
     private fun updateParticles(deltaTime: Float) {
-        particles.removeAll { particle ->
+        particles.forEach { particle ->
             particle.lifetime += deltaTime
             particle.x += particle.velocityX * deltaTime
             particle.y += particle.velocityY * deltaTime
             particle.alpha = 1f - (particle.lifetime / particle.maxLifetime)
-
-            // Remove if lifetime exceeded
-            particle.lifetime >= particle.maxLifetime
         }
+        particles.removeAll { it.lifetime >= it.maxLifetime }
     }
 
     private fun updateTrail(currentTime: Long) {
@@ -392,7 +416,7 @@ class SpaceBall : Fragment(), SensorEventListener {
             isDragging = true
             lastDragX = x
             lastDragY = y
-            lastDragTime = System.currentTimeMillis()
+            lastDragTime = SystemClock.elapsedRealtime()
             dragVelocityX = 0f
             dragVelocityY = 0f
         }
@@ -400,7 +424,7 @@ class SpaceBall : Fragment(), SensorEventListener {
 
     private fun handleDrag(x: Float, y: Float) {
         if (isDragging) {
-            val currentTime = System.currentTimeMillis()
+            val currentTime = SystemClock.elapsedRealtime()
             val deltaTime = (currentTime - lastDragTime) / 1000f
 
             if (deltaTime > 0) {
@@ -427,6 +451,10 @@ class SpaceBall : Fragment(), SensorEventListener {
             velocityX = dragVelocityX * 0.15f
             velocityY = dragVelocityY * 0.15f
 
+            if (velocityX != 0f || velocityY != 0f) {
+                AnalyticsManager.logBallThrown()
+            }
+
             // Reset all edge tracking to allow sparkles on next impact
             wasAtLeftEdge = false
             wasAtRightEdge = false
@@ -437,23 +465,22 @@ class SpaceBall : Fragment(), SensorEventListener {
 
     private fun triggerHapticFeedback(impactVelocity: Float) {
         rootView?.let { view ->
-            // Use different haptic feedback based on impact force
             if (impactVelocity > 0.02f) {
-                // Hard impact - stronger feedback
+                if (!reviewFlaggedThisVisit) {
+                    reviewFlaggedThisVisit = true
+                    AnalyticsManager.logWinAchieved(AnalyticsManager.Features.SPACE_BALL)
+                    PreferencesManager.recordWin(requireContext())
+                }
                 view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
             } else {
-                // Soft impact - lighter feedback
                 view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
             }
         }
     }
 
     private fun initializeBackgroundParticles() {
-        // Get screen dimensions from the view
-        val view = view ?: return
-        val width = view.width.toFloat()
-        val height = view.height.toFloat()
-
+        val width  = cachedWidth
+        val height = cachedHeight
         if (width <= 0 || height <= 0) return
 
         // Create 80 background particles at random positions
@@ -472,10 +499,8 @@ class SpaceBall : Fragment(), SensorEventListener {
     }
 
     private fun updateBackgroundParticles(gravityX: Float, gravityY: Float, deltaTime: Float) {
-        val view = view ?: return
-        val width = view.width.toFloat()
-        val height = view.height.toFloat()
-
+        val width  = cachedWidth
+        val height = cachedHeight
         if (width <= 0 || height <= 0) return
 
         // Update each background particle with slower movement (parallax effect)

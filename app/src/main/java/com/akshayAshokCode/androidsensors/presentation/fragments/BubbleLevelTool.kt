@@ -6,6 +6,8 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.LayoutInflater
@@ -15,7 +17,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -26,9 +27,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,12 +36,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,14 +46,18 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.akshayAshokCode.androidsensors.R
-import com.akshayAshokCode.androidsensors.presentation.views.AngleCard
-import com.akshayAshokCode.androidsensors.presentation.views.LevelBubbleView
-import com.akshayAshokCode.androidsensors.presentation.views.SensitivityModeSelector
+import com.akshayAshokCode.androidsensors.presentation.views.HUDAngleCard
+import com.akshayAshokCode.androidsensors.presentation.views.LevelBackground
+import com.akshayAshokCode.androidsensors.presentation.views.SensitivityToggle
+import com.akshayAshokCode.androidsensors.presentation.views.LevelStatusLabel
+import com.akshayAshokCode.androidsensors.presentation.views.TargetReticle
 import com.akshayAshokCode.androidsensors.presentation.views.SensorDetailsBottomSheet
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
+import com.akshayAshokCode.androidsensors.utils.PreferencesManager
 import com.akshayAshokCode.androidsensors.utils.SensorUtils
 
 class BubbleLevelTool : Fragment(), SensorEventListener {
+
     private lateinit var sensorManager: SensorManager
     private lateinit var vibrator: Vibrator
 
@@ -71,8 +71,11 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
     private var smoothedRoll = 0f
     private var smoothingFactor = 0.1f
 
+    private val mainHandler = Handler(Looper.getMainLooper())
+
     // Haptic feedback tracking
     private var wasLevel = false
+    private var reviewFlaggedThisVisit = false
 
     // Sensitivity modes
     enum class SensitivityMode(val tolerance: Float, val displayNameResId: Int) {
@@ -108,7 +111,10 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
                     isLevel = isLevel,
                     currentMode = currentMode,
                     isAvailable = isAvailable,
-                    onModeChange = { currentMode = it },
+                    onModeChange = {
+                        currentMode = it
+                        AnalyticsManager.logSensitivityChanged(it.name)
+                    },
                     showBottomSheet = showBottomSheet,
                     onBottomSheetChange = { showBottomSheet = it }
                 )
@@ -140,12 +146,14 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
+        reviewFlaggedThisVisit = false
 
         val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
-        if (accelerometer == null && magnetometer == null) {
+        if (accelerometer == null || magnetometer == null) {
             isAvailable = false
+            AnalyticsManager.logSensorUnavailable(AnalyticsManager.Features.BUBBLE_LEVEL)
             return
         }
 
@@ -157,7 +165,7 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
         sensorManager.registerListener(
             this,
             sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-            SensorManager.SENSOR_DELAY_UI
+            SensorManager.SENSOR_DELAY_GAME
         )
     }
 
@@ -166,62 +174,51 @@ class BubbleLevelTool : Fragment(), SensorEventListener {
         sensorManager.unregisterListener(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sensorManager.unregisterListener(this)
+    }
+
     override fun onSensorChanged(event: SensorEvent?) {
         when (event?.sensor?.type) {
-            Sensor.TYPE_ACCELEROMETER -> {
-                System.arraycopy(event.values, 0, accelerometerData, 0, event.values.size)
-            }
-
-            Sensor.TYPE_MAGNETIC_FIELD -> {
-                System.arraycopy(event.values, 0, magnetometerData, 0, event.values.size)
-            }
+            Sensor.TYPE_ACCELEROMETER -> System.arraycopy(event.values, 0, accelerometerData, 0, 3)
+            Sensor.TYPE_MAGNETIC_FIELD -> System.arraycopy(event.values, 0, magnetometerData, 0, 3)
+            else -> return
         }
-        updateLevelTool()
+        // Compute orientation on sensor thread — avoids allocating two snapshot FloatArrays per event
+        if (!SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerData, magnetometerData)) return
+        SensorManager.getOrientation(rotationMatrix, orientationAngles)
+        val rawPitch = Math.toDegrees(orientationAngles[1].toDouble()).toFloat()
+        val rawRoll  = Math.toDegrees(orientationAngles[2].toDouble()).toFloat()
+        mainHandler.post {
+            if (!isAdded) return@post
+            updateLevelTool(rawPitch, rawRoll)
+        }
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
 
-    private fun updateLevelTool() {
-        if (SensorManager.getRotationMatrix(
-                rotationMatrix,
-                null,
-                accelerometerData,
-                magnetometerData
-            )
-        ) {
-            SensorManager.getOrientation(rotationMatrix, orientationAngles)
+    private fun updateLevelTool(rawPitch: Float, rawRoll: Float) {
+        smoothedPitch = SensorUtils.applySmoothingFilter(smoothedPitch, rawPitch, smoothingFactor)
+        smoothedRoll  = SensorUtils.applySmoothingFilter(smoothedRoll, rawRoll, smoothingFactor)
 
-            val rawPitch = Math.toDegrees(orientationAngles[1].toDouble()).toFloat()
-            val rawRoll = Math.toDegrees(orientationAngles[2].toDouble()).toFloat()
+        val calibratedAngles = SensorUtils.calculateCalibratedAngles(
+            smoothedPitch, smoothedRoll, calibrationOffsetPitch, calibrationOffsetRoll
+        )
+        pitch = calibratedAngles.first
+        roll  = calibratedAngles.second
 
-            smoothedPitch =
-                SensorUtils.applySmoothingFilter(smoothedPitch, rawPitch, smoothingFactor)
-            smoothedRoll = SensorUtils.applySmoothingFilter(smoothedRoll, rawRoll, smoothingFactor)
-
-            val calibratedAngles = SensorUtils.calculateCalibratedAngles(
-                smoothedPitch,
-                smoothedRoll,
-                calibrationOffsetPitch,
-                calibrationOffsetRoll
-            )
-
-            // Apply calibration offset
-            pitch = calibratedAngles.first
-            roll = calibratedAngles.second
-
-            val newIsLevel = SensorUtils.isDeviceLevel(
-                pitch,
-                roll,
-                currentMode.tolerance
-            )
-
-            if (newIsLevel && !wasLevel) {
-                triggerHapticFeedback()
+        val newIsLevel = SensorUtils.isDeviceLevel(pitch, roll, currentMode.tolerance)
+        if (newIsLevel && !wasLevel) {
+            triggerHapticFeedback()
+            if (!reviewFlaggedThisVisit) {
+                reviewFlaggedThisVisit = true
+                AnalyticsManager.logWinAchieved(AnalyticsManager.Features.BUBBLE_LEVEL)
+                PreferencesManager.recordWin(requireContext())
             }
-
-            isLevel = newIsLevel
-            wasLevel = newIsLevel
         }
+        isLevel  = newIsLevel
+        wasLevel = newIsLevel
     }
 
     private fun triggerHapticFeedback() {
@@ -246,112 +243,64 @@ fun BubbleLevelToolScreen(
     showBottomSheet: Boolean,
     onBottomSheetChange: (Boolean) -> Unit
 ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        LevelBackground(modifier = Modifier.fillMaxSize())
 
-    if (!isAvailable) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            colorResource(R.color.gravity_background_start),
-                            colorResource(R.color.gravity_background_middle)
-                        )
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ) {
+        if (!isAvailable) {
             Text(
                 text = stringResource(R.string.sensor_not_available),
                 fontSize = 16.sp,
-                color = Color.White,
+                color = Color(0xFF00D4FF).copy(alpha = 0.7f),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center)
+                    .padding(32.dp)
             )
+            return@Box
         }
-    }
 
-    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            colorResource(R.color.gravity_background_start),
-                            colorResource(R.color.gravity_background_middle)
-                        )
-                    )
-                )
-                .padding(24.dp),
+                .padding(horizontal = 20.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
+            SensitivityToggle(currentMode = currentMode, onModeChange = onModeChange)
 
-            // Sensitivity Mode Selector
-            SensitivityModeSelector(
-                currentMode = currentMode,
-                onModeChange = onModeChange
-            )
+            LevelStatusLabel(isLevel = isLevel, tolerance = currentMode.tolerance)
 
-            // Status Text with tolerance info
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = if (isLevel) stringResource(R.string.level_status_level) else stringResource(R.string.level_status_not_level),
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isLevel) colorResource(R.color.gravity_low) else colorResource(R.color.gravity_high)
-                )
-                Text(
-                    text = stringResource(R.string.level_tolerance, currentMode.tolerance),
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
-            }
-
-            // Level Bubble View
-            LevelBubbleView(
-                roll = roll,
-                pitch = pitch,
-                isLevel = isLevel,
+            TargetReticle(
+                pitch     = pitch,
+                roll      = roll,
+                isLevel   = isLevel,
                 tolerance = currentMode.tolerance,
-                modifier = Modifier.size(300.dp)
+                modifier  = Modifier.size(300.dp)
             )
 
-            // Angle Displays
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier              = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                AngleCard(stringResource(R.string.angle_pitch).uppercase(), pitch)
-                AngleCard(stringResource(R.string.angle_roll).uppercase(), roll)
+                HUDAngleCard(label = "PITCH\nFWD ↔ BACK",  value = pitch, modifier = Modifier.weight(1f))
+                HUDAngleCard(label = "ROLL\nLEFT ↔ RIGHT", value = roll,  modifier = Modifier.weight(1f))
             }
 
-            // Bottom Info Section with Up Arrow
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable(
-                        indication = null, // Remove ripple effect
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.BUBBLE_LEVEL)
-                        onBottomSheetChange(true)
-                    }
-                    .padding(vertical = 8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = stringResource(R.string.view_details),
-                    tint = Color.Gray,
-                    modifier = Modifier.size(32.dp)
-                )
-                Text(
-                    text = stringResource(R.string.tap_for_sensor_details),
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
-            }
+            Text(
+                text          = "TAP  ↑  FOR SENSOR DETAILS",
+                color         = Color(0xFF00D4FF).copy(alpha = 0.35f),
+                fontSize      = 9.sp,
+                fontFamily    = androidx.compose.ui.text.font.FontFamily.Monospace,
+                letterSpacing = 1.sp,
+                modifier      = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication        = null
+                ) {
+                    AnalyticsManager.logBottomSheetOpened(AnalyticsManager.Features.BUBBLE_LEVEL)
+                    onBottomSheetChange(true)
+                }
+            )
         }
     }
 
