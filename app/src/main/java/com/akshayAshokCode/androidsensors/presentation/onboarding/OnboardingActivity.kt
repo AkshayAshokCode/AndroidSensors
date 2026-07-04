@@ -14,10 +14,7 @@ import androidx.core.graphics.toColorInt
 import com.akshayAshokCode.androidsensors.presentation.MainActivity
 import com.akshayAshokCode.androidsensors.presentation.onboarding.screens.OnboardingScreen
 import com.akshayAshokCode.androidsensors.presentation.onboarding.theme.OnboardingTheme
-import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import com.akshayAshokCode.androidsensors.utils.PreferencesManager
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.analytics
 
 class OnboardingActivity : ComponentActivity() {
 
@@ -32,8 +29,6 @@ class OnboardingActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.dark(statusBarColor),
             navigationBarStyle = SystemBarStyle.dark(navigationBarColor)
         )
-
-        AnalyticsManager.initialize(Firebase.analytics)
 
         // Check if this is the first launch
         if (!PreferencesManager.isFirstLaunch(this)) {

@@ -1,15 +1,15 @@
 package com.akshayAshokCode.androidsensors.utils
 
 import android.os.Bundle
+import com.google.firebase.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
 
 object AnalyticsManager {
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
-    fun initialize(analytics: FirebaseAnalytics) {
-        firebaseAnalytics = analytics
-    }
+    // Self-initializing: FirebaseApp is ready at process start (FirebaseInitProvider),
+    // so this is safe even when the process is restored directly into MainActivity.
+    private val firebaseAnalytics: FirebaseAnalytics by lazy { Firebase.analytics }
 
     // ── Event names ───────────────────────────────────────────────────────────
     object Events {
