@@ -7,10 +7,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -21,6 +27,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.databinding.ActivityMainBinding
+import com.akshayAshokCode.androidsensors.network.InternetAlertService
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
@@ -65,6 +72,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
+        // Opening the app means the user is back — stop the Wi-Fi Pulse ring
+        InternetAlertService.stopRinging(this)
         // Check if an update finished downloading while the app was in the background.
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
@@ -75,11 +84,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Android 15+ draws every app edge-to-edge; opt in explicitly so all versions behave the same.
+        // Dark bars match the dashboard's void background (same as OnboardingActivity).
+        val barColor = ContextCompat.getColor(this, R.color.dash_void)
+        enableEdgeToEdge(
+            statusBarStyle     = SystemBarStyle.dark(barColor),
+            navigationBarStyle = SystemBarStyle.dark(barColor)
+        )
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // The toolbar handles the status bar (fitsSystemWindows). Keep screen content clear of the
+        // navigation bar and display cutouts, so bottom buttons are never hidden behind them.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { root, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.navigationBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            binding.navHostFrag.updatePadding(left = bars.left, right = bars.right, bottom = bars.bottom)
+            ViewCompat.onApplyWindowInsets(root, insets) // keep the default handling for the rest
+        }
         toolbar = binding.activityMainToolbar
         setSupportActionBar(toolbar)
         navigationView = binding.navView

@@ -64,7 +64,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.akshayAshokCode.androidsensors.Constants
 import com.akshayAshokCode.androidsensors.data.SensorModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -104,6 +103,8 @@ fun DashboardScreen(
         animationSpec = infiniteRepeatable(tween(1920, easing = FastOutSlowInEasing), RepeatMode.Reverse, StartOffset( 840)), label = "ba2")
     val ba3 by sharedPulse.animateFloat(initialValue = 0.22f, targetValue = 0.82f,
         animationSpec = infiniteRepeatable(tween(2080, easing = FastOutSlowInEasing), RepeatMode.Reverse, StartOffset(1260)), label = "ba3")
+    val ba4 by sharedPulse.animateFloat(initialValue = 0.22f, targetValue = 0.82f,
+        animationSpec = infiniteRepeatable(tween(2240, easing = FastOutSlowInEasing), RepeatMode.Reverse, StartOffset(1680)), label = "ba4")
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -133,7 +134,7 @@ fun DashboardScreen(
                         sensor             = sensor,
                         isAvailable        = availability[sensor.id] ?: true,
                         index              = index,
-                        borderAlpha        = when (index) { 0 -> ba0; 1 -> ba1; 2 -> ba2; else -> ba3 },
+                        borderAlpha        = when (index) { 0 -> ba0; 1 -> ba1; 2 -> ba2; 3 -> ba3; else -> ba4 },
                         playEntryAnimation = playEntryAnimation,
                         onClick            = { onSensorClick(sensor) }
                     )
@@ -356,7 +357,7 @@ internal fun SensorCard(
                             overflow      = TextOverflow.Ellipsis
                         )
                         Text(
-                            text          = sensorTagline(sensor.id),
+                            text          = stringResource(sensor.taglineResId),
                             color         = Color.White.copy(alpha = 0.48f),
                             fontSize      = 9.sp,
                             letterSpacing = 0.1.sp,
@@ -396,15 +397,6 @@ internal fun SensorCard(
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
-
-/** Short tagline shown on each sensor card. */
-internal fun sensorTagline(sensorId: Int): String = when (sensorId) {
-    Constants.METAL_DETECTOR    -> "Detect magnetic fields"
-    Constants.GRAVITY_METER     -> "3-axis gravity analysis"
-    Constants.BUBBLE_LEVEL_TOOL -> "Precision leveling tool"
-    Constants.SPACE_BALL        -> "Gravity physics sim"
-    else                        -> ""
-}
 
 internal fun currentTimeString(): String {
     val c = Calendar.getInstance()
