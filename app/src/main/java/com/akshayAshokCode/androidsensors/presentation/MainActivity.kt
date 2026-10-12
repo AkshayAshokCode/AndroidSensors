@@ -64,6 +64,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        // super.onPostCreate() re-applies the activity title (the app name) to the toolbar. When the
+        // app is opened straight onto a screen (Wi-Fi Pulse notification or tile), navigation has
+        // already set that screen's title, so put it back.
+        navController.currentDestination?.label?.let { toolbar.title = it }
+    }
+
     override fun onStart() {
         super.onStart()
         appUpdateManager.registerListener(listener)

@@ -17,9 +17,11 @@ Guidance for working in this repository.
 ```bash
 ./gradlew assembleDebug          # debug APK
 ./gradlew installDebug           # install on connected device
-./gradlew bundleRelease          # release AAB (R8 minify on, full native debug symbols)
+./gradlew bundleRelease          # release AAB (R8 full mode + resource shrinking, full native debug symbols)
 ./gradlew test                   # unit tests (only the template ExampleUnitTest exists)
 ```
+
+Release builds use **R8 full mode and resource shrinking**, and debug builds don't use R8 at all. Test anything that loads classes or resources by name on a release build. To install a release build locally without the upload key, add Android Studio's signing properties pointing at `~/.android/debug.keystore` (`-Pandroid.injected.signing.store.file=… -Pandroid.injected.signing.store.password=android -Pandroid.injected.signing.key.alias=androiddebugkey -Pandroid.injected.signing.key.password=android`).
 
 `google-services.json` is required for the Firebase plugin. Sensors don't work meaningfully on the emulator, so test on a real device.
 
@@ -120,7 +122,8 @@ The README says MVVM, but the code doesn't use ViewModels. Each feature **Fragme
   - **Ring:**
     - The service stays in the foreground and plays the alarm sound (`USAGE_ALARM`, so it plays on silent), looping and getting louder, with vibration.
     - The silent `wifi_pulse_ringing` channel shows a heads-up with **Stop**. Swiping it away also stops the ring.
-    - It stops on Stop, when the app is opened (`MainActivity.onResume` calls `stopRinging`), or after 60 s. A quiet "internet is back" notification is left behind.
+    - It stops on Stop, when the notification is tapped or swiped, when the app is opened (`MainActivity.onResume` calls `stopRinging`), or after 60 s.
+    - A quiet "internet is back" notification is left behind **only** when the ring times out, since the user may have missed it. If they stopped it themselves, they've seen it, so nothing is left.
     - Under Do Not Disturb it doesn't ring and falls back to Notification. It uses `CATEGORY_STATUS`, not `CATEGORY_ALARM`, so it doesn't bypass DND.
     - There is no full-screen intent, because Android 14+ limits that to alarm and calling apps.
   - **Notification:** a single post on the high-importance `wifi_pulse_alert` channel.

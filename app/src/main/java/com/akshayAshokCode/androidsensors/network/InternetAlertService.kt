@@ -78,7 +78,8 @@ class InternetAlertService : Service() {
         }
     }
 
-    private val ringTimeout = Runnable { finishRinging() }
+    // Nobody stopped the ring: the user may have missed it, so leave a record behind
+    private val ringTimeout = Runnable { finishRinging(userSawIt = false) }
 
     override fun onCreate() {
         super.onCreate()
@@ -90,7 +91,8 @@ class InternetAlertService : Service() {
         when (intent?.action) {
             ACTION_STOP_RING, ACTION_CANCEL -> {
                 if (_isRinging.value) {
-                    finishRinging()
+                    // Stop tapped, notification tapped or swiped, or app opened: the user has seen it
+                    finishRinging(userSawIt = true)
                 } else {
                     if (intent.action == ACTION_CANCEL && armedAt != 0L) {
                         AnalyticsManager.logInternetAlertCancelled()
@@ -321,12 +323,14 @@ class InternetAlertService : Service() {
         }
     }
 
-    private fun finishRinging() {
+    private fun finishRinging(userSawIt: Boolean) {
         handler.removeCallbacksAndMessages(null)
         releaseRinging()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-        // Leave a quiet record so the user still sees it if they missed the ring
-        InternetAlertNotifications.showBack(this, ringWaited, ringLine, silent = true)
+        if (!userSawIt) {
+            // Leave a quiet record so the user still sees it if they missed the ring
+            InternetAlertNotifications.showBack(this, ringWaited, ringLine, silent = true)
+        }
         stopSelf()
     }
 
