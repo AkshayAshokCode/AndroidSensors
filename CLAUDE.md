@@ -120,7 +120,8 @@ The README says MVVM, but the code doesn't use ViewModels. Each feature **Fragme
   - **Ring:**
     - The service stays in the foreground and plays the alarm sound (`USAGE_ALARM`, so it plays on silent), looping and getting louder, with vibration.
     - The silent `wifi_pulse_ringing` channel shows a heads-up with **Stop**. Swiping it away also stops the ring.
-    - It stops on Stop, when the app is opened (`MainActivity.onResume` calls `stopRinging`), or after 60 s. A quiet "internet is back" notification is left behind.
+    - It stops on Stop, when the notification is tapped or swiped, when the app is opened (`MainActivity.onResume` calls `stopRinging`), or after 60 s.
+    - A quiet "internet is back" notification is left behind **only** when the ring times out, since the user may have missed it. If they stopped it themselves, they've seen it, so nothing is left.
     - Under Do Not Disturb it doesn't ring and falls back to Notification. It uses `CATEGORY_STATUS`, not `CATEGORY_ALARM`, so it doesn't bypass DND.
     - There is no full-screen intent, because Android 14+ limits that to alarm and calling apps.
   - **Notification:** a single post on the high-importance `wifi_pulse_alert` channel.

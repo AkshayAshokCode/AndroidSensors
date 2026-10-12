@@ -7,7 +7,7 @@
 [![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)](https://www.android.com)
 [![Language](https://img.shields.io/badge/language-Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Min SDK](https://img.shields.io/badge/minSdk-24-blue)](https://developer.android.com/tools/releases/platforms)
-[![Version](https://img.shields.io/badge/version-4.2.0-brightgreen)](https://github.com/AkshayAshokCode/AndroidSensors/releases)
+[![Version](https://img.shields.io/badge/version-4.2.1-brightgreen)](https://github.com/AkshayAshokCode/AndroidSensors/releases)
 [![License](https://img.shields.io/github/license/AkshayAshokCode/AndroidSensors)](LICENSE)
 <br/>
 [<img src="https://www.logo.wine/a/logo/Google_Play/Google_Play-Badge-Logo.wine.svg" width="180"/>](https://play.google.com/store/apps/details?id=com.akshayAshokCode.androidsensors)

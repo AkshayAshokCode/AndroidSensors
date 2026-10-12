@@ -13,8 +13,8 @@ android {
         applicationId = "com.akshayAshokCode.androidsensors"
         minSdk = 24 // Play automatic protection requires 24+
         targetSdk = 36
-        versionCode = 24
-        versionName = "4.2.0"
+        versionCode = 25
+        versionName = "4.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
