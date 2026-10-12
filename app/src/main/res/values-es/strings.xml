@@ -189,4 +189,128 @@
     <string name="update_downloaded">Se acaba de descargar una actualización.</string>
     <string name="update_restart">REINICIAR</string>
     <string name="feedback_body_template">Hola 👋\n\n¡Gracias por usar Android Sensors!\n\nPor favor comparte tus comentarios a continuación 👇\n(Escribe tus comentarios a continuación — puedes eliminar este texto)\n\n• ¿Qué estabas intentando hacer?\n• ¿Qué funcionó bien?\n• ¿Qué no funcionó o resultó confuso?\n• ¿Alguna solicitud de función?\n\n\n\n\n\n--------------------\nInformación del dispositivo:\n• Dispositivo: %1$s %2$s\n• Versión de Android: %3$s\n• Versión de la aplicación: %4$s\n--------------------</string>
+
+    <!-- Dashboard card taglines + Wi-Fi Pulse -->
+    <string name="tagline_metal_detector">Detecta campos magnéticos</string>
+    <string name="tagline_gravity_meter">Análisis de gravedad en 3 ejes</string>
+    <string name="tagline_bubble_level">Nivel de precisión</string>
+    <string name="tagline_space_ball">Simulador de física con gravedad</string>
+    <string name="tagline_wifi_pulse">Te avisa cuando vuelve internet</string>
+    <string name="wifi_pulse_not_available">El Wi-Fi no está disponible en este dispositivo</string>
+    <string name="wifi_pulse_status_online">En línea por Wi-Fi</string>
+    <string name="wifi_pulse_status_no_internet">Wi-Fi conectado · sin internet</string>
+    <string name="wifi_pulse_status_disconnected">Wi-Fi desconectado</string>
+    <string name="wifi_pulse_status_wifi_off">El Wi-Fi está apagado</string>
+    <string name="wifi_pulse_headline">Deja de revisar. Nosotros te avisamos.</string>
+    <string name="wifi_pulse_trust_1">Deja el teléfono. Nosotros vigilamos tu conexión.</string>
+    <string name="wifi_pulse_trust_4">Sin falsas alarmas. Esperamos hasta que internet funcione de verdad.</string>
+    <string name="wifi_pulse_online_hint">Estás en línea. Abre Wi-Fi Pulse cuando se caiga internet.</string>
+    <string name="wifi_pulse_armed_title">✓ Listo. Ya puedes dejar de revisar.</string>
+    <string name="wifi_pulse_armed_since">Esperando desde %1$s</string>
+    <string name="wifi_pulse_wifi_off_hint">El Wi-Fi está apagado. Actívalo para que tu teléfono pueda reconectarse.</string>
+    <string name="wifi_pulse_notifications_off_hint">Las notificaciones están desactivadas. Permítelas para que podamos avisarte cuando vuelva internet.</string>
+    <string name="wifi_pulse_button_arm">Avísame cuando vuelva</string>
+    <string name="wifi_pulse_button_cancel">Dejar de esperar</string>
+    <string name="wifi_pulse_button_online">Estás en línea</string>
+    <string name="wifi_pulse_button_wifi_settings">Activar Wi-Fi</string>
+    <string name="wifi_pulse_button_notification_settings">Permitir notificaciones</string>
+    <string name="wifi_pulse_channel_waiting">Esperando internet</string>
+    <string name="wifi_pulse_channel_waiting_desc">Se muestra mientras Wi-Fi Pulse espera a que vuelva tu internet.</string>
+    <string name="wifi_pulse_channel_alert">Internet ha vuelto</string>
+    <string name="wifi_pulse_channel_alert_desc">Te avisa cuando tu internet vuelve a funcionar.</string>
+    <string name="wifi_pulse_notif_waiting_title">Esperando internet · desde %1$s</string>
+    <string name="wifi_pulse_notif_status_disconnected">Wi-Fi desconectado · esperando…</string>
+    <string name="wifi_pulse_notif_status_no_internet">Wi-Fi conectado · comprobando internet…</string>
+    <string name="wifi_pulse_notif_cancel">Dejar de esperar</string>
+    <string name="wifi_pulse_notif_back_title">✓ ¡Internet ha vuelto!</string>
+    <string name="wifi_pulse_notif_timeout_title">Wi-Fi Pulse dejó de esperar</string>
+    <string name="wifi_pulse_notif_timeout_text">Internet seguía sin funcionar después de %1$s. Vuelve a activar la alerta si la necesitas.</string>
+    <string name="wifi_pulse_tile_label">Alerta de internet</string>
+    <string name="wifi_pulse_tile_off">Desactivada</string>
+    <string name="wifi_pulse_tile_waiting">Esperando…</string>
+    <string name="wifi_pulse_details_title">Wi-Fi Pulse</string>
+    <string name="wifi_pulse_instruction">Cuando se caiga internet, toca “Avísame cuando vuelva” y guarda el teléfono. Tu teléfono te avisará cuando internet vuelva a funcionar.</string>
+    <string-array name="wifi_pulse_waiting_lines">
+        <item>Internet se está tomando un descanso. Tú también puedes.</item>
+        <item>Buen momento para hablar con alguien cerca de ti. 🙂</item>
+        <item>Descansa la vista. Mira algo que esté lejos.</item>
+        <item>Abre una ventana. Respira aire fresco. 🌿</item>
+        <item>Bebe un poco de agua. Estírate un poco.</item>
+        <item>Sal afuera unos minutos, si puedes.</item>
+        <item>Prepara una bebida caliente. Nosotros esperamos. ☕</item>
+        <item>Llama a un amigo o a un familiar.</item>
+        <item>Lee unas páginas de un libro. 📖</item>
+        <item>No hace falta revisar el teléfono. Nosotros lo hacemos por ti.</item>
+    </string-array>
+    <string-array name="wifi_pulse_back_lines">
+        <item>Vuelves a estar en línea.</item>
+        <item>¡Hola de nuevo! Esperamos que hayas descansado. 🌿</item>
+        <item>Vuelves a estar en línea, y no tuviste que revisar ni una vez.</item>
+    </string-array>
+    <string-array name="wifi_pulse_long_outage_lines">
+        <item>Internet sigue sin funcionar. Seguimos atentos.</item>
+        <item>Seguimos esperando. ¿Por qué no das un paseo corto? 🚶</item>
+        <item>Esto está tardando. Haz algo que te guste. Nosotros te avisamos.</item>
+    </string-array>
+    <string name="wifi_pulse_details">
+    \u25BA Qué usa: La conexión Wi-Fi o de datos móviles de tu teléfono. Sin sensores y sin acceso a la ubicación.\n\n
+    \u25BA Qué conexión: Si el Wi-Fi está activado, Wi-Fi Pulse vigila el Wi-Fi, aunque no esté conectado (por ejemplo, cuando el router no tiene corriente). Si el Wi-Fi está apagado, vigila los datos móviles. Si activas o apagas el Wi-Fi mientras esperas, cambia lo que vigila.\n\n
+    \u25BA Cómo funciona: Android comprueba si tu conexión puede llegar a internet de verdad. Wi-Fi Pulse espera a que esta comprobación se cumpla, así no recibes un aviso cuando solo vuelve el router. Mientras no hay internet, pide a Android que vuelva a comprobarlo cada 30 segundos.\n\n
+    \u25BA Tres estados: En línea. Conectado sin internet (normalmente un problema de tu proveedor de internet o de la red móvil). Sin conexión (a menudo el router, un corte de luz o falta de señal móvil).\n\n
+    \u25BA Intensidad de la señal: muestra la intensidad de tu señal (en dBm), con los mismos niveles que la barra de estado de tu teléfono. Para Wi-Fi también muestra la banda (2.4, 5 o 6 GHz); para datos móviles, el nombre de tu red móvil. Si la señal es excelente pero no hay internet, el problema suele ser tu proveedor de internet.\n\n
+    \u25BA Ajustes rápidos: Añade el botón “Alerta de internet” para activar la alerta sin abrir la app.\n\n
+    \u25BA Modo Sonar: reproduce tu sonido de alarma hasta 1 minuto, aunque el teléfono esté en silencio. Toca Detener o abre la app para pararlo. Con No molestar activado, recibes una notificación normal.\n\n
+    \u25BA Batería: La alerta solo funciona mientras esperas. Se detiene cuando vuelve internet o después de 12 horas.\n\n
+    \u25BA Privacidad: Wi-Fi Pulse solo comprueba si estás conectado. Nunca ve lo que haces en internet.\n\n
+    \u25BA Algunos teléfonos detienen apps en segundo plano para ahorrar batería. Si la alerta se detiene, abre Información de la app y permite el uso en segundo plano en los ajustes de batería.
+</string>
+
+    <!-- Wi-Fi Pulse alert style -->
+    <string name="wifi_pulse_style_ring">Sonar</string>
+    <string name="wifi_pulse_style_notification">Notificación</string>
+    <string name="wifi_pulse_style_ring_hint">Suena hasta que lo detengas, hasta 1 minuto. Suena aunque el teléfono esté en silencio.</string>
+    <string name="wifi_pulse_style_notification_hint">Recibirás una notificación normal.</string>
+    <string name="wifi_pulse_armed_style_ring">Tu teléfono sonará cuando vuelva internet.</string>
+    <string name="wifi_pulse_armed_style_notification">Recibirás una notificación cuando vuelva internet.</string>
+    <string name="wifi_pulse_notif_stop">Detener</string>
+    <string name="wifi_pulse_channel_ringing">Internet ha vuelto (sonando)</string>
+    <string name="wifi_pulse_channel_ringing_desc">Se muestra mientras tu teléfono suena para avisarte que volvió internet.</string>
+
+    <!-- Wi-Fi Pulse: alert stopped by the phone in the background -->
+    <string name="wifi_pulse_stopped_resumed">Tu teléfono detuvo Wi-Fi Pulse en segundo plano. Lo volvimos a activar.</string>
+    <string name="wifi_pulse_stopped_missed">Tu teléfono detuvo Wi-Fi Pulse en segundo plano, así que no pudimos avisarte. Internet ya volvió.</string>
+    <string name="wifi_pulse_battery_hint">Para que la alerta siga funcionando, abre Información de la app y permite el uso en segundo plano en los ajustes de batería.</string>
+    <string name="wifi_pulse_button_app_settings">Abrir información de la app</string>
+    <string name="wifi_pulse_notif_stopped_text">Tu teléfono detuvo la alerta en segundo plano. Abre Wi-Fi Pulse para activarla de nuevo.</string>
+
+    <!-- Wi-Fi signal quality -->
+    <string name="wifi_pulse_signal_excellent">Excelente</string>
+    <string name="wifi_pulse_signal_good">Buena</string>
+    <string name="wifi_pulse_signal_fair">Regular</string>
+    <string name="wifi_pulse_signal_weak">Débil</string>
+
+    <!-- Wi-Fi Pulse: how long the user waited -->
+    <string name="wifi_pulse_back_after">Volvió después de %1$s</string>
+    <string name="wifi_pulse_less_than_a_minute">menos de un minuto</string>
+    <string name="wifi_pulse_hours_and_minutes">%1$s y %2$s</string>
+    <plurals name="wifi_pulse_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <plurals name="wifi_pulse_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+
+    <!-- Wi-Fi Pulse: mobile data (watched when Wi-Fi is switched off) -->
+    <string name="wifi_pulse_status_online_mobile">En línea por datos móviles</string>
+    <string name="wifi_pulse_status_no_internet_mobile">Datos móviles conectados · sin internet</string>
+    <string name="wifi_pulse_status_disconnected_mobile">Sin conexión móvil</string>
+    <string name="wifi_pulse_status_airplane">El modo avión está activado</string>
+    <string name="wifi_pulse_airplane_hint">El modo avión está activado. Desactívalo para que tu teléfono pueda usar datos móviles.</string>
+    <string name="wifi_pulse_button_airplane_settings">Desactivar modo avión</string>
+    <string name="wifi_pulse_notif_status_disconnected_mobile">Sin conexión móvil · esperando…</string>
+    <string name="wifi_pulse_notif_status_no_internet_mobile">Datos móviles conectados · comprobando internet…</string>
 </resources>

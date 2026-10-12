@@ -9,6 +9,16 @@
 
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!-- Wi-Fi Pulse: read connection state (normal permissions, no prompt) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- Wi-Fi Pulse: "notify me when it is back" alert, requested only when the user arms it -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <!-- Wi-Fi Pulse ring: keeps the CPU awake for the up-to-1-minute ring -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <queries>
         <intent>
             <action android:name="android.intent.action.SEND"/>
@@ -35,6 +45,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Runs only while the user waits for the internet to come back; stops itself -->
+        <service
+            android:name=".network.InternetAlertService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Started by the user to wait until their Wi-Fi internet connection works again, then alerts them once and stops. Times out after 12 hours." />
+        </service>
+
+        <service
+            android:name=".network.InternetAlertTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_wifi_pulse"
+            android:label="@string/wifi_pulse_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            tools:targetApi="24">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
     </application>
 
 </manifest>

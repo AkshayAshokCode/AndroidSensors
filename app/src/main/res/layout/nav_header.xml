@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/nav_header_background"
@@ -13,7 +14,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/outline_android_24"
-        android:tint="@color/dash_cyan"
+        app:tint="@color/dash_cyan"
         android:contentDescription="@string/app_name"/>
 
 

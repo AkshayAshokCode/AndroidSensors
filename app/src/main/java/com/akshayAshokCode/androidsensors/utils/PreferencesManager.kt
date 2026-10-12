@@ -14,6 +14,8 @@ object PreferencesManager {
     private const val KEY_PENDING_REVIEW       = "pending_review"
     private const val KEY_WIN_COUNT            = "win_count"
     private const val KEY_SESSION_COUNT        = "session_count"
+    private const val KEY_ALERT_ARMED_AT       = "internet_alert_armed_at"
+    private const val KEY_ALERT_RING           = "internet_alert_ring"
 
     private const val WINS_REQUIRED = 4
 
@@ -69,5 +71,25 @@ object PreferencesManager {
         val pending = prefs.getBoolean(KEY_PENDING_REVIEW, false)
         if (pending) prefs.edit { putBoolean(KEY_PENDING_REVIEW, false) }
         return pending
+    }
+
+    /** When the internet alert was armed, so a restarted service can resume the same wait. 0 = not armed. */
+    fun getAlertArmedAt(context: Context): Long =
+        getPreferences(context).getLong(KEY_ALERT_ARMED_AT, 0L)
+
+    fun setAlertArmedAt(context: Context, armedAt: Long) {
+        getPreferences(context).edit { putLong(KEY_ALERT_ARMED_AT, armedAt) }
+    }
+
+    fun clearAlertArmedAt(context: Context) {
+        getPreferences(context).edit { remove(KEY_ALERT_ARMED_AT) }
+    }
+
+    /** Wi-Fi Pulse alert style: true = ring (default), false = notification. */
+    fun isAlertRing(context: Context): Boolean =
+        getPreferences(context).getBoolean(KEY_ALERT_RING, true)
+
+    fun setAlertRing(context: Context, ring: Boolean) {
+        getPreferences(context).edit { putBoolean(KEY_ALERT_RING, ring) }
     }
 }

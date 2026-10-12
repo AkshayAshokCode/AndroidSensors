@@ -20,6 +20,7 @@ import com.akshayAshokCode.androidsensors.Constants
 import com.akshayAshokCode.androidsensors.R
 import com.akshayAshokCode.androidsensors.data.SensorModel
 import com.akshayAshokCode.androidsensors.data.SensorRepository
+import com.akshayAshokCode.androidsensors.network.InternetStatusMonitor
 import com.akshayAshokCode.androidsensors.presentation.MainActivity
 import com.akshayAshokCode.androidsensors.presentation.views.DashboardScreen
 import com.akshayAshokCode.androidsensors.utils.AnalyticsManager
@@ -57,6 +58,8 @@ class Dashboard : Fragment() {
                 Constants.GRAVITY_METER, Constants.SPACE_BALL ->
                     sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) != null ||
                     sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null
+                Constants.WIFI_PULSE ->
+                    InternetStatusMonitor.isSupported(requireContext())
                 else ->
                     sensorManager.getDefaultSensor(sensor.sensorType) != null
             }
@@ -145,6 +148,9 @@ class Dashboard : Fragment() {
             Constants.SPACE_BALL ->
                 AnalyticsManager.Features.SPACE_BALL to
                 R.id.action_dashboard_to_spaceBall
+            Constants.WIFI_PULSE ->
+                AnalyticsManager.Features.WIFI_PULSE to
+                R.id.action_dashboard_to_wifiPulse
             else -> return
         }
 

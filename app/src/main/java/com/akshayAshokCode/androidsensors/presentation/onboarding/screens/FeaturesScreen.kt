@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Architecture
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SportsBaseball
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,6 +77,12 @@ private val features = listOf(
         name    = "SPACE BALL",
         useCase = "Physics simulation — tilt to roll, drag to throw",
         tag     = "GRAVITY SENSOR"
+    ),
+    FeatureData(
+        icon    = Icons.Filled.Wifi,
+        name    = "WI-FI PULSE",
+        useCase = "Get an alert when your internet works again",
+        tag     = "WI-FI"
     )
 )
 
@@ -100,7 +107,7 @@ fun FeaturesScreen() {
         Spacer(Modifier.height(6.dp))
 
         Text(
-            text          = "4 TOOLS · 1 DEVICE",
+            text          = "5 TOOLS · 1 DEVICE",
             color         = FCyan,
             fontSize      = 10.sp,
             fontFamily    = FontFamily.Monospace,

@@ -7,7 +7,7 @@
 [![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)](https://www.android.com)
 [![Language](https://img.shields.io/badge/language-Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Min SDK](https://img.shields.io/badge/minSdk-23-blue)](https://developer.android.com/tools/releases/platforms)
-[![Version](https://img.shields.io/badge/version-4.0.1-brightgreen)](https://github.com/AkshayAshokCode/AndroidSensors/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-brightgreen)](https://github.com/AkshayAshokCode/AndroidSensors/releases)
 [![License](https://img.shields.io/github/license/AkshayAshokCode/AndroidSensors)](LICENSE)
 <br/>
 [<img src="https://www.logo.wine/a/logo/Google_Play/Google_Play-Badge-Logo.wine.svg" width="180"/>](https://play.google.com/store/apps/details?id=com.akshayAshokCode.androidsensors)
@@ -32,8 +32,9 @@ Whether you're a hobbyist, student, DIY builder, or developer curious about hard
 | ⚖️ **Gravity Meter** | Accelerometer + Gravity | Real-time 3-axis vector, live graph, directional arrow |
 | 📐 **Bubble Level** | Accelerometer | Multi-sensitivity modes, haptic feedback, pitch & roll readout |
 | 🌐 **Space Ball** | Gravity + Accelerometer | Immersive 3D gravity visualization |
+| 📶 **Wi-Fi Pulse** | Wi-Fi / mobile data connection | Alerts you when the internet is back (ring or notification), live signal strength, Quick Settings tile |
 
-All tools work **100% offline** with no permissions beyond sensor access.
+The sensor tools work **100% offline** and need no permissions. Wi-Fi Pulse asks for notification access only when you turn on its alert, and never reads your location or what you do online.
 
 ---
 
@@ -91,6 +92,7 @@ https://github.com/user-attachments/assets/a9048e7c-2c38-4c3a-9c96-5fae4db75bd5
 - [x] Magnetic Field Sensor
 - [x] Accelerometer
 - [x] Space Ball
+- [x] Wi-Fi Pulse (internet-is-back alert)
 
 ### Coming Soon
 - [ ] Gyroscope

@@ -201,4 +201,152 @@
     <string name="update_downloaded">An update has just been downloaded.</string>
     <string name="update_restart">RESTART</string>
     <string name="feedback_body_template">Hi 👋\n\nThanks for using Android Sensors!\n\nPlease share your feedback below 👇\n(Write your feedback below — you can delete this text)\n\n• What were you trying to do?\n• What worked well?\n• What didn\'t work or felt confusing?\n• Any feature request?\n\n\n\n\n\n--------------------\nDevice Info:\n• Device: %1$s %2$s\n• Android Version: %3$s\n• App Version: %4$s\n--------------------</string>
+
+    <!-- Dashboard card taglines -->
+    <string name="tagline_metal_detector">Detect magnetic fields</string>
+    <string name="tagline_gravity_meter">3-axis gravity analysis</string>
+    <string name="tagline_bubble_level">Precision leveling tool</string>
+    <string name="tagline_space_ball">Gravity physics sim</string>
+    <string name="tagline_wifi_pulse">Alerts you when the internet is back</string>
+
+    <!-- ═══ Wi-Fi Pulse ═══
+         Translator notes: "Wi-Fi Pulse" is the feature name — do not translate it.
+         Users in 150+ countries read these lines, many in English as a second language.
+         Keep sentences short and literal. Adapt the meaning; avoid idioms, slang and puns. -->
+    <string name="sensor_name_wifi_pulse" translatable="false">Wi-Fi Pulse</string>
+    <string name="nav_label_wifi_pulse" translatable="false">Wi-Fi Pulse</string>
+    <string name="wifi_pulse_not_available">Wi-Fi is not available on this device</string>
+
+    <!-- Live status (shown in capitals on screen) -->
+    <string name="wifi_pulse_status_online">Online on Wi-Fi</string>
+    <string name="wifi_pulse_status_no_internet">Wi-Fi connected · no internet</string>
+    <string name="wifi_pulse_status_disconnected">Wi-Fi disconnected</string>
+    <string name="wifi_pulse_status_wifi_off">Wi-Fi is off</string>
+
+    <!-- Screen messages -->
+    <string name="wifi_pulse_headline">Stop checking. We will tell you.</string>
+    <string name="wifi_pulse_trust_1">Put your phone down. We will watch your connection for you.</string>
+    <string name="wifi_pulse_trust_4">No false alerts. We wait until the internet really works.</string>
+    <string name="wifi_pulse_online_hint">You are online. Open Wi-Fi Pulse when the internet goes down.</string>
+    <string name="wifi_pulse_armed_title">✓ Done. You can stop checking now.</string>
+    <!-- %1$s = time, e.g. 10:42 -->
+    <string name="wifi_pulse_armed_since">Waiting since %1$s</string>
+    <string name="wifi_pulse_wifi_off_hint">Wi-Fi is off. Turn it on so your phone can reconnect.</string>
+    <string name="wifi_pulse_notifications_off_hint">Notifications are off. Allow them so we can tell you when the internet is back.</string>
+
+    <!-- Buttons (shown in capitals) -->
+    <string name="wifi_pulse_button_arm">Notify me when it is back</string>
+    <string name="wifi_pulse_button_cancel">Stop waiting</string>
+    <string name="wifi_pulse_button_online">You are online</string>
+    <string name="wifi_pulse_button_wifi_settings">Turn on Wi-Fi</string>
+    <string name="wifi_pulse_button_notification_settings">Allow notifications</string>
+
+    <!-- Notifications -->
+    <string name="wifi_pulse_channel_waiting">Waiting for the internet</string>
+    <string name="wifi_pulse_channel_waiting_desc">Shown while Wi-Fi Pulse waits for your internet to come back.</string>
+    <string name="wifi_pulse_channel_alert">Internet is back</string>
+    <string name="wifi_pulse_channel_alert_desc">Alerts you when your internet works again.</string>
+    <!-- %1$s = time, e.g. 10:42 -->
+    <string name="wifi_pulse_notif_waiting_title">Waiting for the internet · since %1$s</string>
+    <string name="wifi_pulse_notif_status_disconnected">Wi-Fi disconnected · waiting…</string>
+    <string name="wifi_pulse_notif_status_no_internet">Wi-Fi connected · checking internet…</string>
+    <string name="wifi_pulse_notif_cancel">Stop waiting</string>
+    <string name="wifi_pulse_notif_back_title">✓ The internet is back!</string>
+    <string name="wifi_pulse_notif_timeout_title">Wi-Fi Pulse stopped waiting</string>
+    <!-- %1$s = a duration such as "12 hours" -->
+    <string name="wifi_pulse_notif_timeout_text">The internet was still down after %1$s. Turn the alert on again if you need it.</string>
+
+    <!-- Quick Settings tile (keep very short) -->
+    <string name="wifi_pulse_tile_label">Internet alert</string>
+    <string name="wifi_pulse_tile_off">Off</string>
+    <string name="wifi_pulse_tile_waiting">Waiting…</string>
+
+    <!-- Shown one at a time while waiting -->
+    <string-array name="wifi_pulse_waiting_lines">
+        <item>The internet is taking a break. You can take one too.</item>
+        <item>Good time to talk to someone near you. 🙂</item>
+        <item>Rest your eyes. Look at something far away.</item>
+        <item>Open a window. Get some fresh air. 🌿</item>
+        <item>Drink some water. Stretch a little.</item>
+        <item>Step outside for a few minutes, if you can.</item>
+        <item>Make a warm drink. We will wait for you. ☕</item>
+        <item>Call a friend or a family member.</item>
+        <item>Read a few pages of a book. 📖</item>
+        <item>No need to check your phone. We are checking for you.</item>
+    </string-array>
+    <string-array name="wifi_pulse_back_lines">
+        <item>You are online again.</item>
+        <item>Welcome back! We hope you had a nice break. 🌿</item>
+        <item>You are online again, and you did not have to check once.</item>
+    </string-array>
+    <!-- Used after waiting for more than 1 hour -->
+    <string-array name="wifi_pulse_long_outage_lines">
+        <item>The internet is still down. We are still watching.</item>
+        <item>Still waiting. Maybe go for a short walk? 🚶</item>
+        <item>This is taking a while. Do something you enjoy. We will tell you.</item>
+    </string-array>
+
+    <!-- Details bottom sheet -->
+    <string name="wifi_pulse_details_title">Wi-Fi Pulse</string>
+    <string name="wifi_pulse_instruction">When the internet goes down, tap “Notify me when it is back” and put your phone away. Your phone will alert you when the internet works again.</string>
+    <string name="wifi_pulse_details">
+    \u25BA What it uses: Your phone\'s Wi-Fi or mobile data connection. No sensors and no location access.\n\n
+    \u25BA Which connection: If Wi-Fi is on, Wi-Fi Pulse watches Wi-Fi, even when Wi-Fi is not connected (for example, when the router has no power). If Wi-Fi is off, it watches mobile data. Switching Wi-Fi on or off while waiting changes what it watches.\n\n
+    \u25BA How it works: Android checks if your connection can really reach the internet. Wi-Fi Pulse waits for this check to pass, so you are not alerted when only the router comes back. While there is no internet, it asks Android to check again every 30 seconds.\n\n
+    \u25BA Three states: Online. Connected with no internet (usually a problem with your internet provider or mobile network). Not connected (often the router, a power cut, or no mobile signal).\n\n
+    \u25BA Signal strength: shows how strong your signal is (in dBm), using the same levels as your phone\'s status bar. For Wi-Fi it also shows the band (2.4, 5 or 6 GHz); for mobile data, your network name. If the signal is excellent but there is no internet, the problem is usually your internet provider.\n\n
+    \u25BA Quick Settings: Add the “Internet alert” tile to turn the alert on without opening the app.\n\n
+    \u25BA Ring mode: plays your alarm sound for up to 1 minute, even on silent. Tap Stop or open the app to stop it. During Do Not Disturb you get a normal notification instead.\n\n
+    \u25BA Battery: The alert runs only while you wait. It stops when the internet is back, or after 12 hours.\n\n
+    \u25BA Privacy: Wi-Fi Pulse only checks if you are connected. It never sees what you do online.\n\n
+    \u25BA Some phones stop apps in the background to save battery. If the alert stops, open App info and allow background use in the battery settings.
+</string>
+
+    <!-- Wi-Fi Pulse alert style -->
+    <string name="wifi_pulse_style_ring">Ring</string>
+    <string name="wifi_pulse_style_notification">Notification</string>
+    <string name="wifi_pulse_style_ring_hint">Rings until you stop it, up to 1 minute. It rings even on silent.</string>
+    <string name="wifi_pulse_style_notification_hint">You will get a normal notification.</string>
+    <string name="wifi_pulse_armed_style_ring">Your phone will ring when the internet is back.</string>
+    <string name="wifi_pulse_armed_style_notification">You will get a notification when the internet is back.</string>
+    <string name="wifi_pulse_notif_stop">Stop</string>
+    <string name="wifi_pulse_channel_ringing">Internet is back (ringing)</string>
+    <string name="wifi_pulse_channel_ringing_desc">Shown while your phone rings to tell you the internet is back.</string>
+
+    <!-- Wi-Fi Pulse: alert stopped by the phone in the background -->
+    <string name="wifi_pulse_stopped_resumed">Your phone stopped Wi-Fi Pulse in the background. We turned it back on.</string>
+    <string name="wifi_pulse_stopped_missed">Your phone stopped Wi-Fi Pulse in the background, so we could not alert you. The internet is back now.</string>
+    <string name="wifi_pulse_battery_hint">To keep the alert running, open App info and allow background use in the battery settings.</string>
+    <string name="wifi_pulse_button_app_settings">Open App info</string>
+    <string name="wifi_pulse_notif_stopped_text">Your phone stopped the alert in the background. Open Wi-Fi Pulse to turn it on again.</string>
+
+    <!-- Wi-Fi signal quality (shown in capitals next to the dBm value) -->
+    <string name="wifi_pulse_signal_excellent">Excellent</string>
+    <string name="wifi_pulse_signal_good">Good</string>
+    <string name="wifi_pulse_signal_fair">Fair</string>
+    <string name="wifi_pulse_signal_weak">Weak</string>
+
+    <!-- Wi-Fi Pulse "internet is back" alert: how long the user waited.
+         %1$s in wifi_pulse_back_after is a duration like "42 minutes" or "1 hour 5 minutes". -->
+    <string name="wifi_pulse_back_after">Back after %1$s</string>
+    <string name="wifi_pulse_less_than_a_minute">less than a minute</string>
+    <string name="wifi_pulse_hours_and_minutes">%1$s %2$s</string>
+    <plurals name="wifi_pulse_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="wifi_pulse_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <!-- Wi-Fi Pulse: mobile data (watched when Wi-Fi is switched off) -->
+    <string name="wifi_pulse_status_online_mobile">Online on mobile data</string>
+    <string name="wifi_pulse_status_no_internet_mobile">Mobile data connected · no internet</string>
+    <string name="wifi_pulse_status_disconnected_mobile">No mobile connection</string>
+    <string name="wifi_pulse_status_airplane">Airplane mode is on</string>
+    <string name="wifi_pulse_airplane_hint">Airplane mode is on. Turn it off so your phone can connect to mobile data.</string>
+    <string name="wifi_pulse_button_airplane_settings">Turn off airplane mode</string>
+    <string name="wifi_pulse_notif_status_disconnected_mobile">No mobile connection · waiting…</string>
+    <string name="wifi_pulse_notif_status_no_internet_mobile">Mobile data connected · checking internet…</string>
 </resources>

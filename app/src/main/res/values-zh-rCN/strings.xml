@@ -189,4 +189,124 @@
     <string name="update_downloaded">更新已下载完成。</string>
     <string name="update_restart">重启</string>
     <string name="feedback_body_template">您好 👋\n\n感谢使用 Android Sensors！\n\n请在下方分享您的反馈 👇\n（在下方写下您的反馈 — 您可以删除此文本）\n\n• 您想做什么？\n• 什么运行良好？\n• 什么不起作用或令人困惑？\n• 有什么功能请求吗？\n\n\n\n\n\n--------------------\n设备信息：\n• 设备：%1$s %2$s\n• Android 版本：%3$s\n• 应用版本：%4$s\n--------------------</string>
+
+    <!-- Dashboard card taglines + Wi-Fi Pulse -->
+    <string name="tagline_metal_detector">检测磁场</string>
+    <string name="tagline_gravity_meter">三轴重力分析</string>
+    <string name="tagline_bubble_level">精准水平仪</string>
+    <string name="tagline_space_ball">重力物理模拟</string>
+    <string name="tagline_wifi_pulse">网络恢复时提醒你</string>
+    <string name="wifi_pulse_not_available">此设备不支持 Wi-Fi</string>
+    <string name="wifi_pulse_status_online">已通过 Wi-Fi 在线</string>
+    <string name="wifi_pulse_status_no_internet">Wi-Fi 已连接 · 无法上网</string>
+    <string name="wifi_pulse_status_disconnected">Wi-Fi 已断开</string>
+    <string name="wifi_pulse_status_wifi_off">Wi-Fi 已关闭</string>
+    <string name="wifi_pulse_headline">不用一直查看，我们会通知你。</string>
+    <string name="wifi_pulse_trust_1">放下手机吧，我们帮你留意网络连接。</string>
+    <string name="wifi_pulse_trust_4">不会误报。我们会等到网络真正可用。</string>
+    <string name="wifi_pulse_online_hint">你已在线。网络断开时再打开 Wi-Fi Pulse。</string>
+    <string name="wifi_pulse_armed_title">✓ 设置好了。现在可以不用查看了。</string>
+    <string name="wifi_pulse_armed_since">从 %1$s 开始等待</string>
+    <string name="wifi_pulse_wifi_off_hint">Wi-Fi 已关闭。请打开 Wi-Fi，让手机可以重新连接。</string>
+    <string name="wifi_pulse_notifications_off_hint">通知已关闭。请允许通知，以便网络恢复时我们能通知你。</string>
+    <string name="wifi_pulse_button_arm">网络恢复时通知我</string>
+    <string name="wifi_pulse_button_cancel">停止等待</string>
+    <string name="wifi_pulse_button_online">你已在线</string>
+    <string name="wifi_pulse_button_wifi_settings">打开 Wi-Fi</string>
+    <string name="wifi_pulse_button_notification_settings">允许通知</string>
+    <string name="wifi_pulse_channel_waiting">等待网络恢复</string>
+    <string name="wifi_pulse_channel_waiting_desc">Wi-Fi Pulse 等待网络恢复时显示。</string>
+    <string name="wifi_pulse_channel_alert">网络已恢复</string>
+    <string name="wifi_pulse_channel_alert_desc">网络重新可用时提醒你。</string>
+    <string name="wifi_pulse_notif_waiting_title">等待网络恢复 · 开始于 %1$s</string>
+    <string name="wifi_pulse_notif_status_disconnected">Wi-Fi 已断开 · 等待中…</string>
+    <string name="wifi_pulse_notif_status_no_internet">Wi-Fi 已连接 · 正在检查网络…</string>
+    <string name="wifi_pulse_notif_cancel">停止等待</string>
+    <string name="wifi_pulse_notif_back_title">✓ 网络已恢复！</string>
+    <string name="wifi_pulse_notif_timeout_title">Wi-Fi Pulse 已停止等待</string>
+    <string name="wifi_pulse_notif_timeout_text">%1$s后网络仍未恢复。如有需要，请重新开启提醒。</string>
+    <string name="wifi_pulse_tile_label">网络提醒</string>
+    <string name="wifi_pulse_tile_off">关闭</string>
+    <string name="wifi_pulse_tile_waiting">等待中…</string>
+    <string name="wifi_pulse_details_title">Wi-Fi Pulse</string>
+    <string name="wifi_pulse_instruction">网络断开时，点按“网络恢复时通知我”，然后放下手机。网络恢复时，手机会提醒你。</string>
+    <string-array name="wifi_pulse_waiting_lines">
+        <item>网络在休息，你也可以休息一下。</item>
+        <item>正好和身边的人聊聊天。🙂</item>
+        <item>让眼睛休息一下，看看远处。</item>
+        <item>打开窗户，呼吸一下新鲜空气。🌿</item>
+        <item>喝点水，活动一下身体。</item>
+        <item>如果方便，出去走几分钟。</item>
+        <item>泡杯热饮吧，我们帮你等着。☕</item>
+        <item>给朋友或家人打个电话。</item>
+        <item>读几页书吧。📖</item>
+        <item>不用看手机，我们在帮你检查。</item>
+    </string-array>
+    <string-array name="wifi_pulse_back_lines">
+        <item>你已重新在线。</item>
+        <item>欢迎回来！希望你休息得不错。🌿</item>
+        <item>你已重新在线，而且一次都不用查看。</item>
+    </string-array>
+    <string-array name="wifi_pulse_long_outage_lines">
+        <item>网络仍未恢复，我们还在等待。</item>
+        <item>还在等待。要不要去散散步？🚶</item>
+        <item>需要一些时间。做点你喜欢的事吧，我们会通知你。</item>
+    </string-array>
+    <string name="wifi_pulse_details">
+    \u25BA 使用什么：手机的 Wi-Fi 或移动数据连接。不使用传感器，也不需要位置权限。\n\n
+    \u25BA 监测哪个连接：如果 Wi-Fi 已开启，Wi-Fi Pulse 会监测 Wi-Fi，即使 Wi-Fi 未连接（例如路由器断电时）。如果 Wi-Fi 已关闭，则监测移动数据。等待期间开启或关闭 Wi-Fi，会切换监测的连接。\n\n
+    \u25BA 工作原理：Android 会检查你的连接是否真的能访问互联网。Wi-Fi Pulse 会等到检查通过，所以只有路由器恢复时不会提醒你。没有网络时，它会每 30 秒请 Android 重新检查一次。\n\n
+    \u25BA 三种状态：在线。已连接但无法上网（通常是网络服务商或移动网络的问题）。未连接（通常是路由器、停电或没有移动信号）。\n\n
+    \u25BA 信号强度：显示信号强度（单位 dBm），与手机状态栏使用相同的等级。Wi-Fi 还会显示频段（2.4、5 或 6 GHz）；移动数据会显示运营商名称。如果信号极好但无法上网，通常是网络服务商的问题。\n\n
+    \u25BA 快捷设置：添加“网络提醒”图块，无需打开应用即可开启提醒。\n\n
+    \u25BA 响铃模式：播放你的闹钟铃声，最长 1 分钟，静音模式下也会响。点按“停止”或打开应用即可停止。开启勿扰模式时，你会收到普通通知。\n\n
+    \u25BA 电量：提醒只在你等待时运行。网络恢复后或 12 小时后会自动停止。\n\n
+    \u25BA 隐私：Wi-Fi Pulse 只检查你是否已连接，从不查看你在网上做什么。\n\n
+    \u25BA 部分手机会为了省电在后台停止应用。如果提醒停止了，请打开应用信息，并在电池设置中允许后台运行。
+</string>
+
+    <!-- Wi-Fi Pulse alert style -->
+    <string name="wifi_pulse_style_ring">响铃</string>
+    <string name="wifi_pulse_style_notification">通知</string>
+    <string name="wifi_pulse_style_ring_hint">响铃直到你停止，最长 1 分钟。静音模式下也会响。</string>
+    <string name="wifi_pulse_style_notification_hint">你会收到一条普通通知。</string>
+    <string name="wifi_pulse_armed_style_ring">网络恢复时，手机会响铃。</string>
+    <string name="wifi_pulse_armed_style_notification">网络恢复时，你会收到通知。</string>
+    <string name="wifi_pulse_notif_stop">停止</string>
+    <string name="wifi_pulse_channel_ringing">网络已恢复（响铃中）</string>
+    <string name="wifi_pulse_channel_ringing_desc">手机响铃提醒网络已恢复时显示。</string>
+
+    <!-- Wi-Fi Pulse: alert stopped by the phone in the background -->
+    <string name="wifi_pulse_stopped_resumed">你的手机在后台停止了 Wi-Fi Pulse。我们已重新开启。</string>
+    <string name="wifi_pulse_stopped_missed">你的手机在后台停止了 Wi-Fi Pulse，所以我们没能提醒你。网络现在已恢复。</string>
+    <string name="wifi_pulse_battery_hint">为了让提醒保持运行，请打开应用信息，并在电池设置中允许后台运行。</string>
+    <string name="wifi_pulse_button_app_settings">打开应用信息</string>
+    <string name="wifi_pulse_notif_stopped_text">你的手机在后台停止了提醒。请打开 Wi-Fi Pulse 重新开启。</string>
+
+    <!-- Wi-Fi signal quality -->
+    <string name="wifi_pulse_signal_excellent">极好</string>
+    <string name="wifi_pulse_signal_good">良好</string>
+    <string name="wifi_pulse_signal_fair">一般</string>
+    <string name="wifi_pulse_signal_weak">弱</string>
+
+    <!-- Wi-Fi Pulse: how long the user waited -->
+    <string name="wifi_pulse_back_after">%1$s后恢复</string>
+    <string name="wifi_pulse_less_than_a_minute">不到 1 分钟</string>
+    <string name="wifi_pulse_hours_and_minutes">%1$s%2$s</string>
+    <plurals name="wifi_pulse_minutes">
+        <item quantity="other">%d 分钟</item>
+    </plurals>
+    <plurals name="wifi_pulse_hours">
+        <item quantity="other">%d 小时</item>
+    </plurals>
+
+    <!-- Wi-Fi Pulse: mobile data (watched when Wi-Fi is switched off) -->
+    <string name="wifi_pulse_status_online_mobile">已通过移动数据在线</string>
+    <string name="wifi_pulse_status_no_internet_mobile">移动数据已连接 · 无法上网</string>
+    <string name="wifi_pulse_status_disconnected_mobile">无移动网络连接</string>
+    <string name="wifi_pulse_status_airplane">飞行模式已开启</string>
+    <string name="wifi_pulse_airplane_hint">飞行模式已开启。请关闭飞行模式，让手机可以使用移动数据。</string>
+    <string name="wifi_pulse_button_airplane_settings">关闭飞行模式</string>
+    <string name="wifi_pulse_notif_status_disconnected_mobile">无移动网络连接 · 等待中…</string>
+    <string name="wifi_pulse_notif_status_no_internet_mobile">移动数据已连接 · 正在检查网络…</string>
 </resources>

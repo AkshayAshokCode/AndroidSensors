@@ -189,4 +189,126 @@
     <string name="update_downloaded">एक अपडेट डाउनलोड हो गया है।</string>
     <string name="update_restart">पुनः आरंभ करें</string>
     <string name="feedback_body_template">नमस्ते 👋\n\nAndroid Sensors का उपयोग करने के लिए धन्यवाद!\n\nकृपया नीचे अपनी प्रतिक्रिया साझा करें 👇\n(नीचे अपनी प्रतिक्रिया लिखें — आप इस टेक्स्ट को हटा सकते हैं)\n\n• आप क्या करने की कोशिश कर रहे थे?\n• क्या अच्छा काम किया?\n• क्या काम नहीं किया या भ्रमित करने वाला था?\n• कोई फीचर अनुरोध?\n\n\n\n\n\n--------------------\nडिवाइस जानकारी:\n• डिवाइस: %1$s %2$s\n• Android संस्करण: %3$s\n• ऐप संस्करण: %4$s\n--------------------</string>
+
+    <!-- Dashboard card taglines + Wi-Fi Pulse -->
+    <string name="tagline_metal_detector">चुंबकीय क्षेत्र का पता लगाएं</string>
+    <string name="tagline_gravity_meter">3-अक्ष गुरुत्वाकर्षण विश्लेषण</string>
+    <string name="tagline_bubble_level">सटीक लेवल टूल</string>
+    <string name="tagline_space_ball">गुरुत्वाकर्षण भौतिकी सिमुलेशन</string>
+    <string name="tagline_wifi_pulse">इंटरनेट वापस आने पर सूचना देता है</string>
+    <string name="wifi_pulse_not_available">इस डिवाइस पर वाई-फ़ाई उपलब्ध नहीं है</string>
+    <string name="wifi_pulse_status_online">वाई-फ़ाई पर ऑनलाइन</string>
+    <string name="wifi_pulse_status_no_internet">वाई-फ़ाई कनेक्ट है · इंटरनेट नहीं</string>
+    <string name="wifi_pulse_status_disconnected">वाई-फ़ाई डिस्कनेक्ट है</string>
+    <string name="wifi_pulse_status_wifi_off">वाई-फ़ाई बंद है</string>
+    <string name="wifi_pulse_headline">बार-बार चेक करना बंद करें। हम आपको बताएंगे।</string>
+    <string name="wifi_pulse_trust_1">फ़ोन रख दें। हम आपके कनेक्शन पर नज़र रखेंगे।</string>
+    <string name="wifi_pulse_trust_4">कोई गलत अलर्ट नहीं। हम तब तक इंतज़ार करते हैं जब तक इंटरनेट सच में काम न करे।</string>
+    <string name="wifi_pulse_online_hint">आप ऑनलाइन हैं। जब इंटरनेट बंद हो, तब Wi-Fi Pulse खोलें।</string>
+    <string name="wifi_pulse_armed_title">✓ हो गया। अब आपको चेक करने की ज़रूरत नहीं।</string>
+    <string name="wifi_pulse_armed_since">%1$s से इंतज़ार जारी</string>
+    <string name="wifi_pulse_wifi_off_hint">वाई-फ़ाई बंद है। इसे चालू करें ताकि आपका फ़ोन फिर से कनेक्ट हो सके।</string>
+    <string name="wifi_pulse_notifications_off_hint">सूचनाएं बंद हैं। इन्हें अनुमति दें ताकि इंटरनेट वापस आने पर हम आपको बता सकें।</string>
+    <string name="wifi_pulse_button_arm">इंटरनेट वापस आने पर बताएं</string>
+    <string name="wifi_pulse_button_cancel">इंतज़ार बंद करें</string>
+    <string name="wifi_pulse_button_online">आप ऑनलाइन हैं</string>
+    <string name="wifi_pulse_button_wifi_settings">वाई-फ़ाई चालू करें</string>
+    <string name="wifi_pulse_button_notification_settings">सूचनाओं की अनुमति दें</string>
+    <string name="wifi_pulse_channel_waiting">इंटरनेट का इंतज़ार</string>
+    <string name="wifi_pulse_channel_waiting_desc">जब Wi-Fi Pulse आपके इंटरनेट के वापस आने का इंतज़ार करता है, तब दिखाई देती है।</string>
+    <string name="wifi_pulse_channel_alert">इंटरनेट वापस आ गया</string>
+    <string name="wifi_pulse_channel_alert_desc">आपका इंटरनेट फिर से चलने पर आपको सूचना देता है।</string>
+    <string name="wifi_pulse_notif_waiting_title">इंटरनेट का इंतज़ार · %1$s से</string>
+    <string name="wifi_pulse_notif_status_disconnected">वाई-फ़ाई डिस्कनेक्ट है · इंतज़ार जारी…</string>
+    <string name="wifi_pulse_notif_status_no_internet">वाई-फ़ाई कनेक्ट है · इंटरनेट जांच रहे हैं…</string>
+    <string name="wifi_pulse_notif_cancel">इंतज़ार बंद करें</string>
+    <string name="wifi_pulse_notif_back_title">✓ इंटरनेट वापस आ गया!</string>
+    <string name="wifi_pulse_notif_timeout_title">Wi-Fi Pulse ने इंतज़ार बंद कर दिया</string>
+    <string name="wifi_pulse_notif_timeout_text">%1$s बाद भी इंटरनेट बंद था। ज़रूरत हो तो अलर्ट फिर से चालू करें।</string>
+    <string name="wifi_pulse_tile_label">इंटरनेट अलर्ट</string>
+    <string name="wifi_pulse_tile_off">बंद</string>
+    <string name="wifi_pulse_tile_waiting">इंतज़ार…</string>
+    <string name="wifi_pulse_details_title">Wi-Fi Pulse</string>
+    <string name="wifi_pulse_instruction">जब इंटरनेट बंद हो जाए, तो “इंटरनेट वापस आने पर बताएं” पर टैप करें और फ़ोन रख दें। इंटरनेट फिर से चलने पर आपका फ़ोन आपको अलर्ट करेगा।</string>
+    <string-array name="wifi_pulse_waiting_lines">
+        <item>इंटरनेट थोड़ा आराम कर रहा है। आप भी आराम कर सकते हैं।</item>
+        <item>पास बैठे किसी से बात करने का अच्छा समय है। 🙂</item>
+        <item>आंखों को आराम दें। किसी दूर की चीज़ को देखें।</item>
+        <item>खिड़की खोलें। थोड़ी ताज़ी हवा लें। 🌿</item>
+        <item>थोड़ा पानी पिएं। थोड़ा स्ट्रेच करें।</item>
+        <item>हो सके तो कुछ मिनट बाहर टहल आएं।</item>
+        <item>कुछ गरम पीने के लिए बनाएं। हम इंतज़ार करेंगे। ☕</item>
+        <item>किसी दोस्त या परिवार के सदस्य को फ़ोन करें।</item>
+        <item>किसी किताब के कुछ पन्ने पढ़ें। 📖</item>
+        <item>फ़ोन चेक करने की ज़रूरत नहीं। हम आपके लिए चेक कर रहे हैं।</item>
+    </string-array>
+    <string-array name="wifi_pulse_back_lines">
+        <item>आप फिर से ऑनलाइन हैं।</item>
+        <item>वापसी पर स्वागत है! उम्मीद है आपका ब्रेक अच्छा रहा। 🌿</item>
+        <item>आप फिर से ऑनलाइन हैं, और आपको एक बार भी चेक नहीं करना पड़ा।</item>
+    </string-array>
+    <string-array name="wifi_pulse_long_outage_lines">
+        <item>इंटरनेट अभी भी बंद है। हम अभी भी नज़र रखे हुए हैं।</item>
+        <item>अभी भी इंतज़ार है। थोड़ी देर टहल आएं? 🚶</item>
+        <item>इसमें समय लग रहा है। कुछ ऐसा करें जो आपको पसंद हो। हम आपको बताएंगे।</item>
+    </string-array>
+    <string name="wifi_pulse_details">
+    \u25BA यह क्या इस्तेमाल करता है: आपके फ़ोन का वाई-फ़ाई या मोबाइल डेटा कनेक्शन। कोई सेंसर नहीं और लोकेशन की कोई अनुमति नहीं।\n\n
+    \u25BA कौन सा कनेक्शन: अगर वाई-फ़ाई चालू है, तो Wi-Fi Pulse वाई-फ़ाई पर नज़र रखता है, भले ही वह कनेक्ट न हो (जैसे जब राउटर में बिजली न हो)। अगर वाई-फ़ाई बंद है, तो यह मोबाइल डेटा पर नज़र रखता है। इंतज़ार के दौरान वाई-फ़ाई चालू या बंद करने पर यह बदल जाता है।\n\n
+    \u25BA यह कैसे काम करता है: Android जांचता है कि आपका कनेक्शन सच में इंटरनेट तक पहुंच सकता है या नहीं। Wi-Fi Pulse इस जांच के सफल होने का इंतज़ार करता है, ताकि सिर्फ़ राउटर वापस आने पर आपको अलर्ट न मिले। जब तक इंटरनेट नहीं होता, यह हर 30 सेकंड में Android से फिर से जांचने को कहता है।\n\n
+    \u25BA तीन स्थितियां: ऑनलाइन। कनेक्ट है लेकिन इंटरनेट नहीं (आमतौर पर इंटरनेट प्रदाता या मोबाइल नेटवर्क की समस्या)। कनेक्ट नहीं है (अक्सर राउटर, बिजली कटौती या मोबाइल सिग्नल न होना)।\n\n
+    \u25BA सिग्नल की ताकत: आपके सिग्नल की ताकत (dBm में) दिखाता है, आपके फ़ोन के स्टेटस बार जैसे ही स्तरों के साथ। वाई-फ़ाई के लिए यह बैंड (2.4, 5 या 6 GHz) भी दिखाता है; मोबाइल डेटा के लिए आपके नेटवर्क का नाम। अगर सिग्नल बहुत अच्छा है लेकिन इंटरनेट नहीं है, तो समस्या आमतौर पर आपके इंटरनेट प्रदाता की होती है।\n\n
+    \u25BA क्विक सेटिंग्स: ऐप खोले बिना अलर्ट चालू करने के लिए “इंटरनेट अलर्ट” टाइल जोड़ें।\n\n
+    \u25BA रिंग मोड: आपकी अलार्म ध्वनि 1 मिनट तक बजती है, फ़ोन साइलेंट पर हो तब भी। बंद करने के लिए \"बंद करें\" पर टैप करें या ऐप खोलें। डू नॉट डिस्टर्ब चालू होने पर आपको सामान्य सूचना मिलती है।\n\n
+    \u25BA बैटरी: अलर्ट सिर्फ़ इंतज़ार के दौरान चलता है। इंटरनेट वापस आने पर या 12 घंटे बाद यह बंद हो जाता है।\n\n
+    \u25BA गोपनीयता: Wi-Fi Pulse सिर्फ़ यह जांचता है कि आप कनेक्ट हैं या नहीं। यह कभी नहीं देखता कि आप ऑनलाइन क्या करते हैं।\n\n
+    \u25BA कुछ फ़ोन बैटरी बचाने के लिए बैकग्राउंड में ऐप बंद कर देते हैं। अगर अलर्ट बंद हो जाए, तो ऐप की जानकारी खोलें और बैटरी सेटिंग में बैकग्राउंड उपयोग की अनुमति दें।
+</string>
+
+    <!-- Wi-Fi Pulse alert style -->
+    <string name="wifi_pulse_style_ring">रिंग</string>
+    <string name="wifi_pulse_style_notification">सूचना</string>
+    <string name="wifi_pulse_style_ring_hint">जब तक आप बंद न करें, 1 मिनट तक बजेगा। फ़ोन साइलेंट पर हो तब भी बजेगा।</string>
+    <string name="wifi_pulse_style_notification_hint">आपको एक सामान्य सूचना मिलेगी।</string>
+    <string name="wifi_pulse_armed_style_ring">इंटरनेट वापस आने पर आपका फ़ोन बजेगा।</string>
+    <string name="wifi_pulse_armed_style_notification">इंटरनेट वापस आने पर आपको सूचना मिलेगी।</string>
+    <string name="wifi_pulse_notif_stop">बंद करें</string>
+    <string name="wifi_pulse_channel_ringing">इंटरनेट वापस आ गया (रिंग)</string>
+    <string name="wifi_pulse_channel_ringing_desc">जब इंटरनेट वापस आने की सूचना देने के लिए आपका फ़ोन बजता है, तब दिखाई देती है।</string>
+
+    <!-- Wi-Fi Pulse: alert stopped by the phone in the background -->
+    <string name="wifi_pulse_stopped_resumed">आपके फ़ोन ने बैकग्राउंड में Wi-Fi Pulse को बंद कर दिया। हमने इसे फिर से चालू कर दिया है।</string>
+    <string name="wifi_pulse_stopped_missed">आपके फ़ोन ने बैकग्राउंड में Wi-Fi Pulse को बंद कर दिया, इसलिए हम आपको सूचना नहीं दे सके। इंटरनेट अब वापस आ गया है।</string>
+    <string name="wifi_pulse_battery_hint">अलर्ट चालू रखने के लिए, ऐप की जानकारी खोलें और बैटरी सेटिंग में बैकग्राउंड उपयोग की अनुमति दें।</string>
+    <string name="wifi_pulse_button_app_settings">ऐप की जानकारी खोलें</string>
+    <string name="wifi_pulse_notif_stopped_text">आपके फ़ोन ने बैकग्राउंड में अलर्ट बंद कर दिया। इसे फिर से चालू करने के लिए Wi-Fi Pulse खोलें।</string>
+
+    <!-- Wi-Fi signal quality -->
+    <string name="wifi_pulse_signal_excellent">बहुत अच्छा</string>
+    <string name="wifi_pulse_signal_good">अच्छा</string>
+    <string name="wifi_pulse_signal_fair">ठीक-ठाक</string>
+    <string name="wifi_pulse_signal_weak">कमज़ोर</string>
+
+    <!-- Wi-Fi Pulse: how long the user waited -->
+    <string name="wifi_pulse_back_after">%1$s बाद वापस आया</string>
+    <string name="wifi_pulse_less_than_a_minute">1 मिनट से कम समय</string>
+    <string name="wifi_pulse_hours_and_minutes">%1$s %2$s</string>
+    <plurals name="wifi_pulse_minutes">
+        <item quantity="one">%d मिनट</item>
+        <item quantity="other">%d मिनट</item>
+    </plurals>
+    <plurals name="wifi_pulse_hours">
+        <item quantity="one">%d घंटा</item>
+        <item quantity="other">%d घंटे</item>
+    </plurals>
+
+    <!-- Wi-Fi Pulse: mobile data (watched when Wi-Fi is switched off) -->
+    <string name="wifi_pulse_status_online_mobile">मोबाइल डेटा पर ऑनलाइन</string>
+    <string name="wifi_pulse_status_no_internet_mobile">मोबाइल डेटा कनेक्ट है · इंटरनेट नहीं</string>
+    <string name="wifi_pulse_status_disconnected_mobile">मोबाइल कनेक्शन नहीं है</string>
+    <string name="wifi_pulse_status_airplane">हवाई जहाज़ मोड चालू है</string>
+    <string name="wifi_pulse_airplane_hint">हवाई जहाज़ मोड चालू है। इसे बंद करें ताकि आपका फ़ोन मोबाइल डेटा से कनेक्ट हो सके।</string>
+    <string name="wifi_pulse_button_airplane_settings">हवाई जहाज़ मोड बंद करें</string>
+    <string name="wifi_pulse_notif_status_disconnected_mobile">मोबाइल कनेक्शन नहीं है · इंतज़ार जारी…</string>
+    <string name="wifi_pulse_notif_status_no_internet_mobile">मोबाइल डेटा कनेक्ट है · इंटरनेट जांच रहे हैं…</string>
 </resources>

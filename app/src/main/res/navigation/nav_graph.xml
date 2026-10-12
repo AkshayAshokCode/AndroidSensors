@@ -22,6 +22,10 @@
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.SpaceBall"
         android:label="@string/nav_label_space_ball" />
     <fragment
+        android:id="@+id/wifiPulse"
+        android:name="com.akshayAshokCode.androidsensors.presentation.fragments.WifiPulse"
+        android:label="@string/nav_label_wifi_pulse" />
+    <fragment
         android:id="@+id/dashboard"
         android:name="com.akshayAshokCode.androidsensors.presentation.fragments.Dashboard"
         android:label="@string/nav_label_all_sensors" >
@@ -37,5 +41,8 @@
         <action
             android:id="@+id/action_dashboard_to_spaceBall"
             app:destination="@id/spaceBall" />
+        <action
+            android:id="@+id/action_dashboard_to_wifiPulse"
+            app:destination="@id/wifiPulse" />
     </fragment>
 </navigation>
