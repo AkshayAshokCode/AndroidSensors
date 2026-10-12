@@ -17,9 +17,11 @@ Guidance for working in this repository.
 ```bash
 ./gradlew assembleDebug          # debug APK
 ./gradlew installDebug           # install on connected device
-./gradlew bundleRelease          # release AAB (R8 minify on, full native debug symbols)
+./gradlew bundleRelease          # release AAB (R8 full mode + resource shrinking, full native debug symbols)
 ./gradlew test                   # unit tests (only the template ExampleUnitTest exists)
 ```
+
+Release builds use **R8 full mode and resource shrinking**, and debug builds don't use R8 at all. Test anything that loads classes or resources by name on a release build. To install a release build locally without the upload key, add Android Studio's signing properties pointing at `~/.android/debug.keystore` (`-Pandroid.injected.signing.store.file=… -Pandroid.injected.signing.store.password=android -Pandroid.injected.signing.key.alias=androiddebugkey -Pandroid.injected.signing.key.password=android`).
 
 `google-services.json` is required for the Firebase plugin. Sensors don't work meaningfully on the emulator, so test on a real device.
 
