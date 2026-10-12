@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.akshayAshokCode.androidsensors.R
 
@@ -13,7 +12,6 @@ import com.akshayAshokCode.androidsensors.R
  * When arming is not possible right now (already online, Wi-Fi off, airplane mode, notifications blocked)
  * it opens the Wi-Fi Pulse screen, which explains what to do.
  */
-@RequiresApi(Build.VERSION_CODES.N)
 class InternetAlertTileService : TileService() {
 
     override fun onStartListening() {

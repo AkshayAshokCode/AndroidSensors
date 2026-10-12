@@ -6,7 +6,7 @@
 
 [![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)](https://www.android.com)
 [![Language](https://img.shields.io/badge/language-Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![Min SDK](https://img.shields.io/badge/minSdk-23-blue)](https://developer.android.com/tools/releases/platforms)
+[![Min SDK](https://img.shields.io/badge/minSdk-24-blue)](https://developer.android.com/tools/releases/platforms)
 [![Version](https://img.shields.io/badge/version-4.2.0-brightgreen)](https://github.com/AkshayAshokCode/AndroidSensors/releases)
 [![License](https://img.shields.io/github/license/AkshayAshokCode/AndroidSensors)](LICENSE)
 <br/>
@@ -79,7 +79,7 @@ https://github.com/user-attachments/assets/a9048e7c-2c38-4c3a-9c96-5fae4db75bd5
 - **Analytics:** Firebase Analytics
 - **In-App Updates:** Google Play In-App Update API
 - **In-App Review:** Google Play Review API
-- **Build:** Gradle, minSdk 23, targetSdk 36
+- **Build:** Gradle, minSdk 24, targetSdk 36
 
 ---
 

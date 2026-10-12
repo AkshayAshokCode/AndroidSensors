@@ -348,7 +348,6 @@ class InternetAlertService : Service() {
         if (PreferencesManager.isAlertRing(this)) STYLE_RING else STYLE_NOTIFICATION
 
     private fun requestTileUpdate() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
         try {
             TileService.requestListeningState(
                 this, ComponentName(this, InternetAlertTileService::class.java)

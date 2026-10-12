@@ -6,7 +6,7 @@ Guidance for working in this repository.
 
 **AndroidSensors** is a single-module Android app (`:app`, package `com.akshayAshokCode.androidsensors`) that turns the phone's built-in sensors into interactive tools: four sensor tools plus **Wi-Fi Pulse**, an internet-is-back alert. It runs offline and has no ads. The sensor tools need only `VIBRATE`. Wi-Fi Pulse adds network-state permissions plus `POST_NOTIFICATIONS`, which is requested only when the user arms the alert. The AD_ID permission is explicitly removed in the manifest. Published on Google Play.
 
-- Kotlin, minSdk 23, target/compileSdk 36, Java 11
+- Kotlin, minSdk 24 (Play automatic protection requires it), target/compileSdk 36, Java 11
 - UI: Jetpack Compose hosted inside Fragments (`ComposeView`), with an XML activity shell (DrawerLayout + MaterialToolbar + NavHostFragment, ViewBinding)
 - Navigation: Jetpack Navigation + Safe Args ([nav_graph.xml](app/src/main/res/navigation/nav_graph.xml))
 - Firebase Analytics, Play In-App Update (flexible), Play In-App Review

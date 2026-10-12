@@ -64,7 +64,7 @@ class InternetStatusMonitor(
 
     private val callback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            // API 23–25 does not always follow up with onCapabilitiesChanged, so read them here
+            // API 24–25 does not always follow up with onCapabilitiesChanged, so read them here
             track(network, connectivityManager.getNetworkCapabilities(network))
         }
 
